@@ -1,9 +1,9 @@
 #include "AppDelegate.h"
-#include "scenes/MainScene.h"
+#include "scenes/ControlPanelScene.hpp"
 
 USING_NS_CC;
 
-static cocos2d::Size designResolutionSize = cocos2d::Size(480, 320);
+static cocos2d::Size designResolutionSize = cocos2d::Size(320, 568);
 static cocos2d::Size smallResolutionSize = cocos2d::Size(480, 320);
 static cocos2d::Size mediumResolutionSize = cocos2d::Size(1024, 768);
 static cocos2d::Size largeResolutionSize = cocos2d::Size(2048, 1536);
@@ -40,11 +40,14 @@ bool AppDelegate::applicationDidFinishLaunching() {
     if(!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
         glview = GLViewImpl::createWithRect("GameTrafficOptimization", cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
+        glview->setFrameSize(designResolutionSize.width,designResolutionSize.height);
+        glview->setDesignResolutionSize(designResolutionSize.width,designResolutionSize.height, ResolutionPolicy::FIXED_WIDTH);
 #else
         glview = GLViewImpl::create("GameTrafficOptimization");
 #endif
         director->setOpenGLView(glview);
     }
+
 
     // turn on display FPS
     director->setDisplayStats(true);
@@ -74,7 +77,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-    auto scene = MainScene::createScene();
+    auto scene = ControlPanelScene::createScene();
 
     // run
     director->runWithScene(scene);

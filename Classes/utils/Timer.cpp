@@ -24,7 +24,7 @@ bool gettime_init = false;
 
 Timer::Timer()
 {
-	int res;
+	//int res;
 #if defined( __WIN32__ ) || defined( WIN32 ) || defined( _WIN32 )
 #ifndef TIMER_GETTICKCOUNT
 	for (res = 1; res <= 50; ++res)
