@@ -1,5 +1,5 @@
 #include "MainScene.h"
-#include "VisibleRect.h"
+#include "utils/VisibleRect.h"
 
 USING_NS_CC;
 

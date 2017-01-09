@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -64,6 +64,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\Projects\GameTrafficOptimization\cocos2d;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryPath>$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A\lib;$(LibraryPath)</LibraryPath>
@@ -96,7 +97,8 @@
       </Command>
     </PostBuildEvent>
     <PreLinkEvent>
-      <Command></Command>
+      <Command>
+      </Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup>
@@ -108,7 +110,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
       <Inputs>$(TargetFileName)</Inputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
-
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
@@ -139,17 +140,39 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
       </Command>
     </PostBuildEvent>
     <PreLinkEvent>
-      <Command></Command>
+      <Command>
+      </Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
-    <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
+    <ClCompile Include="..\Classes\header_compression\rohc\rohc.c" />
+    <ClCompile Include="..\Classes\scenes\ControlPanelScene.cpp" />
+    <ClCompile Include="..\Classes\scenes\MainScene.cpp" />
+    <ClCompile Include="..\Classes\transport_protocols\tcp\39dll.cpp" />
+    <ClCompile Include="..\Classes\transport_protocols\tcp\buffer.cpp" />
+    <ClCompile Include="..\Classes\transport_protocols\tcp\list.cpp" />
+    <ClCompile Include="..\Classes\transport_protocols\tcp\md5.cpp" />
+    <ClCompile Include="..\Classes\transport_protocols\tcp\socket.cpp" />
+    <ClCompile Include="..\Classes\transport_protocols\tcp\tools.cpp" />
+    <ClCompile Include="..\Classes\utils\Timer.cpp" />
+    <ClCompile Include="..\Classes\utils\Utils.cpp" />
+    <ClCompile Include="..\Classes\utils\VisibleRect.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
-    <ClInclude Include="..\Classes\HelloWorldScene.h" />
+    <ClInclude Include="..\Classes\scenes\ControlPanelScene.hpp" />
+    <ClInclude Include="..\Classes\scenes\MainScene.h" />
+    <ClInclude Include="..\Classes\transport_protocols\tcp\39dll.h" />
+    <ClInclude Include="..\Classes\transport_protocols\tcp\buffer.h" />
+    <ClInclude Include="..\Classes\transport_protocols\tcp\Common.h" />
+    <ClInclude Include="..\Classes\transport_protocols\tcp\list.h" />
+    <ClInclude Include="..\Classes\transport_protocols\tcp\socket.h" />
+    <ClInclude Include="..\Classes\transport_protocols\tcp\tools.h" />
+    <ClInclude Include="..\Classes\utils\Timer.h" />
+    <ClInclude Include="..\Classes\utils\Utils.h" />
+    <ClInclude Include="..\Classes\utils\VisibleRect.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>

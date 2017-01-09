@@ -14,6 +14,7 @@
 #include "ui/CocosGUI.h"
 #include <sstream>
 #include <iomanip>
+#include <vector>
 
 //#include <vector>
 

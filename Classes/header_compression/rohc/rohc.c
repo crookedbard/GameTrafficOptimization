@@ -24,7 +24,7 @@
  *   https://rohc-lib.org/support/mailing-list/
  */
 
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS)
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS && CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
 
 
 

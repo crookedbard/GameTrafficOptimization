@@ -7,9 +7,9 @@
 //
 
 #include "ControlPanelScene.hpp"
-#include "VisibleRect.h"
+#include "utils/VisibleRect.h"
 #include <exception>
-#include "39dll.h"
+#include "transport_protocols/tcp/39dll.h"
 
 USING_NS_CC;
 using namespace cocos2d::ui;
@@ -534,9 +534,13 @@ void ControlPanelScene::addMessage(std::string msg)
     _messages.push_back(msg);
     
     std::string fullMsg = "";
+	//gives error on windows that vector iterator is not increacable / decreacable
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
     for (std::vector<std::string>::iterator i = _messages.end(); i-- != _messages.begin(); ) {
         fullMsg += *i  + "\n";
     }
+#endif
+
     _textMessages->setString(fullMsg);
 }
 

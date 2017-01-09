@@ -24,9 +24,9 @@ bool gettime_init = false;
 
 Timer::Timer()
 {
-	//int res;
 #if defined( __WIN32__ ) || defined( WIN32 ) || defined( _WIN32 )
 #ifndef TIMER_GETTICKCOUNT
+	int res;
 	for (res = 1; res <= 50; ++res)
 	{
 		if (timeBeginPeriod(res) == TIMERR_NOERROR)

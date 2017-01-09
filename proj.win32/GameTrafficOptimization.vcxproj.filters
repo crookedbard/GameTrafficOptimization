@@ -10,6 +10,27 @@
     <Filter Include="src">
       <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\utils">
+      <UniqueIdentifier>{ddb91c59-d83d-4e81-a963-ce6a794ee45c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\header_compression">
+      <UniqueIdentifier>{be6b8eca-8d3e-4188-ab74-f7a3aacc16d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\header_compression\rohc">
+      <UniqueIdentifier>{09a9cdab-f04b-4da7-b036-18adad03d587}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\transport_protocols">
+      <UniqueIdentifier>{f9f5a93e-0f85-48f6-b9e8-2d6b5133c4e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\transport_protocols\tcp">
+      <UniqueIdentifier>{3bb8129b-5924-4b72-b708-14d199a63679}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\transport_protocols\sctp">
+      <UniqueIdentifier>{1c0b6cdf-ce09-4f0f-99db-96464ed818a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\scenes">
+      <UniqueIdentifier>{728b8e8f-c34f-457b-b6ea-18e878d7106d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -18,8 +39,41 @@
     <ClCompile Include="..\Classes\AppDelegate.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\HelloWorldScene.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="..\Classes\utils\Timer.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\utils\Utils.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\utils\VisibleRect.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\scenes\ControlPanelScene.cpp">
+      <Filter>src\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\scenes\MainScene.cpp">
+      <Filter>src\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\header_compression\rohc\rohc.c">
+      <Filter>src\header_compression\rohc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\transport_protocols\tcp\39dll.cpp">
+      <Filter>src\transport_protocols\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\transport_protocols\tcp\buffer.cpp">
+      <Filter>src\transport_protocols\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\transport_protocols\tcp\list.cpp">
+      <Filter>src\transport_protocols\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\transport_protocols\tcp\md5.cpp">
+      <Filter>src\transport_protocols\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\transport_protocols\tcp\socket.cpp">
+      <Filter>src\transport_protocols\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\transport_protocols\tcp\tools.cpp">
+      <Filter>src\transport_protocols\tcp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -29,8 +83,38 @@
     <ClInclude Include="..\Classes\AppDelegate.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\HelloWorldScene.h">
-      <Filter>src</Filter>
+    <ClInclude Include="..\Classes\utils\Timer.h">
+      <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\utils\Utils.h">
+      <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\utils\VisibleRect.h">
+      <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\scenes\ControlPanelScene.hpp">
+      <Filter>src\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\scenes\MainScene.h">
+      <Filter>src\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\transport_protocols\tcp\39dll.h">
+      <Filter>src\transport_protocols\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\transport_protocols\tcp\buffer.h">
+      <Filter>src\transport_protocols\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\transport_protocols\tcp\Common.h">
+      <Filter>src\transport_protocols\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\transport_protocols\tcp\list.h">
+      <Filter>src\transport_protocols\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\transport_protocols\tcp\socket.h">
+      <Filter>src\transport_protocols\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\transport_protocols\tcp\tools.h">
+      <Filter>src\transport_protocols\tcp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
