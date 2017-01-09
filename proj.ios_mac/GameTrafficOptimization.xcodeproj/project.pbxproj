@@ -74,6 +74,12 @@
 		57AA28101E22A96A00895B24 /* cocosui in Resources */ = {isa = PBXBuildFile; fileRef = 57AA280E1E22A96A00895B24 /* cocosui */; };
 		57AA28121E22BA4700895B24 /* rohc.c in Sources */ = {isa = PBXBuildFile; fileRef = 57AA28111E22BA4700895B24 /* rohc.c */; };
 		57AA28131E22BA4700895B24 /* rohc.c in Sources */ = {isa = PBXBuildFile; fileRef = 57AA28111E22BA4700895B24 /* rohc.c */; };
+		57AA28291E22F9AB00895B24 /* 39dll.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57AA281D1E22F9AB00895B24 /* 39dll.cpp */; };
+		57AA282A1E22F9AB00895B24 /* buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57AA281F1E22F9AB00895B24 /* buffer.cpp */; };
+		57AA282B1E22F9AB00895B24 /* list.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57AA28221E22F9AB00895B24 /* list.cpp */; };
+		57AA282C1E22F9AB00895B24 /* md5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57AA28241E22F9AB00895B24 /* md5.cpp */; };
+		57AA282D1E22F9AB00895B24 /* socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57AA28251E22F9AB00895B24 /* socket.cpp */; };
+		57AA282E1E22F9AB00895B24 /* tools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57AA28271E22F9AB00895B24 /* tools.cpp */; };
 		8262943E1AAF051F00CB7CF7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8262943D1AAF051F00CB7CF7 /* Security.framework */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
@@ -187,6 +193,18 @@
 		57AA28071E22A11B00895B24 /* ControlPanelScene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ControlPanelScene.hpp; path = scenes/ControlPanelScene.hpp; sourceTree = "<group>"; };
 		57AA280E1E22A96A00895B24 /* cocosui */ = {isa = PBXFileReference; lastKnownFileType = folder; path = cocosui; sourceTree = "<group>"; };
 		57AA28111E22BA4700895B24 /* rohc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = rohc.c; path = header_compression/rohc/rohc.c; sourceTree = "<group>"; };
+		57AA281D1E22F9AB00895B24 /* 39dll.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = 39dll.cpp; path = transport_protocols/tcp/39dll.cpp; sourceTree = "<group>"; };
+		57AA281E1E22F9AB00895B24 /* 39dll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = 39dll.h; path = transport_protocols/tcp/39dll.h; sourceTree = "<group>"; };
+		57AA281F1E22F9AB00895B24 /* buffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = buffer.cpp; path = transport_protocols/tcp/buffer.cpp; sourceTree = "<group>"; };
+		57AA28201E22F9AB00895B24 /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = buffer.h; path = transport_protocols/tcp/buffer.h; sourceTree = "<group>"; };
+		57AA28211E22F9AB00895B24 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Common.h; path = transport_protocols/tcp/Common.h; sourceTree = "<group>"; };
+		57AA28221E22F9AB00895B24 /* list.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = list.cpp; path = transport_protocols/tcp/list.cpp; sourceTree = "<group>"; };
+		57AA28231E22F9AB00895B24 /* list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = list.h; path = transport_protocols/tcp/list.h; sourceTree = "<group>"; };
+		57AA28241E22F9AB00895B24 /* md5.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = md5.cpp; path = transport_protocols/tcp/md5.cpp; sourceTree = "<group>"; };
+		57AA28251E22F9AB00895B24 /* socket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = socket.cpp; path = transport_protocols/tcp/socket.cpp; sourceTree = "<group>"; };
+		57AA28261E22F9AB00895B24 /* socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = socket.h; path = transport_protocols/tcp/socket.h; sourceTree = "<group>"; };
+		57AA28271E22F9AB00895B24 /* tools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tools.cpp; path = transport_protocols/tcp/tools.cpp; sourceTree = "<group>"; };
+		57AA28281E22F9AB00895B24 /* tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tools.h; path = transport_protocols/tcp/tools.h; sourceTree = "<group>"; };
 		8262943D1AAF051F00CB7CF7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -448,6 +466,18 @@
 		57AA27671E21672300895B24 /* tcp */ = {
 			isa = PBXGroup;
 			children = (
+				57AA281D1E22F9AB00895B24 /* 39dll.cpp */,
+				57AA281E1E22F9AB00895B24 /* 39dll.h */,
+				57AA281F1E22F9AB00895B24 /* buffer.cpp */,
+				57AA28201E22F9AB00895B24 /* buffer.h */,
+				57AA28211E22F9AB00895B24 /* Common.h */,
+				57AA28221E22F9AB00895B24 /* list.cpp */,
+				57AA28231E22F9AB00895B24 /* list.h */,
+				57AA28241E22F9AB00895B24 /* md5.cpp */,
+				57AA28251E22F9AB00895B24 /* socket.cpp */,
+				57AA28261E22F9AB00895B24 /* socket.h */,
+				57AA28271E22F9AB00895B24 /* tools.cpp */,
+				57AA28281E22F9AB00895B24 /* tools.h */,
 			);
 			name = tcp;
 			sourceTree = "<group>";
@@ -643,14 +673,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
+				57AA282D1E22F9AB00895B24 /* socket.cpp in Sources */,
 				57AA27651E21671100895B24 /* Utils.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				57AA27661E21671100895B24 /* VisibleRect.cpp in Sources */,
+				57AA28291E22F9AB00895B24 /* 39dll.cpp in Sources */,
 				57AA28081E22A11B00895B24 /* ControlPanelScene.cpp in Sources */,
 				57AA28121E22BA4700895B24 /* rohc.c in Sources */,
 				57AA27801E2188C300895B24 /* MainScene.cpp in Sources */,
+				57AA282B1E22F9AB00895B24 /* list.cpp in Sources */,
 				57AA27641E21671100895B24 /* Timer.cpp in Sources */,
+				57AA282E1E22F9AB00895B24 /* tools.cpp in Sources */,
+				57AA282A1E22F9AB00895B24 /* buffer.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
+				57AA282C1E22F9AB00895B24 /* md5.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -708,6 +744,7 @@
 				INFOPLIST_FILE = ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(_COCOS_LIB_IOS_BEGIN)",
 					"$(_COCOS_LIB_IOS_END)",
@@ -742,6 +779,7 @@
 				INFOPLIST_FILE = ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(_COCOS_LIB_IOS_BEGIN)",
 					"$(_COCOS_LIB_IOS_END)",
@@ -765,6 +803,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				DEVELOPMENT_TEAM = Z2TUYEY23U;
+				ENABLE_ON_DEMAND_RESOURCES = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -781,15 +820,16 @@
 				);
 				INFOPLIST_FILE = mac/Info.plist;
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(_COCOS_LIB_MAC_BEGIN)",
 					"$(_COCOS_LIB_MAC_END)",
 					"-lrohc",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.CrookedBard.GameTrafficOptimization;
+				SUPPORTED_PLATFORMS = macosx;
 				USER_HEADER_SEARCH_PATHS = "$(_COCOS_HEADER_MAC_BEGIN) $(_COCOS_HEADER_MAC_END)";
-				VALID_ARCHS = "i386 x86_64 armv7 arm64";
+				VALID_ARCHS = "i386 x86_64 arm64 armv7";
 			};
 			name = Debug;
 		};
@@ -802,6 +842,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				DEVELOPMENT_TEAM = Z2TUYEY23U;
+				ENABLE_ON_DEMAND_RESOURCES = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = mac/Prefix.pch;
@@ -816,15 +857,16 @@
 				);
 				INFOPLIST_FILE = mac/Info.plist;
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(_COCOS_LIB_MAC_BEGIN)",
 					"$(_COCOS_LIB_MAC_END)",
 					"-lrohc",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.CrookedBard.GameTrafficOptimization;
+				SUPPORTED_PLATFORMS = macosx;
 				USER_HEADER_SEARCH_PATHS = "$(_COCOS_HEADER_MAC_BEGIN) $(_COCOS_HEADER_MAC_END)";
-				VALID_ARCHS = "i386 x86_64 armv7 arm64";
+				VALID_ARCHS = "i386 x86_64 arm64 armv7";
 			};
 			name = Release;
 		};

@@ -12,6 +12,9 @@
 #include "cocos2d.h"
 #include "extensions/cocos-ext.h"
 #include "ui/CocosGUI.h"
+#include <sstream>
+#include <iomanip>
+
 //#include <vector>
 
 class ControlPanelScene : public cocos2d::Layer
@@ -36,6 +39,7 @@ public:
     bool readSettings();
     bool loadPanel();
     void addMessage(std::string msg);
+    std::string doubleToString(double dbl);
     
     CREATE_FUNC(ControlPanelScene);
 private:
@@ -44,7 +48,8 @@ private:
     bool _isSctpServer;
     bool _isSctpClient;
     std::string _ipAddress;
-    std::string _port;
+    double _port;
+    double _tcpSocket;
     std::vector<std::string> _messages;
     cocos2d::Label *_labelConnectionStatus;
     cocos2d::ui::Button *_buttonTcpListen;

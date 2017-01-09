@@ -9,6 +9,7 @@
 #include "ControlPanelScene.hpp"
 #include "VisibleRect.h"
 #include <exception>
+#include "39dll.h"
 
 USING_NS_CC;
 using namespace cocos2d::ui;
@@ -80,7 +81,7 @@ bool ControlPanelScene::loadPanel()
         scrollView->setInnerContainerSize(Size(innerWidth, innerHeight));
         const float LINE_HEIGHT = 30.0f;
         //line 1. Connection info
-        auto labelIpAddress = Label::createWithTTF(_ipAddress + ":" +_port, FONT_NAME, FONT_SIZE);
+        auto labelIpAddress = Label::createWithTTF(_ipAddress + ":" + doubleToString(_port), FONT_NAME, FONT_SIZE);
         labelIpAddress->setPosition(Vec2(10, scrollView->getInnerContainerSize().height - labelIpAddress->getContentSize().height ));
         labelIpAddress->setAnchorPoint(Vec2::ZERO);
         scrollView->addChild(labelIpAddress);
@@ -249,6 +250,21 @@ void ControlPanelScene::onButtonTcpListen(Ref* pSender, Widget::TouchEventType t
     {
         if(!_isTcpServer)
         {
+            dllInit();
+            _tcpSocket = tcplisten(_port, 2, 1);
+            
+            if(socket <= 0)
+            {
+                addMessage("Listening socket could not be opened on port " + doubleToString(_port));
+                closesock(_tcpSocket);
+                return;
+            }
+            else
+            {
+                setnagle(_tcpSocket, false);
+                addMessage("Server listening for incoming connections on port " + doubleToString(_port));
+            }
+            
             _isTcpServer = true;
             _labelConnectionStatus->setString("TCP server listening");
             _labelConnectionStatus->setColor(Color3B(0, 255, 0));
@@ -272,6 +288,8 @@ void ControlPanelScene::onButtonTcpListen(Ref* pSender, Widget::TouchEventType t
             _buttonSctpListen->setBright(true);
             _buttonSctpConnect->setEnabled(true);
             _buttonSctpConnect->setBright(true);
+            
+            closesock(_tcpSocket);
         }
     }
 }
@@ -282,6 +300,16 @@ void ControlPanelScene::onButtonTcpConnect(Ref* pSender, Widget::TouchEventType 
     {
         if(!_isTcpClient)
         {
+            dllInit();
+            _tcpSocket = tcpconnect(_ipAddress, _port, 1);
+            
+            if (_tcpSocket <= 0){
+                addMessage("Failed to connect!");
+                closesock(_tcpSocket);
+                return;
+            }else{
+                setnagle(_tcpSocket, false);
+            }
             _isTcpClient = true;
             _labelConnectionStatus->setString("TCP client connected");
             _labelConnectionStatus->setColor(Color3B(0, 255, 0));
@@ -305,6 +333,8 @@ void ControlPanelScene::onButtonTcpConnect(Ref* pSender, Widget::TouchEventType 
             _buttonSctpListen->setBright(true);
             _buttonSctpConnect->setEnabled(true);
             _buttonSctpConnect->setBright(true);
+            
+            closesock(_tcpSocket);
         }
     }
 }
@@ -493,7 +523,7 @@ bool ControlPanelScene::readSettings()
     if(seglist.size() < settingsCount) return false;
     
     _ipAddress = seglist[0];
-    _port = seglist[1];
+    _port = std::stod(seglist[1]);
     
     return true;
 }
@@ -508,6 +538,13 @@ void ControlPanelScene::addMessage(std::string msg)
         fullMsg += *i  + "\n";
     }
     _textMessages->setString(fullMsg);
+}
+
+std::string ControlPanelScene::doubleToString(double dbl)
+{
+    std::ostringstream strs;
+    strs << dbl;
+    return strs.str();
 }
 
 void ControlPanelScene::menuCloseCallback(Ref* pSender)
