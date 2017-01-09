@@ -13,7 +13,7 @@ CBuffer::CBuffer()
 
 CBuffer::~CBuffer()
 {
-	if (data != NULL)
+	if (data != nullptr)
 		free(data);
 }
 

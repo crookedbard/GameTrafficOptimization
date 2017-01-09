@@ -498,9 +498,26 @@ int AddSocket(CSocket*b)
 
 double dllInit()
 {
+	buffers.Clear();
+	sockets.Clear();
 	CSocket::SockStart();
 	buffers.Add(new CBuffer());
 	sockets.Add(new CSocket()); //dummy socket
+	return 1;
+}
+
+double dllFree()
+{
+	CSocket::SockExit();
+	for (int i = 0; i < buffers.count; i++)
+		if (buffers[i] != NULL)
+			delete (CBuffer*)buffers.item(i);
+	for (int i = 0; i < sockets.count; i++)
+		if (sockets[i] != NULL)
+			delete (CSocket*)sockets.item(i);
+	//	for (int i = 0; i < files.count; i++)
+	//		if (files[i] != NULL)
+	//			CTools::BinClose((HANDLE)files.item(i));
 	return 1;
 }
 

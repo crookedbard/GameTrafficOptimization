@@ -83,9 +83,9 @@ int AddBuffer(CBuffer*b);
 int AddSocket(CSocket*b);
 //int AddFile(HANDLE b);
 double dllInit();
-//double dllFree();
+double dllFree();
 
 //my custom
-CBuffer* getBuffer(double buffid);
+CBuffer* getBuffer(double buffid = 0);
  
 #endif // __39DLL_H__

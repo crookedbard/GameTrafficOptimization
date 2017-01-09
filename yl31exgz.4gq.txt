@@ -1,0 +1,81 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	modified:   Classes/AppDelegate.cpp
+#	new file:   Classes/controllers/PacketController.cpp
+#	new file:   Classes/controllers/PacketController.h
+#	new file:   Classes/layers/HudLayer.cpp
+#	new file:   Classes/layers/HudLayer.h
+#	modified:   Classes/scenes/ControlPanelScene.cpp
+#	modified:   Classes/scenes/ControlPanelScene.hpp
+#	modified:   Classes/scenes/MainScene.cpp
+#	modified:   Classes/transport_protocols/tcp/39dll.cpp
+#	modified:   Classes/transport_protocols/tcp/39dll.h
+#	modified:   Classes/transport_protocols/tcp/buffer.cpp
+#	deleted:    cocos2d/cocos/2d/Debug.win32/libcocos2d.tlog/CL.command.1.tlog
+#	deleted:    cocos2d/cocos/2d/Debug.win32/libcocos2d.tlog/CL.read.1.tlog
+#	deleted:    cocos2d/cocos/2d/Debug.win32/libcocos2d.tlog/CL.write.1.tlog
+#	deleted:    cocos2d/cocos/2d/Debug.win32/libcocos2d.tlog/libcocos2d.lastbuildstate
+#	deleted:    cocos2d/cocos/2d/Debug.win32/libcocos2d.tlog/libcocos2d.write.1u.tlog
+#	deleted:    cocos2d/cocos/2d/Debug.win32/libcocos2d.tlog/link.command.1.tlog
+#	deleted:    cocos2d/cocos/2d/Debug.win32/libcocos2d.tlog/link.read.1.tlog
+#	deleted:    cocos2d/cocos/2d/Debug.win32/libcocos2d.tlog/link.write.1.tlog
+#	deleted:    cocos2d/cocos/editor-support/spine/proj.win32/Debug.win32/libSpine.idb
+#	deleted:    cocos2d/cocos/editor-support/spine/proj.win32/Debug.win32/libSpine.tlog/CL.command.1.tlog
+#	deleted:    cocos2d/cocos/editor-support/spine/proj.win32/Debug.win32/libSpine.tlog/CL.read.1.tlog
+#	deleted:    cocos2d/cocos/editor-support/spine/proj.win32/Debug.win32/libSpine.tlog/CL.write.1.tlog
+#	deleted:    cocos2d/cocos/editor-support/spine/proj.win32/Debug.win32/libSpine.tlog/Lib-link.read.1.tlog
+#	deleted:    cocos2d/cocos/editor-support/spine/proj.win32/Debug.win32/libSpine.tlog/Lib-link.write.1.tlog
+#	deleted:    cocos2d/cocos/editor-support/spine/proj.win32/Debug.win32/libSpine.tlog/lib.command.1.tlog
+#	deleted:    cocos2d/cocos/editor-support/spine/proj.win32/Debug.win32/libSpine.tlog/libSpine.lastbuildstate
+#	deleted:    cocos2d/external/Box2D/proj.win32/Debug.win32/libbox2d.idb
+#	deleted:    cocos2d/external/Box2D/proj.win32/Debug.win32/libbox2d.tlog/CL.command.1.tlog
+#	deleted:    cocos2d/external/Box2D/proj.win32/Debug.win32/libbox2d.tlog/CL.read.1.tlog
+#	deleted:    cocos2d/external/Box2D/proj.win32/Debug.win32/libbox2d.tlog/CL.write.1.tlog
+#	deleted:    cocos2d/external/Box2D/proj.win32/Debug.win32/libbox2d.tlog/Lib-link.read.1.tlog
+#	deleted:    cocos2d/external/Box2D/proj.win32/Debug.win32/libbox2d.tlog/Lib-link.write.1.tlog
+#	deleted:    cocos2d/external/Box2D/proj.win32/Debug.win32/libbox2d.tlog/lib.command.1.tlog
+#	deleted:    cocos2d/external/Box2D/proj.win32/Debug.win32/libbox2d.tlog/libbox2d.lastbuildstate
+#	deleted:    cocos2d/external/bullet/proj.win32/Debug.win32/libbullet.idb
+#	deleted:    cocos2d/external/bullet/proj.win32/Debug.win32/libbullet.tlog/CL.command.1.tlog
+#	deleted:    cocos2d/external/bullet/proj.win32/Debug.win32/libbullet.tlog/CL.read.1.tlog
+#	deleted:    cocos2d/external/bullet/proj.win32/Debug.win32/libbullet.tlog/CL.write.1.tlog
+#	deleted:    cocos2d/external/bullet/proj.win32/Debug.win32/libbullet.tlog/Lib-link.read.1.tlog
+#	deleted:    cocos2d/external/bullet/proj.win32/Debug.win32/libbullet.tlog/Lib-link.write.1.tlog
+#	deleted:    cocos2d/external/bullet/proj.win32/Debug.win32/libbullet.tlog/lib.command.1.tlog
+#	deleted:    cocos2d/external/bullet/proj.win32/Debug.win32/libbullet.tlog/libbullet.lastbuildstate
+#	deleted:    cocos2d/external/recast/proj.win32/Debug.win32/librecast.tlog/CL.command.1.tlog
+#	deleted:    cocos2d/external/recast/proj.win32/Debug.win32/librecast.tlog/CL.read.1.tlog
+#	deleted:    cocos2d/external/recast/proj.win32/Debug.win32/librecast.tlog/CL.write.1.tlog
+#	deleted:    cocos2d/external/recast/proj.win32/Debug.win32/librecast.tlog/Lib-link.read.1.tlog
+#	deleted:    cocos2d/external/recast/proj.win32/Debug.win32/librecast.tlog/Lib-link.write.1.tlog
+#	deleted:    cocos2d/external/recast/proj.win32/Debug.win32/librecast.tlog/lib.command.1.tlog
+#	deleted:    cocos2d/external/recast/proj.win32/Debug.win32/librecast.tlog/librecast.lastbuildstate
+#	deleted:    proj.win32/Debug.win32/GameTraf.76A39BB2.tlog/CL.command.1.tlog
+#	deleted:    proj.win32/Debug.win32/GameTraf.76A39BB2.tlog/CL.read.1.tlog
+#	deleted:    proj.win32/Debug.win32/GameTraf.76A39BB2.tlog/CL.write.1.tlog
+#	deleted:    proj.win32/Debug.win32/GameTraf.76A39BB2.tlog/GameTrafficOptimization.lastbuildstate
+#	deleted:    proj.win32/Debug.win32/GameTraf.76A39BB2.tlog/GameTrafficOptimization.write.1u.tlog
+#	deleted:    proj.win32/Debug.win32/GameTraf.76A39BB2.tlog/link.command.1.tlog
+#	deleted:    proj.win32/Debug.win32/GameTraf.76A39BB2.tlog/link.read.1.tlog
+#	deleted:    proj.win32/Debug.win32/GameTraf.76A39BB2.tlog/link.write.1.tlog
+#	deleted:    proj.win32/Debug.win32/GameTraf.76A39BB2.tlog/rc.command.1.tlog
+#	deleted:    proj.win32/Debug.win32/GameTraf.76A39BB2.tlog/rc.read.1.tlog
+#	deleted:    proj.win32/Debug.win32/GameTraf.76A39BB2.tlog/rc.write.1.tlog
+#	deleted:    proj.win32/Debug.win32/GameTrafficOptimization.exp
+#	deleted:    proj.win32/Debug.win32/game.res
+#	deleted:    proj.win32/Debug.win32/libcocos2d.exp
+#	deleted:    proj.win32/Debug.win32/vc140.idb
+#
+# Changes not staged for commit:
+#	modified:   proj.win32/GameTrafficOptimization.vcxproj
+#	modified:   proj.win32/GameTrafficOptimization.vcxproj.filters
+#
+# Untracked files:
+#	proj.win32/GameTrafficOptimization.VC.VC.opendb
+#
+

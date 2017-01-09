@@ -31,6 +31,12 @@
     <Filter Include="src\scenes">
       <UniqueIdentifier>{728b8e8f-c34f-457b-b6ea-18e878d7106d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\controllers">
+      <UniqueIdentifier>{37cbbbcc-ae9d-4d81-9517-1576f35566ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\layers">
+      <UniqueIdentifier>{330bcb8c-c2b3-4bdd-aba4-9106d88ce6d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -75,6 +81,12 @@
     <ClCompile Include="..\Classes\transport_protocols\tcp\tools.cpp">
       <Filter>src\transport_protocols\tcp</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\controllers\PacketController.cpp">
+      <Filter>src\controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\layers\HudLayer.cpp">
+      <Filter>src\layers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -115,6 +127,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\transport_protocols\tcp\tools.h">
       <Filter>src\transport_protocols\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\controllers\PacketController.h">
+      <Filter>src\controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\layers\HudLayer.h">
+      <Filter>src\layers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
