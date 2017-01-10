@@ -1,4 +1,5 @@
-#include "layers\HudLayer.h"
+//#include "layers\HudLayer.h"
+#include "HudLayer.h"
 
 USING_NS_CC;
 using namespace cocos2d::ui;

@@ -143,3 +143,52 @@ unsigned int CTools::adler32(CBuffer*buff)
 		b -= 65521;
 	return b << 16 | a;
 }
+
+// Get a Vector of the IP addresses of this computer
+std::vector<std::string> CTools::getIPAddresses() {
+    
+    std::vector<std::string> IPAddresses;
+    int TempAddress = 0;
+    char* TempIPAddress = (char*) malloc(16);
+    
+    ifaddrs* ifap = NULL;   //Head of the interface address linked list
+    
+    if (getifaddrs(&ifap) == 0 && ifap != NULL) {
+        
+        //Get another pointer to move down the linked list
+        ifaddrs* current = ifap;
+        
+        //Move down the linked list until we get to a NULL pointer
+        while (current != NULL) {
+            
+            //Create a pointer of the correct type to work with
+            const sockaddr_in* interfaceAddress = reinterpret_cast<const sockaddr_in*>(current->ifa_addr);
+            
+            if (current->ifa_addr != NULL) {
+                if (current->ifa_addr->sa_family == AF_INET) {
+                    //printf("%s:", current->ifa_name);
+                    if (interfaceAddress != NULL) {
+                        TempAddress = ntohl(interfaceAddress->sin_addr.s_addr);
+                        sprintf(TempIPAddress, "%d.%d.%d.%d", (TempAddress >> 24) & 0xFF, (TempAddress >> 16) & 0xFF,
+                                (TempAddress >> 8) & 0xFF, TempAddress & 0xFF);
+                        //Don't include the lookback address
+                        if (strcmp(TempIPAddress, "127.0.0.1") != 0) {
+                            IPAddresses.push_back(std::string(TempIPAddress));
+                        }
+                        //printf("%s\n", TempIPAddress);
+                    }
+                }
+            }
+            
+            //Move to the next node in the linked-list
+            current = current->ifa_next;
+        }
+        
+        //Release the interface memory
+        freeifaddrs(ifap);
+        ifap = NULL;
+    }
+    
+    return IPAddresses;
+    
+}

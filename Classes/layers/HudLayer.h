@@ -2,8 +2,8 @@
 #define __HUDLAYER_H_
 
 #include "cocos2d.h"
-#include "extensions\cocos-ext.h"
-#include "ui\CocosGUI.h"
+#include "cocos-ext.h"
+#include "CocosGUI.h"
 #include <sstream>
 #include <iomanip>
 #include <vector>

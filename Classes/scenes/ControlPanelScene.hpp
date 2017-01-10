@@ -10,8 +10,10 @@
 #define ControlPanelScene_hpp
 
 #include "cocos2d.h"
-#include "extensions\cocos-ext.h"
-#include "ui\CocosGUI.h"
+//#include "extensions\cocos-ext.h"
+#include "cocos-ext.h"
+//#include "ui\CocosGUI.h"
+#include "CocosGUI.h"
 #include <sstream>
 #include <iomanip>
 

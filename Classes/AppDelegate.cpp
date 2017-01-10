@@ -1,5 +1,6 @@
 #include "AppDelegate.h"
-#include "scenes\ControlPanelScene.hpp"
+//#include "scenes\ControlPanelScene.hpp"
+#include "ControlPanelScene.hpp"
 
 USING_NS_CC;
 

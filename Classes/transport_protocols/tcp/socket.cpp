@@ -507,12 +507,12 @@ int CSocket::peekmessage(int size, CBuffer*destination)
 
 	if (size < 0)
 	{
-		delete buff;
+		delete[] buff;
 		return -1;
 	}
 	destination->clear();
 	destination->addBuffer(buff, size);
-	delete buff;
+	delete[] buff;
 	return size;
 }
 #endif
