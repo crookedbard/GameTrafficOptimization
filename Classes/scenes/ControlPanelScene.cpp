@@ -146,27 +146,27 @@ bool ControlPanelScene::loadPanel()
 //		labelIpAddress->setPosition(Vec2(10.0f, scrollView->getInnerContainerSize().height - labelIpAddress->getContentSize().height ));
 //		labelIpAddress->setAnchorPoint(Vec2::ZERO);
 //		scrollView->addChild(labelIpAddress);
-        
-        auto _editName = ui::EditBox::create(Size(150.0f, 25.0f), ui::Scale9Sprite::create());
-        _editName->setPosition(Vec2(7.0f, scrollView->getInnerContainerSize().height - 25.0f ));
-        _editName->setFontName(FONT_NAME.c_str());
-        _editName->setFontSize(FONT_SIZE);
-        _editName->setFontColor(Color3B::WHITE);
-        _editName->setPlaceHolder("IP address:");
-        _editName->setPlaceholderFontColor(Color3B::WHITE);
-        _editName->setMaxLength(20);
-        _editName->setAnchorPoint(Vec2::ZERO);
-        _editName->setReturnType(ui::EditBox::KeyboardReturnType::DONE);
-        _editName->setText((_ipAddress + ":" + doubleToString(_port)).c_str());
-        //_editName->setDelegate(this);
-        scrollView->addChild(_editName);
-        
+		
+		auto _editName = ui::EditBox::create(Size(150.0f, 25.0f), ui::Scale9Sprite::create());
+		_editName->setPosition(Vec2(7.0f, scrollView->getInnerContainerSize().height - 25.0f ));
+		_editName->setFontName(FONT_NAME.c_str());
+		_editName->setFontSize(FONT_SIZE);
+		_editName->setFontColor(Color3B::WHITE);
+		_editName->setPlaceHolder("IP address:");
+		_editName->setPlaceholderFontColor(Color3B::WHITE);
+		_editName->setMaxLength(20);
+		_editName->setAnchorPoint(Vec2::ZERO);
+		_editName->setReturnType(ui::EditBox::KeyboardReturnType::DONE);
+		_editName->setText((_ipAddress + ":" + doubleToString(_port)).c_str());
+		//_editName->setDelegate(this);
+		scrollView->addChild(_editName);
+		
 //        auto labelIp = Label::createWithTTF(_editName->getText(), FONT_NAME, FONT_SIZE);
 //        auto labelPort = Label::createWithTTF(":" + doubleToString(_port), FONT_NAME, FONT_SIZE);
 //        labelPort->setPosition(Vec2(10.0f + labelIp->getContentSize().width, scrollView->getInnerContainerSize().height - labelPort->getContentSize().height - 4.0f));
 //        labelPort->setAnchorPoint(Vec2::ZERO);
 //        scrollView->addChild(labelPort);
-        
+		
 		_labelConnectionStatus = Label::createWithTTF("Disconnected", FONT_NAME, FONT_SIZE);
 		_labelConnectionStatus->setColor(Color3B(255, 0, 0));
 		_labelConnectionStatus->setPosition(Vec2(innerWidth - 180.0f, scrollView->getInnerContainerSize().height - _labelConnectionStatus->getContentSize().height - 4.0f));
@@ -314,7 +314,7 @@ bool ControlPanelScene::loadPanel()
 		scrollView->addChild(_textMessages);
 		
 		addMessage("Result area");
-        
+		
 		auto host = myhost();
 		if (host != NULL) {
 			addMessage(host);
@@ -323,11 +323,11 @@ bool ControlPanelScene::loadPanel()
 		}
 
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
-        auto ips = CTools::getIPAddresses();
-        for(auto i : ips)
-        {
-            addMessage(i);
-        }
+		auto ips = CTools::getIPAddresses();
+		for(auto i : ips)
+		{
+			addMessage(i);
+		}
 #endif
 	}
 	catch(std::exception& e){
