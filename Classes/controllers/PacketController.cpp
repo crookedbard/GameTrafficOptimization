@@ -1,6 +1,10 @@
 #include "PacketController.h"
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#include "transport_protocols\tcp\39dll.h"
+#else
 #include "39dll.h"
-//#include "transport_protocols\tcp\39dll.h"
+#endif
 
 
 void PacketController::handle()

@@ -1,6 +1,10 @@
 #include "AppDelegate.h"
-//#include "scenes\ControlPanelScene.hpp"
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#include "scenes\ControlPanelScene.hpp"
+#else
 #include "ControlPanelScene.hpp"
+#endif
 
 USING_NS_CC;
 

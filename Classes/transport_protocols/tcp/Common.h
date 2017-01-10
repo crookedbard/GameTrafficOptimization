@@ -211,7 +211,7 @@ enum MsTimeVariables
 #include <cstring>
 #include <climits>
 #include <cstdlib>
-#include <ifaddrs.h>
+//#include <ifaddrs.h>
 //#include <iostream>
 
 #if defined ( __GNUC__ )

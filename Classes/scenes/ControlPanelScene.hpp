@@ -9,13 +9,20 @@
 #ifndef ControlPanelScene_hpp
 #define ControlPanelScene_hpp
 
-#include "cocos2d.h"
-//#include "extensions\cocos-ext.h"
-#include "cocos-ext.h"
-//#include "ui\CocosGUI.h"
-#include "CocosGUI.h"
 #include <sstream>
 #include <iomanip>
+#include "cocos2d.h"
+#include "cocos-ext.h"
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#include "ui\CocosGUI.h"
+#else
+#include "CocosGUI.h"
+#endif
+//#include "extensions\cocos-ext.h"
+
+
+
 
 class ControlPanelScene : public cocos2d::Layer
 {

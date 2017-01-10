@@ -1,5 +1,7 @@
+#ifdef USE_HUD_CLASS
 //#include "layers\HudLayer.h"
 #include "HudLayer.h"
+
 
 USING_NS_CC;
 using namespace cocos2d::ui;
@@ -23,3 +25,4 @@ bool HudLayer::init()
 
 	return bRet;
 }
+#endif // USE_HUD_CLASS

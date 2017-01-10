@@ -1,6 +1,9 @@
 #include "MainScene.h"
-//#include "utils\VisibleRect.h"
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#include "utils\VisibleRect.h"
+#else
 #include "VisibleRect.h"
+#endif
 
 USING_NS_CC;
 

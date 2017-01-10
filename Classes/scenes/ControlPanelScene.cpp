@@ -7,13 +7,17 @@
 //
 
 #include "ControlPanelScene.hpp"
-//#include "utils\VisibleRect.h"
-#include "VisibleRect.h"
 #include <exception>
-//#include "transport_protocols\tcp\39dll.h"
-//#include "controllers\PacketController.h"
+//problem with paths
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#include "utils\VisibleRect.h"
+#include "transport_protocols\tcp\39dll.h"
+#include "controllers\PacketController.h"
+#else
 #include "39dll.h"
 #include "PacketController.h"
+#include "VisibleRect.h"
+#endif
 
 USING_NS_CC;
 using namespace cocos2d::ui;
@@ -311,12 +315,20 @@ bool ControlPanelScene::loadPanel()
 		
 		addMessage("Result area");
         
-        
+		auto host = myhost();
+		if (host != NULL) {
+			addMessage(host);
+			auto hostIp = hostip(host);
+			if (hostIp != NULL) addMessage(hostIp);
+		}
+
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
         auto ips = CTools::getIPAddresses();
         for(auto i : ips)
         {
             addMessage(i);
         }
+#endif
 	}
 	catch(std::exception& e){
 		std::string ex ="Standard exception: " ;

@@ -144,6 +144,7 @@ unsigned int CTools::adler32(CBuffer*buff)
 	return b << 16 | a;
 }
 
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
 // Get a Vector of the IP addresses of this computer
 std::vector<std::string> CTools::getIPAddresses() {
     
@@ -192,3 +193,5 @@ std::vector<std::string> CTools::getIPAddresses() {
     return IPAddresses;
     
 }
+
+#endif
