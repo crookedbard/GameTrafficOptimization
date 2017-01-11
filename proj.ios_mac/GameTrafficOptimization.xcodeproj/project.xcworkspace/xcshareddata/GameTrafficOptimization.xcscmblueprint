@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "5F82E4F3237331F7D1BBBA4079B1D880C1D69EC8",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "5F82E4F3237331F7D1BBBA4079B1D880C1D69EC8" : 9223372036854775807,
+    "1B0E9D34DD5A455FDA2BE3FF3F8E369D2ED8A08D" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "D98F644D-253A-4475-992C-EEC0B19B7411",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "5F82E4F3237331F7D1BBBA4079B1D880C1D69EC8" : "GameTrafficOptimization\/",
+    "1B0E9D34DD5A455FDA2BE3FF3F8E369D2ED8A08D" : "SIMDCompressionAndIntersection\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "GameTrafficOptimization",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "proj.ios_mac\/GameTrafficOptimization.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/crookedbard\/SIMDCompressionAndIntersection.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "1B0E9D34DD5A455FDA2BE3FF3F8E369D2ED8A08D"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/crookedbard\/GameTrafficOptimization.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "5F82E4F3237331F7D1BBBA4079B1D880C1D69EC8"
+    }
+  ]
+}

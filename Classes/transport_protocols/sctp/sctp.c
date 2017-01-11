@@ -42,16 +42,19 @@
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS && CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
 
 #include <netinet/in.h>
-#include <netinet/sctp.h>
+//#include <netinet/sctp.h>
+#include <sctp.h>
 
-#include "config.h"
+//#include "config.h"
 
 #if HAVE_POLL_H
 #include <poll.h>
 #endif
 
-#include "libavutil/intreadwrite.h"
-#include "libavutil/parseutils.h"
+//#include "libavutil/intreadwrite.h"
+//#include "libavutil/parseutils.h"
+#include "intreadwrite.h"
+#include "parseutils.h"
 #include "avformat.h"
 #include "internal.h"
 #include "network.h"

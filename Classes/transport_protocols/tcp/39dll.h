@@ -15,7 +15,7 @@ char* tcpip(double sockid);
 double setnagle(double sockid, double value);
 double tcpconnected(double sockid);
 double udpconnect(double port, double mode);
-double sendmessage(double sockid, char*ip = "", double port = 0, double buffid = 0);
+double sendmessage(double sockid, char*ip = (char *)"", double port = 0, double buffid = 0);
 double receivemessage(double sockid, double len = 0, double buffid = 0);
 double peekmessage(double sockid, double len, double buffid);
 double setformat(double sockid, double mode, char*sep);

@@ -92,6 +92,7 @@ enum MsTimeVariables
 #include <unistd.h>
 #include <signal.h>
 #include <netdb.h>
+#include <ifaddrs.h> //to get ip on unix
 #endif
 
 // current platform and compiler
@@ -211,7 +212,6 @@ enum MsTimeVariables
 #include <cstring>
 #include <climits>
 #include <cstdlib>
-//#include <ifaddrs.h>
 //#include <iostream>
 
 #if defined ( __GNUC__ )
