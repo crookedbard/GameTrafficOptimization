@@ -1,10 +1,3 @@
-/* 
- * File:   main.cpp
- * Author: chachalaca
- *
- * Created on 21. červen 2014, 16:30
- */
-
 #include <iostream>
 #include <fstream>
 #include <algorithm>
@@ -12,9 +5,7 @@
 #include <bitset>
 #include <limits> 
 #include "HNode.h"
-//#include "HNode.cpp"
 #include "Huffman.h"
-//#include "Huffman.cpp"
 
 using namespace std;
 

@@ -13,10 +13,12 @@
 #include "utils\VisibleRect.h"
 #include "transport_protocols\tcp\39dll.h"
 #include "controllers\PacketController.h"
+#include "payload_compression\huffman\HuffmanCompression.hpp"
 #else
 #include "39dll.h"
 #include "PacketController.h"
 #include "VisibleRect.h"
+#include "HuffmanCompression.hpp"
 #endif
 
 USING_NS_CC;
@@ -116,7 +118,7 @@ void ControlPanelScene::update(float dt) {
 		}
 		else if (size == 0)
 		{
-			addMessage("Connection to server ended, exiting thread.");
+			addMessage("Connection to server ended.");
 			onButtonTcpConnect(nullptr, Widget::TouchEventType::ENDED);
 			//closesock(_tcpSocket);
 		}
@@ -159,6 +161,8 @@ bool ControlPanelScene::loadPanel()
 		_editName->setReturnType(ui::EditBox::KeyboardReturnType::DONE);
 		_editName->setText((_ipAddress + ":" + doubleToString(_port)).c_str());
 		//_editName->setDelegate(this);
+        //EbDelegate dbd; // = EbDelegate::EbDelegate();
+        _editName->setDelegate(this);
 		scrollView->addChild(_editName);
 		
 //        auto labelIp = Label::createWithTTF(_editName->getText(), FONT_NAME, FONT_SIZE);
@@ -168,21 +172,31 @@ bool ControlPanelScene::loadPanel()
 //        scrollView->addChild(labelPort);
 		
 		_labelConnectionStatus = Label::createWithTTF("Disconnected", FONT_NAME, FONT_SIZE);
-		_labelConnectionStatus->setColor(Color3B(255, 0, 0));
-		_labelConnectionStatus->setPosition(Vec2(innerWidth - 180.0f, scrollView->getInnerContainerSize().height - _labelConnectionStatus->getContentSize().height - 4.0f));
+		_labelConnectionStatus->setColor(Color3B(255.0f, 0.0f, 0.0f));
+		_labelConnectionStatus->setPosition(Vec2(innerWidth - 150.0f, scrollView->getInnerContainerSize().height - _labelConnectionStatus->getContentSize().height - 4.0f));
 		_labelConnectionStatus->setAnchorPoint(Vec2::ZERO);
 		scrollView->addChild(_labelConnectionStatus);
 		
+        //line 1. Transoport protocols
+        auto line = 1.0f;
+        auto labelTransportProtocols = Label::createWithTTF("Transport protocols", FONT_NAME, FONT_SIZE);
+        labelTransportProtocols->setPosition(Vec2(12.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * line));
+        labelTransportProtocols->setAnchorPoint(Vec2(0.0f,0.5f));
+        labelTransportProtocols->setColor(Color3B(255.0f, 255.0f, 0.0f));
+        scrollView->addChild(labelTransportProtocols);
+        
 		//line 2. TCP
+        line += 1.0f;
 		auto labelTcp = Label::createWithTTF("TCP", FONT_NAME, FONT_SIZE);
-		labelTcp->setPosition(Vec2(innerWidth / 2.0f - 110.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * 2.0f ));
-		scrollView->addChild(labelTcp);
+		labelTcp->setPosition(Vec2(innerWidth / 2.0f - 110.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * line ));
+		//labelTcp->setAnchorPoint(Vec2(1.0f,0.5f));
+        scrollView->addChild(labelTcp);
 		
 		_buttonTcpListen = Button::create("cocosui/button.png", "cocosui/buttonHighlighted.png");
 		_buttonTcpListen->setScale9Enabled(true);
 		_buttonTcpListen->setTitleText("Listen");
 		_buttonTcpListen->setContentSize(Size(100.0f, 25.0f));
-		_buttonTcpListen->setPosition(Vec2(innerWidth / 2.0f - 15.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * 2.0f));
+		_buttonTcpListen->setPosition(Vec2(innerWidth / 2.0f - 15.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * line));
 		scrollView->addChild(_buttonTcpListen);
 		_buttonTcpListen->addTouchEventListener(CC_CALLBACK_2(ControlPanelScene::onButtonTcpListen, this));
 		
@@ -190,20 +204,22 @@ bool ControlPanelScene::loadPanel()
 		_buttonTcpConnect->setScale9Enabled(true);
 		_buttonTcpConnect->setTitleText("Connect");
 		_buttonTcpConnect->setContentSize(Size(100.0f, 25.0f));
-		_buttonTcpConnect->setPosition(Vec2(innerWidth / 2.0f + 90.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * 2.0f));
+		_buttonTcpConnect->setPosition(Vec2(innerWidth / 2.0f + 90.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * line));
 		scrollView->addChild(_buttonTcpConnect);
 		_buttonTcpConnect->addTouchEventListener(CC_CALLBACK_2(ControlPanelScene::onButtonTcpConnect, this));
 		
 		//line 3. SCTP
+        line += 1.0f;
 		auto labelSctp = Label::createWithTTF("SCTP", FONT_NAME, FONT_SIZE);
-		labelSctp->setPosition(Vec2(innerWidth / 2.0f - 110.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * 3.0f ));
-		scrollView->addChild(labelSctp);
+		labelSctp->setPosition(Vec2(innerWidth / 2.0f - 110.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * line));
+		//labelSctp->setAnchorPoint(Vec2(1.0f,0.5f));
+        scrollView->addChild(labelSctp);
 		
 		_buttonSctpListen = Button::create("cocosui/button.png", "cocosui/buttonHighlighted.png");
 		_buttonSctpListen->setScale9Enabled(true);
 		_buttonSctpListen->setTitleText("Listen");
 		_buttonSctpListen->setContentSize(Size(100.0f, 25.0f));
-		_buttonSctpListen->setPosition(Vec2(innerWidth / 2.0f - 15.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * 3.0f));
+		_buttonSctpListen->setPosition(Vec2(innerWidth / 2.0f - 15.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * line));
 		scrollView->addChild(_buttonSctpListen);
 		_buttonSctpListen->addTouchEventListener(CC_CALLBACK_2(ControlPanelScene::onButtonSctpListen, this));
 		
@@ -211,14 +227,24 @@ bool ControlPanelScene::loadPanel()
 		_buttonSctpConnect->setScale9Enabled(true);
 		_buttonSctpConnect->setTitleText("Connect");
 		_buttonSctpConnect->setContentSize(Size(100.0f, 25.0f));
-		_buttonSctpConnect->setPosition(Vec2(innerWidth / 2.0f + 90.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * 3.0f));
+		_buttonSctpConnect->setPosition(Vec2(innerWidth / 2.0f + 90.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * line));
 		scrollView->addChild(_buttonSctpConnect);
 		_buttonSctpConnect->addTouchEventListener(CC_CALLBACK_2(ControlPanelScene::onButtonSctpConnect, this));
 		
-		//line 4. ROHC
+        //line 4. Header compression
+        line += 1.0f;
+        auto labelHeaderCompression = Label::createWithTTF("Header compression", FONT_NAME, FONT_SIZE);
+        labelHeaderCompression->setPosition(Vec2(12.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * line));
+        labelHeaderCompression->setAnchorPoint(Vec2(0.0f,0.5f));
+        labelHeaderCompression->setColor(Color3B(255.0f, 255.0f, 0.0f));
+        scrollView->addChild(labelHeaderCompression);
+        
+		//line 5. ROHC
+        line += 1.0f;
 		auto labelRohc = Label::createWithTTF("ROHC", FONT_NAME, FONT_SIZE);
-		labelRohc->setPosition(Vec2(innerWidth / 2.0f - 30.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * 4.0f ));
-		scrollView->addChild(labelRohc);
+		labelRohc->setPosition(Vec2(innerWidth / 2.0f - 110.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * line ));
+		//labelRohc->setAnchorPoint(Vec2(1.0f,0.5f));
+        scrollView->addChild(labelRohc);
 		
 		_checkboxRohc = CheckBox::create();
 		_checkboxRohc->setScale(1.4f);
@@ -228,14 +254,32 @@ bool ControlPanelScene::loadPanel()
 							   "cocosui/check_box_active.png",
 							   "cocosui/check_box_normal_disable.png",
 							   "cocosui/check_box_active_disable.png");
-		_checkboxRohc->setPosition(Vec2(innerWidth / 2.0f +30.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * 4.0f ));
+		_checkboxRohc->setPosition(Vec2(innerWidth / 2.0f - 15.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * line ));
 		_checkboxRohc->addEventListener(CC_CALLBACK_2(ControlPanelScene::selectedEventRohc,this));
 		scrollView->addChild(_checkboxRohc);
 		
-		//line 5. LZ4
+        _buttonTestRohc = Button::create("cocosui/button.png", "cocosui/buttonHighlighted.png");
+        _buttonTestRohc->setScale9Enabled(true);
+        _buttonTestRohc->setTitleText("Perform test");
+        _buttonTestRohc->setContentSize(Size(100.0f, 25.0f));
+        _buttonTestRohc->setPosition(Vec2(innerWidth / 2.0f + 90.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * line));
+        scrollView->addChild(_buttonTestRohc);
+        _buttonTestRohc->addTouchEventListener(CC_CALLBACK_2(ControlPanelScene::onButtonTestRohc, this));
+        
+        //line 6. Payload compression
+        line += 1.0f;
+        auto labelPayloadCompression = Label::createWithTTF("Payload compression", FONT_NAME, FONT_SIZE);
+        labelPayloadCompression->setPosition(Vec2(12.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * line));
+        labelPayloadCompression->setAnchorPoint(Vec2(0.0f,0.5f));
+        labelPayloadCompression->setColor(Color3B(255.0f, 255.0f, 0.0f));
+        scrollView->addChild(labelPayloadCompression);
+        
+		//line 7. LZ4
+        line += 1.0f;
 		auto labelLz = Label::createWithTTF("LZ4", FONT_NAME, FONT_SIZE);
-		labelLz->setPosition(Vec2(innerWidth / 2.0f - 30.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * 5.0f ));
-		scrollView->addChild(labelLz);
+		labelLz->setPosition(Vec2(innerWidth / 2.0f - 110.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * line ));
+		//labelLz->setAnchorPoint(Vec2(1.0f,0.5f));
+        scrollView->addChild(labelLz);
 		
 		_checkboxLz = CheckBox::create("cocosui/check_box_normal.png",
 								   "cocosui/check_box_normal_press.png",
@@ -244,13 +288,23 @@ bool ControlPanelScene::loadPanel()
 								   "cocosui/check_box_active_disable.png");
 		_checkboxLz->setScale(1.4f);
 		_checkboxLz->setTouchEnabled(true);
-		_checkboxLz->setPosition(Vec2(innerWidth / 2.0f + 30.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * 5.0f ));
+		_checkboxLz->setPosition(Vec2(innerWidth / 2.0f - 15.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * line ));
 		_checkboxLz->addEventListener(CC_CALLBACK_2(ControlPanelScene::selectedEventLz,this));
 		scrollView->addChild(_checkboxLz);
 		
-		//line 6. Huffman
+        _buttonTestLz = Button::create("cocosui/button.png", "cocosui/buttonHighlighted.png");
+        _buttonTestLz->setScale9Enabled(true);
+        _buttonTestLz->setTitleText("Perform test");
+        _buttonTestLz->setContentSize(Size(100.0f, 25.0f));
+        _buttonTestLz->setPosition(Vec2(innerWidth / 2.0f + 90.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * line));
+        scrollView->addChild(_buttonTestLz);
+        _buttonTestLz->addTouchEventListener(CC_CALLBACK_2(ControlPanelScene::onButtonTestLz, this));
+        
+		//line 8. Huffman
+        line += 1.0f;
 		auto labelHuffman = Label::createWithTTF("Huffman", FONT_NAME, FONT_SIZE);
-		labelHuffman->setPosition(Vec2(innerWidth / 2.0f - 30.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * 6.0f ));
+		labelHuffman->setPosition(Vec2(innerWidth / 2.0f - 110.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * line ));
+        //labelHuffman->setAnchorPoint(Vec2(1.0f,0.5f));
 		scrollView->addChild(labelHuffman);
 		
 		_checkboxHuffman = CheckBox::create("cocosui/check_box_normal.png",
@@ -260,21 +314,33 @@ bool ControlPanelScene::loadPanel()
 									   "cocosui/check_box_active_disable.png");
 		_checkboxHuffman->setTouchEnabled(true);
 		_checkboxHuffman->setScale(1.4f);
-		_checkboxHuffman->setPosition(Vec2(innerWidth / 2.0f + 30.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * 6.0f ));
+		_checkboxHuffman->setPosition(Vec2(innerWidth / 2.0f - 15.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * line ));
 		_checkboxHuffman->addEventListener(CC_CALLBACK_2(ControlPanelScene::selectedEventHuffman,this));
 		scrollView->addChild(_checkboxHuffman);
 		
-		//line 7. Send Packets
+        _buttonTestHuffman = Button::create("cocosui/button.png", "cocosui/buttonHighlighted.png");
+        _buttonTestHuffman->setScale9Enabled(true);
+        _buttonTestHuffman->setTitleText("Perform test");
+        _buttonTestHuffman->setContentSize(Size(100.0f, 25.0f));
+        _buttonTestHuffman->setPosition(Vec2(innerWidth / 2.0f + 90.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * line));
+        scrollView->addChild(_buttonTestHuffman);
+        _buttonTestHuffman->addTouchEventListener(CC_CALLBACK_2(ControlPanelScene::onButtonTestHuffman, this));
+        
+		//line 9. Send Packets
+        line += 1.0f;
 		auto labelSendPackets = Label::createWithTTF("Send packets", FONT_NAME, FONT_SIZE);
-		labelSendPackets->setPosition(Vec2(innerWidth / 2.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * 7.0f ));
-		scrollView->addChild(labelSendPackets);
+		labelSendPackets->setPosition(Vec2(12.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * line ));
+		labelSendPackets->setAnchorPoint(Vec2(0.0f,0.5f));
+        labelSendPackets->setColor(Color3B(255.0f, 255.0f, 0.0f));
+        scrollView->addChild(labelSendPackets);
 		
-		//line 8. Button Packet line 1
+		//line 10. Button Packet line 1
+        line += 1.0f;
 		auto buttonPacketIntFew = Button::create("cocosui/button.png", "cocosui/buttonHighlighted.png");
 		buttonPacketIntFew->setScale9Enabled(true);
 		buttonPacketIntFew->setTitleText("Few ints");
 		buttonPacketIntFew->setContentSize(Size(100.0f, 25.0f));
-		buttonPacketIntFew->setPosition(Vec2(innerWidth / 2.0f - 60.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * 8.0f));
+		buttonPacketIntFew->setPosition(Vec2(innerWidth / 2.0f - 15.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * line));
 		scrollView->addChild(buttonPacketIntFew);
 		buttonPacketIntFew->addTouchEventListener(CC_CALLBACK_2(ControlPanelScene::onButtonSendFewInts, this));
 		
@@ -282,16 +348,17 @@ bool ControlPanelScene::loadPanel()
 		buttonPacketStringFew->setScale9Enabled(true);
 		buttonPacketStringFew->setTitleText("Few strings");
 		buttonPacketStringFew->setContentSize(Size(100.0f, 25.0f));
-		buttonPacketStringFew->setPosition(Vec2(innerWidth / 2.0f + 50.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * 8.0f));
+		buttonPacketStringFew->setPosition(Vec2(innerWidth / 2.0f + 90.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * line));
 		scrollView->addChild(buttonPacketStringFew);
 		buttonPacketStringFew->addTouchEventListener(CC_CALLBACK_2(ControlPanelScene::onButtonSendFewStrings, this));
 		
-		//line 9. Button Packet line 2
+		//line 11. Button Packet line 2
+        line += 1.0f;
 		auto buttonPacketIntMany = Button::create("cocosui/button.png", "cocosui/buttonHighlighted.png");
 		buttonPacketIntMany->setScale9Enabled(true);
 		buttonPacketIntMany->setTitleText("Many ints");
 		buttonPacketIntMany->setContentSize(Size(100.0f, 25.0f));
-		buttonPacketIntMany->setPosition(Vec2(innerWidth / 2.0f - 60.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * 9.0f));
+		buttonPacketIntMany->setPosition(Vec2(innerWidth / 2.0f - 15.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * line));
 		scrollView->addChild(buttonPacketIntMany);
 		buttonPacketIntMany->addTouchEventListener(CC_CALLBACK_2(ControlPanelScene::onButtonSendManyInts, this));
 		
@@ -299,17 +366,18 @@ bool ControlPanelScene::loadPanel()
 		buttonPacketStringMany->setScale9Enabled(true);
 		buttonPacketStringMany->setTitleText("Many strings");
 		buttonPacketStringMany->setContentSize(Size(100.0f, 25.0f));
-		buttonPacketStringMany->setPosition(Vec2(innerWidth / 2.0f + 50.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * 9.0f));
+		buttonPacketStringMany->setPosition(Vec2(innerWidth / 2.0f + 90.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * line));
 		scrollView->addChild(buttonPacketStringMany);
 		buttonPacketStringMany->addTouchEventListener(CC_CALLBACK_2(ControlPanelScene::onButtonSendManyStrigs, this));
 		
-		//line 10. TextField
+		//line 12. TextField
+        line += 1.0f;
 		//_messages = { "chatas", "testas", "testas", "testas", "testas", "testas" };
 		_textMessages = Text::create("",FONT_NAME, FONT_SIZE_MESSAGE );
 		_textMessages->ignoreContentAdaptWithSize(false);
 		_textMessages->setContentSize(Size(innerWidth - 4.0f, 300.0f));
 		_textMessages->setTextHorizontalAlignment(TextHAlignment::LEFT);
-		_textMessages->setPosition(Vec2(2.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * 10.0f));
+		_textMessages->setPosition(Vec2(2.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * line));
 		_textMessages->setAnchorPoint(Vec2(0.0f, 1.0f));
 		scrollView->addChild(_textMessages);
 		
@@ -339,6 +407,38 @@ bool ControlPanelScene::loadPanel()
 	}
 	return true;
 }
+
+void ControlPanelScene::editBoxReturn( cocos2d::extension::EditBox* editBox )
+{
+    const char *str = editBox->getText();
+    
+    std::stringstream ss(str);
+    std::string segment;
+    std::vector<std::string> seglist;
+    
+    while(std::getline(ss, segment, ':'))
+    {
+        seglist.push_back(segment);
+    }
+    if(seglist.size() < 2) return;
+    auto trimStr = ss.str();
+    //trimStr = std::replace(trimStr.begin(),trimStr.end()," ","");
+    //editBox->setText(std::replace(ss.str(),'',''));
+    _ipAddress = seglist[0];
+    _port = std::stod(seglist[1]);
+
+    addMessage("New ip: "+ _ipAddress +" port: " + doubleToString(_port));
+    //printf("Ip set to: %s", str);
+    // Do something useful
+}
+//void ControlPanelScene::editBoxEditingDidBegin(EditBox *editBox) {
+//}
+//
+//void ControlPanelScene::editBoxEditingDidEnd(EditBox *editBox) {
+//}
+//
+//void ControlPanelScene::editBoxTextChanged(EditBox *editBox, const std::string& text) {
+//}
 
 void ControlPanelScene::onButtonTcpListen(Ref* pSender, Widget::TouchEventType type)
 {
@@ -509,6 +609,33 @@ void ControlPanelScene::onButtonSctpConnect(Ref* pSender, Widget::TouchEventType
 	}
 }
 
+void ControlPanelScene::onButtonTestRohc(Ref* pSender, Widget::TouchEventType type)
+{
+    if (type == Widget::TouchEventType::ENDED)
+    {
+        addMessage("Testing ROHC!");
+    }
+}
+
+void ControlPanelScene::onButtonTestLz(Ref* pSender, Widget::TouchEventType type)
+{
+    if (type == Widget::TouchEventType::ENDED)
+    {
+        addMessage("Testing LZ4!");
+    }
+}
+
+void ControlPanelScene::onButtonTestHuffman(Ref* pSender, Widget::TouchEventType type)
+{
+    if (type == Widget::TouchEventType::ENDED)
+    {
+        addMessage("Testing Huffman!");
+        char *testBuffer = (char*)"Testing Huffman";
+        auto result = HuffmanCompression::encode(testBuffer);
+        addMessage(result);
+    }
+}
+
 void ControlPanelScene::onButtonSendFewInts(Ref* pSender, Widget::TouchEventType type)
 {
 	if (type == Widget::TouchEventType::ENDED && (_isTcpClient || _isTcpServer))
@@ -519,10 +646,12 @@ void ControlPanelScene::onButtonSendFewInts(Ref* pSender, Widget::TouchEventType
 			writebyte(MSG_INTDATAFEW);
 			writeint(123);
 			writeint(456);
-			sendmessage(_tcpSocket);
+            //Buffer::addBuffer((char*)"testas",strlen("testas"));
+			auto osize = sendmessage(_tcpSocket);
 
 			auto payloadSize = buffsize();
 			addMessage("Sending packet with size: " + doubleToString(payloadSize));
+            addMessage(std::to_string(sizeof(osize)));
 			//auto buff = getBuffer();
 			//std::string s(buff->data);
 			//addMessage("buff data: " + s);
@@ -536,7 +665,7 @@ void ControlPanelScene::onButtonSendFewInts(Ref* pSender, Widget::TouchEventType
 				writebyte(MSG_INTDATAFEW); //1Byte
 				writeint(123); //4Bytes
 				writeint(456); //4Bytes
-				sendmessage(_tcpSocket);
+				sendmessage(i.second);
 
 				auto payloadSize = buffsize();
 				addMessage("Sending packet with size: " + doubleToString(payloadSize));

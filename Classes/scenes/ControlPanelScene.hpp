@@ -24,7 +24,7 @@
 
 
 
-class ControlPanelScene : public cocos2d::Layer
+class ControlPanelScene : public cocos2d::Layer, public cocos2d::extension::EditBoxDelegate
 {
 public:
 	static cocos2d::Scene* createScene();
@@ -36,6 +36,9 @@ public:
 	void onButtonTcpConnect(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
 	void onButtonSctpListen(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
 	void onButtonSctpConnect(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
+    void onButtonTestRohc(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
+    void onButtonTestLz(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
+    void onButtonTestHuffman(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
 	void onButtonSendFewInts(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
 	void onButtonSendFewStrings(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
 	void onButtonSendManyInts(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
@@ -67,10 +70,31 @@ private:
 	cocos2d::ui::Button *_buttonTcpConnect;
 	cocos2d::ui::Button *_buttonSctpListen;
 	cocos2d::ui::Button *_buttonSctpConnect;
+    cocos2d::ui::Button *_buttonTestRohc;
+    cocos2d::ui::Button *_buttonTestLz;
+    cocos2d::ui::Button *_buttonTestHuffman;
 	cocos2d::ui::CheckBox *_checkboxRohc;
 	cocos2d::ui::CheckBox *_checkboxLz;
 	cocos2d::ui::CheckBox *_checkboxHuffman;
 	cocos2d::ui::Text *_textMessages;
+    
+    virtual void editBoxReturn( cocos2d::extension::EditBox* editBox );
+//    virtual void editBoxEditingDidBegin(cocos2d::ui::EditBox* editBox);
+//    virtual void editBoxEditingDidEnd(cocos2d::ui::EditBox* editBox);
+//    virtual void editBoxTextChanged(cocos2d::ui::EditBox* editBox, const std::string& text);
 };
 
+//class EbDelegate : public cocos2d::extension::EditBoxDelegate
+//{
+//public:
+//    virtual void editBoxReturn( cocos2d::extension::EditBox* editBox );
+//    virtual void editBoxEditingDidBegin(cocos2d::ui::EditBox* editBox);
+//    virtual void editBoxEditingDidEnd(cocos2d::ui::EditBox* editBox);
+//    virtual void editBoxTextChanged(cocos2d::ui::EditBox* editBox, const std::string& text);
+//private:
+//    //virtual void editBoxEditingDidBegin(cocos2d::ui::EditBox* editBox);
+//    //virtual void editBoxEditingDidEnd(cocos2d::ui::EditBox* editBox);
+//    //virtual void editBoxTextChanged(cocos2d::ui::EditBox* editBox, const std::string& text);
+//    //virtual void editBoxReturn(cocos2d::ui::EditBox* editBox);
+//};
 #endif /* ControlPanelScene_hpp */

@@ -103,6 +103,8 @@
 		57C0119B1E2427EC006E6C4E /* md5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57AA28241E22F9AB00895B24 /* md5.cpp */; };
 		57C0119C1E2427EC006E6C4E /* socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57AA28251E22F9AB00895B24 /* socket.cpp */; };
 		57C0119D1E2427EC006E6C4E /* tools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57AA28271E22F9AB00895B24 /* tools.cpp */; };
+		57EA9DBC1E298473006B3928 /* HuffmanCompression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57EA9DBA1E298472006B3928 /* HuffmanCompression.cpp */; };
+		57EA9DBD1E298473006B3928 /* HuffmanCompression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57EA9DBA1E298472006B3928 /* HuffmanCompression.cpp */; };
 		8262943E1AAF051F00CB7CF7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8262943D1AAF051F00CB7CF7 /* Security.framework */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
@@ -261,6 +263,8 @@
 		57C011921E242360006E6C4E /* PacketController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PacketController.h; path = controllers/PacketController.h; sourceTree = "<group>"; };
 		57C011941E24236F006E6C4E /* HudLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HudLayer.cpp; path = layers/HudLayer.cpp; sourceTree = "<group>"; };
 		57C011951E24236F006E6C4E /* HudLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HudLayer.h; path = layers/HudLayer.h; sourceTree = "<group>"; };
+		57EA9DBA1E298472006B3928 /* HuffmanCompression.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HuffmanCompression.cpp; path = payload_compression/huffman/HuffmanCompression.cpp; sourceTree = "<group>"; };
+		57EA9DBB1E298473006B3928 /* HuffmanCompression.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = HuffmanCompression.hpp; path = payload_compression/huffman/HuffmanCompression.hpp; sourceTree = "<group>"; };
 		8262943D1AAF051F00CB7CF7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -602,6 +606,8 @@
 				576C3F3E1E25B44800D03ECB /* HNode.h */,
 				576C3F3F1E25B44800D03ECB /* Huffman.cpp */,
 				576C3F401E25B44800D03ECB /* Huffman.h */,
+				57EA9DBA1E298472006B3928 /* HuffmanCompression.cpp */,
+				57EA9DBB1E298473006B3928 /* HuffmanCompression.hpp */,
 			);
 			name = huffman;
 			sourceTree = "<group>";
@@ -805,6 +811,7 @@
 				57AA28081E22A11B00895B24 /* ControlPanelScene.cpp in Sources */,
 				57AA28121E22BA4700895B24 /* rohc.c in Sources */,
 				57AA27801E2188C300895B24 /* MainScene.cpp in Sources */,
+				57EA9DBC1E298473006B3928 /* HuffmanCompression.cpp in Sources */,
 				576C3E5E1E25690300D03ECB /* example2.cpp in Sources */,
 				576C3E5F1E25690300D03ECB /* lz4.cpp in Sources */,
 				57AA282B1E22F9AB00895B24 /* list.cpp in Sources */,
@@ -833,6 +840,7 @@
 				576C3E621E25690C00D03ECB /* lz4.cpp in Sources */,
 				576C3E631E25690C00D03ECB /* lz4xx.cpp in Sources */,
 				57C011981E2427EC006E6C4E /* 39dll.cpp in Sources */,
+				57EA9DBD1E298473006B3928 /* HuffmanCompression.cpp in Sources */,
 				57C011991E2427EC006E6C4E /* buffer.cpp in Sources */,
 				57C0119A1E2427EC006E6C4E /* list.cpp in Sources */,
 				57C0119B1E2427EC006E6C4E /* md5.cpp in Sources */,
