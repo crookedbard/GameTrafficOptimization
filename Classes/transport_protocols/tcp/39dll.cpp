@@ -521,7 +521,7 @@ double dllFree()
 	return 1;
 }
 
-CBuffer* getBuffer(double buffid)
+CBuffer* getbuffer(double buffid)
 {
 	CBuffer*buff = (CBuffer*)buffers.item((int)buffid);
 	if (buff == NULL)return 0;

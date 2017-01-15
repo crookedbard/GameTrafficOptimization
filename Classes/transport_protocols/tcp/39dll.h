@@ -86,6 +86,6 @@ double dllInit();
 double dllFree();
 
 //my custom
-CBuffer* getBuffer(double buffid = 0);
+CBuffer* getbuffer(double buffid = 0);
  
 #endif // __39DLL_H__

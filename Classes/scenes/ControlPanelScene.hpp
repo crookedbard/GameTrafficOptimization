@@ -58,6 +58,9 @@ private:
 	bool _isTcpClient;
 	bool _isSctpServer;
 	bool _isSctpClient;
+    bool _rohc;
+    bool _lz;
+    bool _huffman;
 	std::string _ipAddress;
 	double _port;
 	double _tcpSocket;

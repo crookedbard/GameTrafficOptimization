@@ -58,10 +58,16 @@
 		521A8EA919F11F5000D177D7 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 521A8EA819F11F5000D177D7 /* fonts */; };
 		521A8EAA19F11F5000D177D7 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 521A8EA819F11F5000D177D7 /* fonts */; };
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
-		576C3E5E1E25690300D03ECB /* example2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 576C3E591E25690300D03ECB /* example2.cpp */; };
+		570796E21E2BDCDB00E450FC /* Lz4Compression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 570796E01E2BDCDB00E450FC /* Lz4Compression.cpp */; };
+		570796E31E2BDCDB00E450FC /* Lz4Compression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 570796E01E2BDCDB00E450FC /* Lz4Compression.cpp */; };
+		570797131E2C044900E450FC /* lz4_input_stream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5707970B1E2C044900E450FC /* lz4_input_stream.cpp */; };
+		570797141E2C044900E450FC /* lz4_input_stream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5707970B1E2C044900E450FC /* lz4_input_stream.cpp */; };
+		570797151E2C044900E450FC /* lz4_output_stream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5707970C1E2C044900E450FC /* lz4_output_stream.cpp */; };
+		570797161E2C044900E450FC /* lz4_output_stream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5707970C1E2C044900E450FC /* lz4_output_stream.cpp */; };
+		570797171E2C044900E450FC /* lz4_stream_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5707970D1E2C044900E450FC /* lz4_stream_test.cpp */; };
+		570797181E2C044900E450FC /* lz4_stream_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5707970D1E2C044900E450FC /* lz4_stream_test.cpp */; };
 		576C3E5F1E25690300D03ECB /* lz4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 576C3E5A1E25690300D03ECB /* lz4.cpp */; };
 		576C3E601E25690300D03ECB /* lz4xx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 576C3E5C1E25690300D03ECB /* lz4xx.cpp */; };
-		576C3E611E25690C00D03ECB /* example2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 576C3E591E25690300D03ECB /* example2.cpp */; };
 		576C3E621E25690C00D03ECB /* lz4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 576C3E5A1E25690300D03ECB /* lz4.cpp */; };
 		576C3E631E25690C00D03ECB /* lz4xx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 576C3E5C1E25690300D03ECB /* lz4xx.cpp */; };
 		576C3F051E2592E300D03ECB /* simd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 576C3EF41E2592E200D03ECB /* simd.cpp */; };
@@ -205,7 +211,13 @@
 		521A8E6319F0C34300D177D7 /* Default-736h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-736h@3x.png"; sourceTree = "<group>"; };
 		521A8EA819F11F5000D177D7 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
-		576C3E591E25690300D03ECB /* example2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = example2.cpp; path = payload_compression/lz4/example2.cpp; sourceTree = "<group>"; };
+		570796E01E2BDCDB00E450FC /* Lz4Compression.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Lz4Compression.cpp; path = payload_compression/lz4/Lz4Compression.cpp; sourceTree = "<group>"; };
+		570796E11E2BDCDB00E450FC /* Lz4Compression.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Lz4Compression.hpp; path = payload_compression/lz4/Lz4Compression.hpp; sourceTree = "<group>"; };
+		570796FB1E2C024900E450FC /* lz4frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lz4frame.h; path = payload_compression/lz4stream/lib/lz4frame.h; sourceTree = "<group>"; };
+		5707970B1E2C044900E450FC /* lz4_input_stream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lz4_input_stream.cpp; path = payload_compression/lz4stream/lz4_input_stream.cpp; sourceTree = "<group>"; };
+		5707970C1E2C044900E450FC /* lz4_output_stream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lz4_output_stream.cpp; path = payload_compression/lz4stream/lz4_output_stream.cpp; sourceTree = "<group>"; };
+		5707970D1E2C044900E450FC /* lz4_stream_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lz4_stream_test.cpp; path = payload_compression/lz4stream/lz4_stream_test.cpp; sourceTree = "<group>"; };
+		5707970E1E2C044900E450FC /* lz4_stream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lz4_stream.h; path = payload_compression/lz4stream/lz4_stream.h; sourceTree = "<group>"; };
 		576C3E5A1E25690300D03ECB /* lz4.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lz4.cpp; path = payload_compression/lz4/lz4.cpp; sourceTree = "<group>"; };
 		576C3E5B1E25690300D03ECB /* lz4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lz4.h; path = payload_compression/lz4/lz4.h; sourceTree = "<group>"; };
 		576C3E5C1E25690300D03ECB /* lz4xx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lz4xx.cpp; path = payload_compression/lz4/lz4xx.cpp; sourceTree = "<group>"; };
@@ -493,6 +505,26 @@
 			path = ios;
 			sourceTree = SOURCE_ROOT;
 		};
+		570796E51E2C011A00E450FC /* lz4stream */ = {
+			isa = PBXGroup;
+			children = (
+				5707970B1E2C044900E450FC /* lz4_input_stream.cpp */,
+				5707970C1E2C044900E450FC /* lz4_output_stream.cpp */,
+				5707970D1E2C044900E450FC /* lz4_stream_test.cpp */,
+				5707970E1E2C044900E450FC /* lz4_stream.h */,
+				570796F61E2C023500E450FC /* lib */,
+			);
+			name = lz4stream;
+			sourceTree = "<group>";
+		};
+		570796F61E2C023500E450FC /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				570796FB1E2C024900E450FC /* lz4frame.h */,
+			);
+			name = lib;
+			sourceTree = "<group>";
+		};
 		576C3EE01E2592CB00D03ECB /* simd */ = {
 			isa = PBXGroup;
 			children = (
@@ -533,6 +565,7 @@
 		57AA275B1E2166C700895B24 /* payload_compression */ = {
 			isa = PBXGroup;
 			children = (
+				570796E51E2C011A00E450FC /* lz4stream */,
 				576C3F291E25A25200D03ECB /* simdcpp */,
 				576C3EE01E2592CB00D03ECB /* simd */,
 				57AA276A1E21673D00895B24 /* huffman */,
@@ -591,11 +624,12 @@
 		57AA27691E21673600895B24 /* lz4 */ = {
 			isa = PBXGroup;
 			children = (
-				576C3E591E25690300D03ECB /* example2.cpp */,
 				576C3E5A1E25690300D03ECB /* lz4.cpp */,
 				576C3E5B1E25690300D03ECB /* lz4.h */,
 				576C3E5C1E25690300D03ECB /* lz4xx.cpp */,
 				576C3E5D1E25690300D03ECB /* lz4xx.h */,
+				570796E01E2BDCDB00E450FC /* Lz4Compression.cpp */,
+				570796E11E2BDCDB00E450FC /* Lz4Compression.hpp */,
 			);
 			name = lz4;
 			sourceTree = "<group>";
@@ -804,6 +838,7 @@
 				57AA282D1E22F9AB00895B24 /* socket.cpp in Sources */,
 				576C3E601E25690300D03ECB /* lz4xx.cpp in Sources */,
 				57AA27651E21671100895B24 /* Utils.cpp in Sources */,
+				570797131E2C044900E450FC /* lz4_input_stream.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				57C011931E242360006E6C4E /* PacketController.cpp in Sources */,
 				57AA27661E21671100895B24 /* VisibleRect.cpp in Sources */,
@@ -812,9 +847,11 @@
 				57AA28121E22BA4700895B24 /* rohc.c in Sources */,
 				57AA27801E2188C300895B24 /* MainScene.cpp in Sources */,
 				57EA9DBC1E298473006B3928 /* HuffmanCompression.cpp in Sources */,
-				576C3E5E1E25690300D03ECB /* example2.cpp in Sources */,
 				576C3E5F1E25690300D03ECB /* lz4.cpp in Sources */,
 				57AA282B1E22F9AB00895B24 /* list.cpp in Sources */,
+				570797151E2C044900E450FC /* lz4_output_stream.cpp in Sources */,
+				570797171E2C044900E450FC /* lz4_stream_test.cpp in Sources */,
+				570796E21E2BDCDB00E450FC /* Lz4Compression.cpp in Sources */,
 				576C3F441E25B53900D03ECB /* sctp.c in Sources */,
 				57C011961E24236F006E6C4E /* HudLayer.cpp in Sources */,
 				57AA27641E21671100895B24 /* Timer.cpp in Sources */,
@@ -835,10 +872,12 @@
 				576C3F451E25B57800D03ECB /* sctp.c in Sources */,
 				576C3F421E25B46800D03ECB /* Huffman.cpp in Sources */,
 				576C3F3C1E25B1D700D03ECB /* simd.cpp in Sources */,
+				570797141E2C044900E450FC /* lz4_input_stream.cpp in Sources */,
 				576C3F3B1E25B1C200D03ECB /* simd.c in Sources */,
-				576C3E611E25690C00D03ECB /* example2.cpp in Sources */,
 				576C3E621E25690C00D03ECB /* lz4.cpp in Sources */,
 				576C3E631E25690C00D03ECB /* lz4xx.cpp in Sources */,
+				570797181E2C044900E450FC /* lz4_stream_test.cpp in Sources */,
+				570796E31E2BDCDB00E450FC /* Lz4Compression.cpp in Sources */,
 				57C011981E2427EC006E6C4E /* 39dll.cpp in Sources */,
 				57EA9DBD1E298473006B3928 /* HuffmanCompression.cpp in Sources */,
 				57C011991E2427EC006E6C4E /* buffer.cpp in Sources */,
@@ -855,6 +894,7 @@
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				57AA27811E2188C300895B24 /* MainScene.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
+				570797161E2C044900E450FC /* lz4_output_stream.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -903,9 +943,8 @@
 				OTHER_LDFLAGS = (
 					"$(_COCOS_LIB_IOS_BEGIN)",
 					"$(_COCOS_LIB_IOS_END)",
+					"-llz4",
 					"-lrohc",
-					"-msse2",
-					"-msse",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.CrookedBard.GameTrafficOptimization;
 				SDKROOT = iphoneos;
@@ -942,9 +981,8 @@
 				OTHER_LDFLAGS = (
 					"$(_COCOS_LIB_IOS_BEGIN)",
 					"$(_COCOS_LIB_IOS_END)",
+					"-llz4",
 					"-lrohc",
-					"-msse2",
-					"-msse",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.CrookedBard.GameTrafficOptimization;
 				SDKROOT = iphoneos;
@@ -985,7 +1023,7 @@
 				OTHER_LDFLAGS = (
 					"$(_COCOS_LIB_MAC_BEGIN)",
 					"$(_COCOS_LIB_MAC_END)",
-					"-lrohc",
+					"-llz4",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.CrookedBard.GameTrafficOptimization;
 				SUPPORTED_PLATFORMS = macosx;
@@ -1022,7 +1060,7 @@
 				OTHER_LDFLAGS = (
 					"$(_COCOS_LIB_MAC_BEGIN)",
 					"$(_COCOS_LIB_MAC_END)",
-					"-lrohc",
+					"-llz4",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.CrookedBard.GameTrafficOptimization;
 				SUPPORTED_PLATFORMS = macosx;
@@ -1072,7 +1110,10 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-I/usr/local/include";
-				OTHER_LDFLAGS = "-lrohc";
+				OTHER_LDFLAGS = (
+					"-lrohc",
+					"-llz4",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -1118,7 +1159,10 @@
 					"-DNS_BLOCK_ASSERTIONS=1",
 					"-I/usr/local/include",
 				);
-				OTHER_LDFLAGS = "-lrohc";
+				OTHER_LDFLAGS = (
+					"-lrohc",
+					"-llz4",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				VALIDATE_PRODUCT = YES;

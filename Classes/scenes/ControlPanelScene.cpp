@@ -14,11 +14,14 @@
 #include "transport_protocols\tcp\39dll.h"
 #include "controllers\PacketController.h"
 #include "payload_compression\huffman\HuffmanCompression.hpp"
+#include "payload_compression\huffman\Lz4Compression.hpp"
 #else
 #include "39dll.h"
 #include "PacketController.h"
 #include "VisibleRect.h"
 #include "HuffmanCompression.hpp"
+#include "Lz4Compression.hpp"
+#include "lz4_stream.h"
 #endif
 
 USING_NS_CC;
@@ -98,7 +101,7 @@ void ControlPanelScene::update(float dt) {
 			{
 				addMessage("Packet received. Size: " + doubleToString(size));
 				//handle packet payload
-				PacketController::handle();
+				PacketController::read();
 			}
 			if (size == 0)
 			{
@@ -114,7 +117,7 @@ void ControlPanelScene::update(float dt) {
 		{
 			addMessage("Packet received. Size: " + doubleToString(size));
 			//handle packet payload
-			PacketController::handle();
+			PacketController::read();
 		}
 		else if (size == 0)
 		{
@@ -457,7 +460,9 @@ void ControlPanelScene::onButtonTcpListen(Ref* pSender, Widget::TouchEventType t
 			}
 			else
 			{
+                setformat(_tcpSocket, 2, 0);
 				setnagle(_tcpSocket, false);
+                //setsync(_tcpSocket, 1);
 				addMessage("Server listening on port " + doubleToString(_port));
 			}
 			
@@ -504,7 +509,9 @@ void ControlPanelScene::onButtonTcpConnect(Ref* pSender, Widget::TouchEventType 
 				closesock(_tcpSocket);
 				return;
 			}else{
+                //setformat(_tcpSocket, 2, 0);
 				setnagle(_tcpSocket, false);
+                //setsync(_tcpSocket, 1);
 			}
 			_isTcpClient = true;
 			_labelConnectionStatus->setString("TCP client connected");
@@ -622,6 +629,39 @@ void ControlPanelScene::onButtonTestLz(Ref* pSender, Widget::TouchEventType type
     if (type == Widget::TouchEventType::ENDED)
     {
         addMessage("Testing LZ4!");
+        auto testBuffer = (char*)"Testing Lz4!Testing Lz4!ABCZXNCMBZXCHGUIQiuwiqwjebnbyzixcuzyxciuzyxcuiyzxuciyzuxciy";
+//        auto result = Lz4Compression::encode(testBuffer);
+//        addMessage(result);
+//        auto result2 = Lz4Compression::decode(result);
+//        addMessage(result2);
+        //Lz4Compression::exampleLz4();
+        std::stringstream input_stream(testBuffer);
+        std::stringstream compressed_stream;
+        
+        LZ4OutputStream lz4_out_stream(compressed_stream);
+        
+        std::copy(std::istreambuf_iterator<char>(input_stream),
+                  std::istreambuf_iterator<char>(),
+                  std::ostreambuf_iterator<char>(lz4_out_stream));
+        lz4_out_stream.close();
+        
+        
+        LZ4InputStream lz4_in_stream(compressed_stream);
+        std::stringstream decompressed_stream;
+        
+        std::copy(std::istreambuf_iterator<char>(lz4_in_stream),
+                  std::istreambuf_iterator<char>(),
+                  std::ostreambuf_iterator<char>(decompressed_stream));
+        
+        std::string cstr = compressed_stream.str();
+        std::string dstr = decompressed_stream.str();
+        printf("\nINPUT TEXT:\n%s\n", cstr.c_str());
+        printf("\nINPUT TEXT:\n%s\n", dstr.c_str());
+        
+        addMessage(cstr);
+        addMessage(dstr);
+        addMessage(doubleToString( cstr.length()));
+        addMessage(doubleToString( dstr.length()));
     }
 }
 
@@ -630,7 +670,7 @@ void ControlPanelScene::onButtonTestHuffman(Ref* pSender, Widget::TouchEventType
     if (type == Widget::TouchEventType::ENDED)
     {
         addMessage("Testing Huffman!");
-        char *testBuffer = (char*)"Testing Huffman";
+        char *testBuffer = (char*)"Testing Huffman!Testing Huffman!ABCZXNCMBZXCHGUIQiuwiqwjebnbyzixcuzyxciuzyxcuiyzxuciyzuxciy";
         auto result = HuffmanCompression::encode(testBuffer);
         addMessage(result);
     }
@@ -640,37 +680,28 @@ void ControlPanelScene::onButtonSendFewInts(Ref* pSender, Widget::TouchEventType
 {
 	if (type == Widget::TouchEventType::ENDED && (_isTcpClient || _isTcpServer))
 	{
+        if(_lz) PacketController::write(MSG_FEW_INT_LZ);
+        else if(_huffman) PacketController::write(MSG_FEW_INT_HUFFMAN);
+        else PacketController::write(MSG_FEW_INT);
+        
+        double sizet, payloadSize;
 		if (_isTcpClient)
 		{
-			clearbuffer();
-			writebyte(MSG_INTDATAFEW);
-			writeint(123);
-			writeint(456);
-            //Buffer::addBuffer((char*)"testas",strlen("testas"));
-			auto osize = sendmessage(_tcpSocket);
-
-			auto payloadSize = buffsize();
-			addMessage("Sending packet with size: " + doubleToString(payloadSize));
-            addMessage(std::to_string(sizeof(osize)));
-			//auto buff = getBuffer();
-			//std::string s(buff->data);
-			//addMessage("buff data: " + s);
-			//addMessage("buff size: " + buff->BuffSize);
+            sizet = sendmessage(_tcpSocket);
 		}
 		if (_isTcpServer)
 		{
 			for (auto i : _connections)
 			{
-				clearbuffer();
-				writebyte(MSG_INTDATAFEW); //1Byte
-				writeint(123); //4Bytes
-				writeint(456); //4Bytes
-				sendmessage(i.second);
-
-				auto payloadSize = buffsize();
-				addMessage("Sending packet with size: " + doubleToString(payloadSize));
+				sizet = sendmessage(i.second);
 			}
 		}
+        payloadSize = buffsize();
+        addMessage("Sending packet with size: " + doubleToString(payloadSize) + " " + doubleToString(sizet) );
+        //auto buff = getBuffer();
+        //std::string s(buff->data);
+        //addMessage("buff data: " + s);
+        //addMessage("buff size: " + buff->BuffSize);
 	}
 }
 
@@ -703,11 +734,11 @@ void ControlPanelScene::selectedEventRohc(Ref* pSender,CheckBox::EventType type)
 	switch (type)
 	{
 		case CheckBox::EventType::SELECTED:
-
+            _rohc = true;
 			break;
 			
 		case CheckBox::EventType::UNSELECTED:
-
+            _rohc = false;
 			break;
 			
 		default:
@@ -720,11 +751,11 @@ void ControlPanelScene::selectedEventLz(Ref* pSender,CheckBox::EventType type)
 	switch (type)
 	{
 		case CheckBox::EventType::SELECTED:
-			
+            _lz = true;
 			break;
 			
 		case CheckBox::EventType::UNSELECTED:
-			
+            _lz = false;
 			break;
 			
 		default:
@@ -737,11 +768,11 @@ void ControlPanelScene::selectedEventHuffman(Ref* pSender,CheckBox::EventType ty
 	switch (type)
 	{
 		case CheckBox::EventType::SELECTED:
-			
+            _huffman = true;
 			break;
 			
 		case CheckBox::EventType::UNSELECTED:
-			
+            _huffman = false;
 			break;
 			
 		default:
@@ -755,6 +786,9 @@ bool ControlPanelScene::readSettings()
 	_isTcpClient = false;
 	_isSctpServer = false;
 	_isSctpClient = false;
+    _rohc = false;
+    _lz = false;
+    _huffman = false;
 	auto sharedFileUtils = FileUtils::getInstance();
 	const int settingsCount = 2; //ipAddress and port
 	

@@ -27,6 +27,7 @@ const char* HuffmanCompression::encode(char* buffer)
     Huffman<char>* h = new Huffman<char>();
     std::vector<bool> code = h->encode(&text);
     
+    
     short r = code.size()%8;
     long bsize = ((code.size()-r)/8);
     
@@ -57,6 +58,8 @@ const char* HuffmanCompression::encode(char* buffer)
     
     return cstr;
 }
+
+
 
 char* HuffmanCompression::decode(char* buffer)
 {
