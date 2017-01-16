@@ -9,12 +9,28 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../Classes/scenes/ControlPanelScene.cpp"
-            timestampString = "506202862.913896"
+            filePath = "../Classes/payload_compression/huffman/HuffmanCompression.cpp"
+            timestampString = "506223977.395765"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "673"
-            endingLineNumber = "673"
+            startingLineNumber = "118"
+            endingLineNumber = "118"
+            landmarkName = "HuffmanCompression::decode(const char* buffer)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../Classes/scenes/ControlPanelScene.cpp"
+            timestampString = "506223138.237366"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "676"
+            endingLineNumber = "676"
             landmarkName = "ControlPanelScene::onButtonTestHuffman(Ref* pSender, Widget::TouchEventType type)"
             landmarkType = "7">
          </BreakpointContent>
@@ -26,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../Classes/payload_compression/huffman/HuffmanCompression.cpp"
-            timestampString = "506126867.277069"
+            timestampString = "506223168.431994"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "28"
-            endingLineNumber = "28"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
             landmarkName = "HuffmanCompression::encode(char* buffer)"
             landmarkType = "7">
          </BreakpointContent>
@@ -42,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../Classes/payload_compression/huffman/HuffmanCompression.cpp"
-            timestampString = "506126867.277069"
+            timestampString = "506223215.241544"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "59"
-            endingLineNumber = "59"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
             landmarkName = "HuffmanCompression::encode(char* buffer)"
             landmarkType = "7">
          </BreakpointContent>
@@ -58,11 +74,91 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../Classes/payload_compression/huffman/HuffmanCompression.cpp"
-            timestampString = "506126867.277069"
+            timestampString = "506223977.395765"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "44"
-            endingLineNumber = "44"
+            startingLineNumber = "132"
+            endingLineNumber = "132"
+            landmarkName = "HuffmanCompression::decode(const char* buffer)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../Classes/payload_compression/huffman/HuffmanCompression.cpp"
+            timestampString = "506223967.436775"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
+            landmarkName = "HuffmanCompression::encode(char* buffer)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "HuffmanCompression::encode(char*)"
+                  moduleName = "GameTrafficOptimization-desktop"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/daini_000/Projects/GameTrafficOptimization/Classes/payload_compression/huffman/HuffmanCompression.cpp"
+                  timestampString = "506224340.350222"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "90"
+                  endingLineNumber = "90"
+                  offsetFromSymbolStart = "4980">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "HuffmanCompression::encode(char*)"
+                  moduleName = "GameTrafficOptimization-desktop"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/daini_000/Projects/GameTrafficOptimization/Classes/payload_compression/huffman/HuffmanCompression.cpp"
+                  timestampString = "506224340.355903"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "90"
+                  endingLineNumber = "90"
+                  offsetFromSymbolStart = "6045">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../Classes/payload_compression/huffman/HuffmanCompression.cpp"
+            timestampString = "506224088.252418"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "76"
+            endingLineNumber = "76"
+            landmarkName = "HuffmanCompression::encode(char* buffer)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../Classes/payload_compression/huffman/HuffmanCompression.cpp"
+            timestampString = "506224316.031464"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
             landmarkName = "HuffmanCompression::encode(char* buffer)"
             landmarkType = "7">
          </BreakpointContent>

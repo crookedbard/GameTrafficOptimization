@@ -670,9 +670,11 @@ void ControlPanelScene::onButtonTestHuffman(Ref* pSender, Widget::TouchEventType
     if (type == Widget::TouchEventType::ENDED)
     {
         addMessage("Testing Huffman!");
-        char *testBuffer = (char*)"Testing Huffman!Testing Huffman!ABCZXNCMBZXCHGUIQiuwiqwjebnbyzixcuzyxciuzyxcuiyzxuciyzuxciy";
+        char *testBuffer = (char*)"Huff";
         auto result = HuffmanCompression::encode(testBuffer);
-        addMessage(result);
+        //addMessage(result);
+        auto result2 = HuffmanCompression::decode(result);
+        addMessage(result2);
     }
 }
 

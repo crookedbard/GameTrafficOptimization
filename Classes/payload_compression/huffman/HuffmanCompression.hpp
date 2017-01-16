@@ -28,7 +28,7 @@ class HuffmanCompression
 {
 public:
     static const char* encode(char* buffer);
-    static char* decode(char* buffer);
+    static const char* decode(const char* buffer);
     static std::pair<EncodingResults, DecodingResults> performTest();
 };
 
