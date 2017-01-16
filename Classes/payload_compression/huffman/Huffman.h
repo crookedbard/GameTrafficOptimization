@@ -1,155 +1,111 @@
-/* 
- * File:   Huffman.h
- * Author: chachalaca
- *
- * Created on 21. červen 2014, 16:30
- */
 
-#ifndef HTREE_H
-#define	HTREE_H
-  
-#include <vector>
-#include <algorithm>
-#include <iostream>
-#include "HNode.h"
+#ifndef Huffman_h
+#define Huffman_h
 
-template <typename T> 
-class Huffman {
-    public:
-        Huffman();
-        Huffman(const Huffman<T>& orig);
-        Huffman<T> &operator=(Huffman<T> n);
-        virtual ~Huffman();        
-         
-        std::vector<bool> encode(std::vector<T>* text);
-        std::vector<T> decode(std::vector<bool>* code) const;
-    private:
-        std::vector< HNode<T> > createAlphabet(std::vector<T>* text) const;
-        HNode<T> buildTree();
-        std::vector< HNode<T> > alphabet;
-        HNode<T> root;
-    
+
+/*       huffman trees            */
+typedef struct hufftree {
+        unsigned int freq;       //s1 freq
+        unsigned char s1;        //0...255:codes       left symb
+        unsigned char s2;        //                    right symb
+        hufftree* pleft;         //0
+        hufftree* pright;        //1
+        hufftree* parent;        //parent node
+} *PHTREE;
+
+typedef struct huffsymbol {
+        unsigned int size;       //symbol size in bits
+        __int64 symb;            //max 256 bits
+} *PSYMB;
+
+
+/*       huffman file headers            */
+typedef struct huffheader {
+        char magic[4];           //'HUFF'
+        int symnum;              //total symbnum
+        int uncmpsize;           //uncompressed file size
+        int cmpsize;             //compressed file size
+} *PHUFFHDR;
+
+typedef struct symbheader {
+        unsigned int freq;       //its freq
+        unsigned char symb;      //symbol
+} *PSYMBHDR;
+
+
+
+class Huffman
+{
+public:
+        Huffman(){};
+        //Huffman(const Huffman& huffman);
+        //~Huffman();
+
+// Operators
+        //const Huffman& operator=(const Huffman& huffman);
+
+// Operations
+        void encode(unsigned char *dest, int &csize, unsigned char *sour, int usize);
+        void decode(unsigned char *dest, int &usize, unsigned char *sour);
+
+// Access
+// Inquiry
+        inline int get_uncompressed_size(unsigned char *sour);
+
+protected:
+private:
+        Huffman(const Huffman& huffman);
+        const Huffman& operator=(const Huffman& huffman);
+        
+        
+        PHTREE temptree;                              //tmass1 first tree
+        PHTREE htree;                                 //tmass2 second huff tree
+        PSYMB hsymbol;                                //smass symbols codebook
+
+        unsigned char tmass1[256*sizeof(hufftree)];             //first tree with freq codes
+        unsigned char tmass2[256*sizeof(hufftree)];             //last built tree
+        unsigned char smass[256*sizeof(huffsymbol)];            //symbols codebook buffer [code][size] pairs
+
+        unsigned char *psour;                                  //source pointer
+        unsigned char *pdest;                                  //dest pointer
+
+        PHUFFHDR pheader;                              //huffman file header
+        PSYMBHDR psheader;                             //[ freq ][C] pairs
+
+        int filesize;                                 //uncompressed file size
+        int symnum;                                   //total different symbols
+        int bitslast;
+        
+        
+        static int __cdecl compare(const void *a, const void *b);    //for sorting routine
+
+        void storetree(void);                         //memory and huff headers init
+        void buildtree(void);                         //htree building
+        void buildbook(void);                         //build codebook [code][size] pairs
+        void writesymb(int c);                        //write codebook symbol
+
+        void readtree(void);                          //read headers and get freqs
+        unsigned char readsymb();                     //read symbol from htree
+        inline int getnextbit();                      //get bits from sour
+                     
 };
 
-
-
-template <typename T> 
-Huffman<T>::Huffman() {
-       
+inline int Huffman::get_uncompressed_size(unsigned char *sour)
+{
+        pheader = (PHUFFHDR)sour;
+        return pheader->uncmpsize;
 }
 
-template <typename T> 
-Huffman<T>::Huffman(const Huffman<T>& orig) {
-    this->alphabet = orig.alphabet;
-    this->root = orig.root;
-}
-
-template <typename T> 
-Huffman<T> &Huffman<T>::operator=(Huffman<T> n) {
-    std::swap(this->alphabet, n.alphabet);
-    std::swap(this->root, n.root);
-
-
-    return *this;
-}
-
-template <typename T> 
-Huffman<T>::~Huffman() {
-}
-
-template <typename T>
-std::vector< HNode<T> > Huffman<T>::createAlphabet(std::vector<T>* text) const{
-    std::vector< HNode<T> > alphabet;
-    
-    typename std::vector<T>::iterator ti;
-    ti = text->begin();
-
-    while (ti != text->end()) {
-        typename std::vector< HNode<T> >::iterator ai = find_if(alphabet.begin(), alphabet.end(), HNodeSymbolComparator<T>(*ti));    
-        if (ai != alphabet.end()) {
-            ai->setCount(ai->getCount()+1);
+/*             get bits from sour             */
+inline int Huffman::getnextbit()
+{
+        if (bitslast) {
+                return 0x1 & (*psour >> (--bitslast));
+        } else {
+                psour++;
+                bitslast = 8;
+                return 0x1 & (*psour >> (--bitslast));
         }
-        else {
-            HNode<T> newNode;            
-            alphabet.push_back(newNode);
-            alphabet.back().setCount(1);
-            alphabet.back().setSymbol(*ti);
-        }
-        ti++;
-    }
-     
-    return alphabet;
- 
 }
 
-template <typename T>
-HNode<T> Huffman<T>::buildTree() {
-    std::vector< HNode<T>* > temp;
-    
-    typename std::vector< HNode<T> >::iterator ai = this->alphabet.begin();
-    while (ai != this->alphabet.end()) {
-        temp.push_back(&(*ai));
-        ai++;
-    }
-    typename std::vector< HNode<T>* >::iterator ti;
-    
-    while(temp.size() > 1) {
-        std::sort(temp.rbegin(), temp.rend(), HNodePointerCountComparator<T>());  
-        
-        ti = temp.end();
-        ti -= 1;
-
-        temp.push_back(new HNode<T>());
-        temp.back()->setCount(temp.back()->getCount()+(*ti)->getCount());
-        temp.back()->setLeft(*ti);
-        
-        temp.erase(ti);
-                
-        ti -= 1;
-                
-        temp.back()->setCount(temp.back()->getCount()+(*ti)->getCount());
-        temp.back()->setRight(*ti);
-                
-        temp.erase(ti);
-        
-    }
-   
-    std::vector<bool> nullcode;
-    (*(temp.back())).assignCode(nullcode);
-    
-    return *(temp.back());
-}
-
-template <typename T>
-std::vector<bool> Huffman<T>::encode(std::vector<T>* text) {
-    
-    this->alphabet = this->createAlphabet(text);
-    this->root = this->buildTree(); 
-    
-    std::vector<bool> code;
-    typename std::vector<T>::iterator ti = text->begin();    
-    while (ti != text->end()) {
-        typename std::vector< HNode<T> >::iterator ai = find_if(this->alphabet.begin(), this->alphabet.end(), HNodeSymbolComparator<T>(*ti));    
-        if (ai != alphabet.end()) {
-            code.insert(code.end(), ai->getCode().begin(), ai->getCode().end());
-        }       
-        
-        ti++;
-    }
-    return code;
-}
-
-template <typename T>
-std::vector<T> Huffman<T>::decode(std::vector<bool>* code) const{
-    std::vector<T> text;
-    while (code->size()>0) {
-        text.push_back(this->root.decodeSymbol(code));
-    }
-    return text;
-}
-
-
-
-
-#endif	/* HTREE_H */
-
+#endif

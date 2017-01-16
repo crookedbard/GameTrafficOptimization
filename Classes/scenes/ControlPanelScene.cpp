@@ -14,7 +14,7 @@
 #include "transport_protocols\tcp\39dll.h"
 #include "controllers\PacketController.h"
 #include "payload_compression\huffman\HuffmanCompression.hpp"
-#include "payload_compression\huffman\Lz4Compression.hpp"
+#include "payload_compression\lz4\Lz4Compression.hpp"
 #else
 #include "39dll.h"
 #include "PacketController.h"
@@ -638,7 +638,7 @@ void ControlPanelScene::onButtonTestLz(Ref* pSender, Widget::TouchEventType type
         std::stringstream input_stream(testBuffer);
         std::stringstream compressed_stream;
         
-        LZ4OutputStream lz4_out_stream(compressed_stream);
+        /*LZ4OutputStream lz4_out_stream(compressed_stream);
         
         std::copy(std::istreambuf_iterator<char>(input_stream),
                   std::istreambuf_iterator<char>(),
@@ -661,7 +661,7 @@ void ControlPanelScene::onButtonTestLz(Ref* pSender, Widget::TouchEventType type
         addMessage(cstr);
         addMessage(dstr);
         addMessage(doubleToString( cstr.length()));
-        addMessage(doubleToString( dstr.length()));
+        addMessage(doubleToString( dstr.length()));*/
     }
 }
 
@@ -670,11 +670,11 @@ void ControlPanelScene::onButtonTestHuffman(Ref* pSender, Widget::TouchEventType
     if (type == Widget::TouchEventType::ENDED)
     {
         addMessage("Testing Huffman!");
-        char *testBuffer = (char*)"Huff";
+        /*char *testBuffer = (char*)"Huff";
         auto result = HuffmanCompression::encode(testBuffer);
         //addMessage(result);
         auto result2 = HuffmanCompression::decode(result);
-        addMessage(result2);
+        addMessage(result2);*/
     }
 }
 
@@ -709,9 +709,29 @@ void ControlPanelScene::onButtonSendFewInts(Ref* pSender, Widget::TouchEventType
 
 void ControlPanelScene::onButtonSendFewStrings(Ref* pSender, Widget::TouchEventType type)
 {
-	if (type == Widget::TouchEventType::ENDED)
+	if (type == Widget::TouchEventType::ENDED && (_isTcpClient || _isTcpServer))
 	{
-		addMessage("Sending few strigs: Hello World!");
+		addMessage("SendFewStrings");
+		if (_lz) PacketController::write(MSG_FEW_STRING_LZ);
+		else if (_huffman) PacketController::write(MSG_FEW_STRING_HUFFMAN);
+		else PacketController::write(MSG_FEW_STRING);
+
+		double sizet, payloadSize;
+		if (_isTcpClient)
+		{
+			//sizet = 
+				sendmessage(_tcpSocket);
+		}
+		if (_isTcpServer)
+		{
+			for (auto i : _connections)
+			{
+				//sizet = 
+					sendmessage(i.second);
+			}
+		}
+		payloadSize = buffsize();
+		addMessage("Sending packet with size: " + doubleToString(payloadSize));// +" " + doubleToString(sizet));
 	}
 }
 
@@ -725,9 +745,27 @@ void ControlPanelScene::onButtonSendManyInts(Ref* pSender, Widget::TouchEventTyp
 
 void ControlPanelScene::onButtonSendManyStrigs(Ref* pSender, Widget::TouchEventType type)
 {
-	if (type == Widget::TouchEventType::ENDED)
+	if (type == Widget::TouchEventType::ENDED && (_isTcpClient || _isTcpServer))
 	{
-		addMessage("Sending many strigs: Hello World! ...");
+		addMessage("SendManyStrings");
+		if (_lz) PacketController::write(MSG_MANY_STRING_LZ);
+		else if (_huffman) PacketController::write(MSG_MANY_STRING_HUFFMAN);
+		else PacketController::write(MSG_MANY_STRING);
+
+		double payloadSize;
+		if (_isTcpClient)
+		{
+			sendmessage(_tcpSocket);
+		}
+		if (_isTcpServer)
+		{
+			for (auto i : _connections)
+			{
+				sendmessage(i.second);
+			}
+		}
+		payloadSize = buffsize();
+		addMessage("Sending packet with size: " + doubleToString(payloadSize));
 	}
 }
 

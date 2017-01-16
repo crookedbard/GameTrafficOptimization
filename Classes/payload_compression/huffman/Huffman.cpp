@@ -1,82 +1,259 @@
-#include <iostream>
-#include <fstream>
-#include <algorithm>
-#include <vector>
-#include <bitset>
-#include <limits> 
-#include "HNode.h"
-#include "Huffman.h"
 
-using namespace std;
+//#include "../stdafx.h"
+#include "huffman.h"
+#include <stdio.h>
+#include <tchar.h>
+#include <memory.h>
+#include <stdlib.h>
 
-/*
- * 
- */
-int performHuffmanTest(int argc, char** argv) {
-        
-    std::vector<char> text;
-        
-    char str[256];
 
-    std::cout << "Zadejte jmeno existujiciho textoveho souboru k zakodovani: ";
-    std::cin.get (str,256);    
-    
-    std::ifstream is(str);     
 
-    while (is.good())          
-    {
-      char c = is.get();       
-      if (is.good())
-          text.push_back(c);
-    }
+/*    IN sour = uncompressed code usize BYTES
+     OUT dest = compressed code csize BYTES     */
+//////////////////////////////////////////////////////////////////////////////////////////////////
+void Huffman::encode(unsigned char *dest, int &csize, unsigned char *sour, int usize)
+{
+        pheader = (PHUFFHDR)dest;     //huff header
+        psour = sour;                //sour buffer
+        pdest = dest;                //dest buffer
+        filesize = usize;            //uncompressed file size
+        csize = 0;                   //fault protection
 
-    is.close(); 
-    
-    Huffman<char>* h = new Huffman<char>();  
-    
-    
-    std::vector<bool> code = h->encode(&text);       
-    
-    
-    short r = code.size()%8;
-    long bsize = ((code.size()-r)/8);
-    
-    std::ofstream outfile ("out.huf",std::ofstream::binary);
-    
-    unsigned char byte[1];
-    unsigned char firstByte[1];
-    
-    firstByte[0] = 0;
-    if((r-(r%4))/4) firstByte[0] |= 1 << 2;
-    if(((r%4)-(r%2))/2) firstByte[0] |= 1 << 1;
-    if(r%2) firstByte[0] |= 1;    
-    
-    outfile.write (reinterpret_cast<char *>(firstByte),1);
-   
-    for(int y=0;y<(bsize+1);y++) { //byte
-        byte[0] = 0;
-        for (int i=0; i < 8; ++i) { //bit
-            if ((8*y+i) <= code.size() && code[8*y+i]) {
-                byte[0] |= 1 << i;
-            }                  
-        }
-        outfile.write (reinterpret_cast<char *>(byte),1);
-    }
-    
-    
-    outfile.close(); 
-    
-    std::vector<char> decodedText;
-    decodedText = h->decode(&code);
-    
-    cout<<endl<<"Pro kontrolu:"<<endl;
-    
-    std::vector<char>::iterator ci = decodedText.begin();
-    while(ci != decodedText.end()) {
-        cout<< *ci;       
-        ci++;       
-    }
+        symnum = 0;
+        bitslast = 8;
 
-    return 0;
+
+        storetree();                 //get freqs and store headers
+        buildtree();                 //build htree
+        buildbook();                 //build codebook
+        for (int i = 0; i < filesize; i++)
+                writesymb(*psour++);
+
+
+        csize = int((pdest - dest) + 1);
+        pheader->cmpsize = csize;
 }
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+/*    IN sour = compressed huffman frame
+     OUT dest = uncompressed code usize BYTES     */
+//////////////////////////////////////////////////////////////////////////////////////////////////
+void Huffman::decode(unsigned char *dest, int &usize, unsigned char *sour)
+{
+        pheader = (PHUFFHDR)sour;     //huff header
+        psour = sour;                //sour buffer
+        pdest = dest;                //dest buffer
+        usize = 0;                   //fault protection
+
+        bitslast = 8;
+
+
+        readtree();                  //read headers and get freqs
+        buildtree();                 //build tree
+        while (filesize) {
+                *pdest++ = readsymb();
+                filesize--;
+        }
+
+
+        usize = int(pdest - dest);
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+/*                           HUFF ENCODING ROUTINES                              */
+
+/*         init tree buffers
+           fill headers                             */
+void Huffman::storetree(void)
+{
+        /*               memory init                           */
+        memset(tmass1, 0, 256*sizeof(hufftree));
+        memset(tmass2, 0, 256*sizeof(hufftree));
+        memset(smass, 0, 256*sizeof(huffsymbol));
+
+        temptree = (PHTREE)tmass1;
+        htree = (PHTREE)tmass2;
+        hsymbol = (PSYMB)smass;
+
+        for (int i = 0; i < 256; i++) temptree[i].s1 = i;               //initilize symbols
+        for (int i = 0; i < filesize; i++) temptree[psour[i]].freq++;   //get symb frequencies
+        for (int i = 0; i < 256; i++) 
+                if (temptree[i].freq) symnum++;        //get total symbols
+        
+        qsort((void *)temptree, 256, sizeof(hufftree), &compare);      //sort temptree
+
+
+        /*               headers init                           */
+        memcpy(pheader->magic, "HUFF", 4);
+        pheader->symnum = symnum;
+        pheader->uncmpsize = filesize;
+        pheader->cmpsize = 0;
+
+        pdest += sizeof(huffheader);
+
+        /*   make [  freq  ][C] pairs    */
+        for (int i = 0; i < symnum; i++) {
+                psheader = (PSYMBHDR)pdest;
+                psheader->symb = temptree[i].s1;
+                psheader->freq = temptree[i].freq;
+
+                pdest += 5;     //sizeof(PSYMBFRQ)
+        }
+        *pdest = 0;
+}
+
+/*         build htree from temptree                */
+void Huffman::buildtree()
+{
+        /*        special case symnum = 1   */
+        if (symnum == 1) {
+                hsymbol[psour[0]].size = 1;
+                return;
+        }
+        /*        build 1 & 2 trees        */
+        for (int i = symnum - 2; i >= 0; i--) {
+                if (temptree[i].parent) {                    //if it is compound node yet
+                        htree[i].pleft = temptree[i].parent;        //to another node 0
+                        htree[i].pleft->parent = &htree[i];
+                } else
+                        htree[i].s1 = temptree[i].s1;               //to final symbol 0
+
+                if (temptree[i+1].parent) {
+                        htree[i].pright = temptree[i+1].parent;     //to another node 1
+                        htree[i].pright->parent = &htree[i];
+                } else
+                        htree[i].s2 = temptree[i+1].s1;	           //to final symbol 1
+
+                if (i) {
+                        temptree[i].freq += temptree[i+1].freq;     //[i]+[i+1] frequencies for new [i] node
+                        temptree[i].parent = &htree[i];             //[i] becomes a node
+                        temptree[i+1].freq = 0;                     //[i+1] destroyed
+
+                        qsort((void *)temptree, (i + 1), sizeof(hufftree), &compare);
+                }
+        }
+}
+
+/*         build codebook from htree        */
+void Huffman::buildbook()
+{
+        unsigned char c;
+        PHTREE parent, child;
+
+        /*     build symbols from htree    */
+        for (int i = symnum - 2; i >= 0; i--) {
+                if (!htree[i].pleft) {            //0bit symbol
+                        c = htree[i].s1;
+                        hsymbol[c].size++;
+
+                        child = &htree[i];
+                        parent = child->parent;
+                        while (parent) {
+                                if (parent->pleft == child)              //add 0 to symb code
+                                        hsymbol[c].size++;
+                                if (parent->pright == child)		       //add 1 to symb code
+                                        hsymbol[c].symb |= __int64(1 << hsymbol[c].size++);
+
+                                child = parent;                    //child becomes a parent
+                                parent = child->parent;            //parent becomes 'childs' parent
+                        }
+                }
+                if (!htree[i].pright) {           //1bit symbol
+                        c = htree[i].s2;
+                        hsymbol[c].symb |= __int64(1 << hsymbol[c].size++);
+
+                        child = &htree[i];
+                        parent = child->parent;
+                        while (parent) {
+                                if (parent->pleft == child)              //add 0 to symb code
+                                        hsymbol[c].size++;
+                                if (parent->pright == child)             //add 1 to symb code
+                                        hsymbol[c].symb |= __int64(1 << hsymbol[c].size++);
+
+                                child = parent;                    //child becomes a parent
+                                parent = child->parent;            //parent becomes 'childs' parent
+                        }
+                }
+        }
+}
+
+/*         write codebook symbol to dest    */
+void Huffman::writesymb(int c)
+{
+        for (unsigned int i = 1; i <= hsymbol[c].size; i++) {
+                *pdest |= ((0x1 & (hsymbol[c].symb >> (hsymbol[c].size - i))) << (--bitslast));
+
+                if (bitslast == 0) {
+                        *(++pdest) = 0;
+                        bitslast = 8;
+                }
+        }
+}
+
+
+
+
+/*                           HUFF DECODING ROUTINES                              */
+
+/*         read huff headers and get freqs        */
+void Huffman::readtree()
+{
+        /*               memory init                    */
+        memset(tmass1, 0, 256*sizeof(hufftree));
+        memset(tmass2, 0, 256*sizeof(hufftree));
+
+        temptree = (PHTREE)tmass1;
+        htree = (PHTREE)tmass2;
+
+        filesize = pheader->uncmpsize;
+        symnum = pheader->symnum;
+        psour += sizeof(huffheader);
+
+        /*       get freqs      */
+        for (int i = 0; i < symnum; i++) {
+                psheader = (PSYMBHDR)psour;
+                temptree[i].freq = psheader->freq;
+                temptree[i].s1 = psheader->symb;
+
+                psour += 5;      //sizeof(PSYMBFRQ)
+        }
+}
+
+/*         decode huff symbol by bit from sour        */
+unsigned char Huffman::readsymb()
+{
+        PHTREE node = &htree[0];
+
+        while (1) {
+                if (getnextbit()) {           //next right node
+                        if (node->pright)
+                                node = node->pright;
+                        else
+                                return node->s2;
+                } else {              //next left node
+                        if (node->pleft)
+                                node = node->pleft;
+                        else
+                                return node->s1;
+                }
+        }
+}
+
+
+/*         compare for qsort()              */
+int __cdecl Huffman::compare(const void *a, const void *b)
+{
+        PHTREE t1 = (PHTREE)a;
+        PHTREE t2 = (PHTREE)b;
+
+        if (t1->freq == t2->freq) return 0;
+        else return ((t1->freq < t2->freq) ? 1 : -1);
+}
+
+
+
+
+
 

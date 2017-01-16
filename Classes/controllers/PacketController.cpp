@@ -139,7 +139,11 @@ void PacketController::readFewInt()
 
 void PacketController::readFewString()
 {
-    
+	auto string1 = readstring();
+	auto string2 = readstring();
+
+	//auto chars1 = readchars();
+	//auto chars2 = readchars();
 }
 
 void PacketController::readManyInt()
@@ -149,7 +153,9 @@ void PacketController::readManyInt()
 
 void PacketController::readManyString()
 {
-    
+	for (int i = 0; i < 15; i++) {
+		auto str = readstring();
+	}
 }
 
 void PacketController::readFewIntLz()
@@ -179,7 +185,14 @@ void PacketController::readFewIntHuffman()
 
 void PacketController::readFewStringHuffman()
 {
-    
+	auto csize = readint();
+	auto encoded = new unsigned char[csize];
+	for (int i = 0; i < csize; i++)
+	{
+		encoded[i] = readbyte();
+	}
+	auto decoded = HuffmanCompression::decode(encoded, csize);
+
 }
 
 void PacketController::readManyIntHuffman()
@@ -189,7 +202,13 @@ void PacketController::readManyIntHuffman()
 
 void PacketController::readManyStringHuffman()
 {
-    
+	auto csize = readint();
+	auto encoded = new unsigned char[csize];
+	for (int i = 0; i < csize; i++)
+	{
+		encoded[i] = readbyte();
+	}
+	auto decoded = HuffmanCompression::decode(encoded, csize);
 }
 
 void PacketController::writeFewInt()
@@ -202,7 +221,10 @@ void PacketController::writeFewInt()
 
 void PacketController::writeFewString()
 {
-    
+	clearbuffer();
+	writebyte(MSG_FEW_STRING);
+	writestring("DAINIUS 01");
+	writestring("KREIVYS 10");
 }
 
 void PacketController::writeManyInt()
@@ -212,7 +234,13 @@ void PacketController::writeManyInt()
 
 void PacketController::writeManyString()
 {
-    
+	clearbuffer();
+	writebyte(MSG_MANY_STRING);
+	for (auto i = 0; i < 20; i++) {
+		writestring("DAINIUS 01 ABCDEF HELLO HELLO BYE");
+		writestring("KREIVYS 10 FGE FGE THANK YOU THANK YOU");
+		writestring("Testas 23 BUYING Selling Looking for party");
+	}
 }
 
 void PacketController::writeFewIntLz()
@@ -237,7 +265,7 @@ void PacketController::writeManyStringLz()
 
 void PacketController::writeFewIntHuffman()
 {
-    clearbuffer();
+    /*clearbuffer();
     writeint(123);
     writeint(456);
     auto buffer = getbuffer();
@@ -246,11 +274,31 @@ void PacketController::writeFewIntHuffman()
     writebyte(MSG_FEW_INT);
     writechars("");//huffman tree
     writechars("");//huffman tree
+	*/
 }
 
 void PacketController::writeFewStringHuffman()
 {
-    
+	/*clearbuffer();
+	//writestring("DAINIUS 01"); //tik viena string aptinka huffmanas
+	//writestring("KREIVYS 10");
+	writechars("DAINIUS 01");
+	writechars("KREIVYS 10"); //kazkodel dar 10 gale prisideda
+	auto buffer = getbuffer();*/
+
+	std::string str = "DAINIUS 01" ;
+	str += "KREIVYS 10";
+
+	int csize;
+	auto encoded = HuffmanCompression::encode(str/*buffer->data*/, csize);
+	clearbuffer();
+	writebyte(MSG_FEW_STRING_HUFFMAN);
+	writeint(csize);
+	for (int i = 0; i < csize; i++)
+	{
+		writebyte(encoded[i]);
+	}
+
 }
 
 void PacketController::writeManyIntHuffman()
@@ -260,5 +308,28 @@ void PacketController::writeManyIntHuffman()
 
 void PacketController::writeManyStringHuffman()
 {
-    
+	/*clearbuffer();
+	for (auto i = 0; i < 5; i++) {
+		writechars("DAINIUS 01 ABCDEF HELLO HELLO BYE");
+		writechars("KREIVYS 10 FGE FGE THANK YOU THANK YOU");
+		writechars("Testas 23 BUYING Selling Looking for party");
+	}
+	auto buffer = getbuffer();*/
+
+	std::string str = "";
+	for (auto i = 0; i < 20; i++) {
+		str += "DAINIUS 01 ABCDEF HELLO HELLO BYE";
+		str += "KREIVYS 10 FGE FGE THANK YOU THANK YOU";
+		str += "Testas 23 BUYING Selling Looking for party";
+	}
+
+	int csize;
+	auto encoded = HuffmanCompression::encode(str/*buffer->data*/, csize);
+	clearbuffer();
+	writebyte(MSG_MANY_STRING_HUFFMAN);
+	writeint(csize);
+	for (int i = 0; i < csize; i++)
+	{
+		writebyte(encoded[i]);
+	}
 }

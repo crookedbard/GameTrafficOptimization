@@ -10,8 +10,6 @@
 #define HuffmanCompression_hpp
 
 #include <stdio.h>
-#include <iostream>
-#include <string>
 /*struct EncodingResults {
     int cyclesMin;
     int cyclesMax;
@@ -30,7 +28,7 @@ class HuffmanCompression
 {
 public:
     static unsigned char * encode(std::string str, int &compSize);
-	static std::string decode(unsigned char * sour, int csize);
+    static std::string decode(std::string buffer);
     //static std::pair<EncodingResults, DecodingResults> performTest();
 };
 

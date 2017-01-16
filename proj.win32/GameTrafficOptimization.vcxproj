@@ -149,8 +149,14 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\controllers\PacketController.cpp" />
     <ClCompile Include="..\Classes\header_compression\rohc\rohc.c" />
     <ClCompile Include="..\Classes\layers\HudLayer.cpp" />
+    <ClCompile Include="..\Classes\payload_compression\huffman\huffman.cpp" />
+    <ClCompile Include="..\Classes\payload_compression\huffman\HuffmanCompression.cpp" />
+    <ClCompile Include="..\Classes\payload_compression\lz4\example2.cpp" />
+    <ClCompile Include="..\Classes\payload_compression\lz4\lz4.cpp" />
+    <ClCompile Include="..\Classes\payload_compression\lz4\lz4xx.cpp" />
     <ClCompile Include="..\Classes\scenes\ControlPanelScene.cpp" />
     <ClCompile Include="..\Classes\scenes\MainScene.cpp" />
+    <ClCompile Include="..\Classes\transport_protocols\sctp\sctp.c" />
     <ClCompile Include="..\Classes\transport_protocols\tcp\39dll.cpp" />
     <ClCompile Include="..\Classes\transport_protocols\tcp\buffer.cpp" />
     <ClCompile Include="..\Classes\transport_protocols\tcp\list.cpp" />
@@ -166,6 +172,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\controllers\PacketController.h" />
     <ClInclude Include="..\Classes\layers\HudLayer.h" />
+    <ClInclude Include="..\Classes\payload_compression\huffman\huffman.h" />
+    <ClInclude Include="..\Classes\payload_compression\huffman\HuffmanCompression.hpp" />
+    <ClInclude Include="..\Classes\payload_compression\lz4\lz4.h" />
+    <ClInclude Include="..\Classes\payload_compression\lz4\lz4xx.h" />
     <ClInclude Include="..\Classes\scenes\ControlPanelScene.hpp" />
     <ClInclude Include="..\Classes\scenes\MainScene.h" />
     <ClInclude Include="..\Classes\transport_protocols\tcp\39dll.h" />
