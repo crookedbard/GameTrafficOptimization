@@ -14,17 +14,15 @@
 #include "transport_protocols\tcp\39dll.h"
 #include "controllers\PacketController.h"
 #include "payload_compression\huffman\HuffmanCompression.hpp"
-#include "payload_compression\lz4\Lz4Compression.hpp"
+#include "payload_compression\lz4stream\Lz4Compression.hpp"
 #else
 #include "39dll.h"
 #include "PacketController.h"
 #include "VisibleRect.h"
 #include "HuffmanCompression.hpp"
 #include "Lz4Compression.hpp"
-//#include "Lz4Compression.hpp"
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS)
-#include "lz4_stream.h"
-#endif
+//#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS)
+//#endif
 #endif
 
 USING_NS_CC;
@@ -632,42 +630,16 @@ void ControlPanelScene::onButtonTestLz(Ref* pSender, Widget::TouchEventType type
     if (type == Widget::TouchEventType::ENDED)
     {
         addMessage("Testing LZ4!");
-        auto testBuffer = (char*)"Testing Lz4!Testing Lz4!ABCZXNCMBZXCHGUIQiuwiqwjebnbyzixcuzyxciuzyxcuiyzxuciyzuxciy";
-//        auto result = Lz4Compression::encode(testBuffer);
-//        addMessage(result);
-//        auto result2 = Lz4Compression::decode(result);
-//        addMessage(result2);
-        //Lz4Compression::exampleLz4();
-        Lz4Compression::encode(testBuffer);
-        
-        #if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS)
-        std::stringstream input_stream(testBuffer);
-        std::stringstream compressed_stream;
-        
-        LZ4OutputStream lz4_out_stream(compressed_stream);
-        
-        std::copy(std::istreambuf_iterator<char>(input_stream),
-                  std::istreambuf_iterator<char>(),
-                  std::ostreambuf_iterator<char>(lz4_out_stream));
-        lz4_out_stream.close();
-        
-        
-        LZ4InputStream lz4_in_stream(compressed_stream);
-        std::stringstream decompressed_stream;
-        
-        std::copy(std::istreambuf_iterator<char>(lz4_in_stream),
-                  std::istreambuf_iterator<char>(),
-                  std::ostreambuf_iterator<char>(decompressed_stream));
-        
-        std::string cstr = compressed_stream.str();
-        std::string dstr = decompressed_stream.str();
-        printf("\ncomp TEXT:\n%s\n", cstr.c_str());
-        printf("\ndecomp TEXT:\n%s\n", dstr.c_str());
-        
-        addMessage(cstr);
-        addMessage(dstr);
-        addMessage(doubleToString( cstr.length()));
-        addMessage(doubleToString( dstr.length()));
+                
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS)
+		
+		auto buffer = "Testing Lz4!Testing Lz4!ABCZXNCMBZXCHGUIQiuwiqwjebnbyzixcuzyxciuzyxcuiyzxuciyzuxciyTesting Lz4!";
+		std::string cstr2 = Lz4Compression::encode(buffer);
+		std::string dstr2 = Lz4Compression::decode(cstr2);
+
+        addMessage(dstr2);
+        addMessage(doubleToString(cstr2.length()));
+        addMessage(doubleToString(dstr2.length()));
 #endif
     }
 }

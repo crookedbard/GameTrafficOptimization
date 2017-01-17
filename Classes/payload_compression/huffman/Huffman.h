@@ -2,8 +2,13 @@
 #ifndef Huffman_h
 #define Huffman_h
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#include <tchar.h>
+#else
 #include <inttypes.h>
 typedef int64_t __int64;
+#endif
+
 //typedef long long __int64;
 /*       huffman trees            */
 typedef struct hufftree {

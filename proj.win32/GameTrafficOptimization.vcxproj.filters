@@ -40,11 +40,17 @@
     <Filter Include="src\payload_compression">
       <UniqueIdentifier>{e1984a5f-779c-4354-b061-99b3ccb44340}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\payload_compression\lz4">
-      <UniqueIdentifier>{7aafcc1a-f2b4-4ad7-a819-0522eb178b2b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\payload_compression\huffman">
       <UniqueIdentifier>{e9177fc5-6458-4ee3-9e52-7de5aefd0536}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\payload_compression\lz4stream">
+      <UniqueIdentifier>{58b217ac-49b2-492a-8454-88630594d22a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\payload_compression\lz4stream\lib">
+      <UniqueIdentifier>{e44d8772-6320-4629-8f03-c75580d3541c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\payload_compression\simd">
+      <UniqueIdentifier>{83df6f3d-1c0b-4c31-90c0-c69614795ad2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -64,9 +70,6 @@
       <Filter>src\utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\scenes\ControlPanelScene.cpp">
-      <Filter>src\scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\scenes\MainScene.cpp">
       <Filter>src\scenes</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\header_compression\rohc\rohc.c">
@@ -99,20 +102,38 @@
     <ClCompile Include="..\Classes\transport_protocols\sctp\sctp.c">
       <Filter>src\transport_protocols\sctp</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\payload_compression\lz4\example2.cpp">
-      <Filter>src\payload_compression\lz4</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\payload_compression\lz4\lz4.cpp">
-      <Filter>src\payload_compression\lz4</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\payload_compression\lz4\lz4xx.cpp">
-      <Filter>src\payload_compression\lz4</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\payload_compression\huffman\huffman.cpp">
       <Filter>src\payload_compression\huffman</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\payload_compression\huffman\HuffmanCompression.cpp">
       <Filter>src\payload_compression\huffman</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\payload_compression\lz4stream\lz4_input_stream.cpp">
+      <Filter>src\payload_compression\lz4stream</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\payload_compression\lz4stream\lz4_output_stream.cpp">
+      <Filter>src\payload_compression\lz4stream</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\payload_compression\lz4stream\lz4_stream_test.cpp">
+      <Filter>src\payload_compression\lz4stream</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\payload_compression\lz4stream\lib\lz4.c">
+      <Filter>src\payload_compression\lz4stream\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\payload_compression\lz4stream\lib\lz4frame.c">
+      <Filter>src\payload_compression\lz4stream\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\payload_compression\lz4stream\lib\lz4hc.c">
+      <Filter>src\payload_compression\lz4stream\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\payload_compression\lz4stream\lib\xxhash.c">
+      <Filter>src\payload_compression\lz4stream\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\payload_compression\lz4stream\Lz4Compression.cpp">
+      <Filter>src\payload_compression\lz4stream</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\payload_compression\simd\SimdCompression.cpp">
+      <Filter>src\payload_compression\simd</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -132,9 +153,6 @@
       <Filter>src\utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\scenes\ControlPanelScene.hpp">
-      <Filter>src\scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\scenes\MainScene.h">
       <Filter>src\scenes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\transport_protocols\tcp\39dll.h">
@@ -161,17 +179,38 @@
     <ClInclude Include="..\Classes\layers\HudLayer.h">
       <Filter>src\layers</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\payload_compression\lz4\lz4.h">
-      <Filter>src\payload_compression\lz4</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\payload_compression\lz4\lz4xx.h">
-      <Filter>src\payload_compression\lz4</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\payload_compression\huffman\huffman.h">
       <Filter>src\payload_compression\huffman</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\payload_compression\huffman\HuffmanCompression.hpp">
       <Filter>src\payload_compression\huffman</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\payload_compression\lz4stream\lz4_stream.h">
+      <Filter>src\payload_compression\lz4stream</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\payload_compression\lz4stream\lib\lz4.h">
+      <Filter>src\payload_compression\lz4stream\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\payload_compression\lz4stream\lib\lz4frame.h">
+      <Filter>src\payload_compression\lz4stream\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\payload_compression\lz4stream\lib\lz4frame_static.h">
+      <Filter>src\payload_compression\lz4stream\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\payload_compression\lz4stream\lib\lz4hc.h">
+      <Filter>src\payload_compression\lz4stream\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\payload_compression\lz4stream\lib\lz4opt.h">
+      <Filter>src\payload_compression\lz4stream\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\payload_compression\lz4stream\lib\xxhash.h">
+      <Filter>src\payload_compression\lz4stream\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\payload_compression\lz4stream\Lz4Compression.hpp">
+      <Filter>src\payload_compression\lz4stream</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\payload_compression\simd\SimdCompression.hpp">
+      <Filter>src\payload_compression\simd</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

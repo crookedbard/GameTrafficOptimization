@@ -7,11 +7,13 @@
 //
 
 #include "Lz4Compression.hpp"
-#include "smallz4.h"
-
 #define _CRT_SECURE_NO_WARNINGS
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#include "Classes\payload_compression\smallz4\smallz4.h"
+#else
 #include "smallz4.h"
+#endif
 
 #include <stdio.h>    // stdin/stdout/stderr, fopen, ...
 #ifdef _WIN32
@@ -21,7 +23,9 @@
 #define _fileno fileno
 #define _isatty isatty
 #endif
-
+#include <iostream>
+#include <string>
+#include <sstream>
 
 /// error handler
 static void error(const char* msg)
@@ -35,8 +39,11 @@ const unsigned int maxChainLength = 65536; // "unlimited" because search window 
 size_t getBytesFromIn(void* data, size_t numBytes)
 {
     if (data && numBytes > 0){
-        data = bufferIn;
-        numBytes = std::strlen(bufferIn);
+		numBytes = std::strlen(bufferIn);
+
+		data = new unsigned char[numBytes];
+		strcpy((char*)data, bufferIn);
+        
         //return fread(data, 1, numBytes, in);
         return sizeof(data);
     }
@@ -47,7 +54,7 @@ std::stringstream bufferOut;
 void sendBytesToOut(const void* data, size_t numBytes)
 {
     if (data && numBytes > 0)
-        bufferOut << (unsigned char *)data;//fwrite(data, 1, numBytes, out);
+        bufferOut << (char *)data;//fwrite(data, 1, numBytes, out);
 }
 
 /// read a single byte (with simple buffering)
@@ -95,7 +102,7 @@ char* Lz4Compression::decode(char* buffer)
     
 //    printf("\nEXAMPLE 2: %d BYTES OF DATA COMPRESSED TO %d BYTES - DECOMPRESSION RATE: %.2f%%\n", (int)decoder.getTotalByteRead(), (int)decoder.getTotalByteWritten(), (float)decoder.getTotalByteWritten() * 100.0 / decoder.getTotalByteRead());
 //    
-
+	return nullptr;
 }
 
 

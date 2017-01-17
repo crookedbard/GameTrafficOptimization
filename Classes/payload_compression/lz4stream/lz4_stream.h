@@ -2,7 +2,8 @@
 #define LZ4_STREAM
 
 // LZ4 Headers
-#include <lz4frame.h>
+//#include <lz4frame.h>
+#include "Classes\payload_compression\lz4stream\lib\lz4frame.h"
 
 // Standard headers
 #include <cassert>

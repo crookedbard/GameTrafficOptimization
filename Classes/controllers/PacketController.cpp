@@ -3,9 +3,11 @@
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 #include "transport_protocols\tcp\39dll.h"
 #include "payload_compression\huffman\HuffmanCompression.hpp"
+#include "payload_compression\lz4stream\Lz4Compression.hpp"
 #else
 #include "39dll.h"
 #include "HuffmanCompression.hpp"
+#include "Lz4Compression.hpp"
 #endif
 
 
@@ -165,7 +167,8 @@ void PacketController::readFewIntLz()
 
 void PacketController::readFewStringLz()
 {
-    
+	auto encoded = readstring();
+	auto decoded = Lz4Compression::decode(encoded);
 }
 
 void PacketController::readManyIntLz()
@@ -175,7 +178,21 @@ void PacketController::readManyIntLz()
 
 void PacketController::readManyStringLz()
 {
-    
+	//auto size = readint();
+	//auto encoded = readchars(size); //doesn't work
+
+	std::string encoded = readstring();
+	auto decoded = Lz4Compression::decode(encoded); //it doesn't decode properly...
+
+	//also doesn't work:
+	/*auto csize = readint();
+	auto encoded = new char[csize];
+	for (int i = 0; i < csize; i++)
+	{
+		encoded[i] = readbyte();
+	}
+	std::string s(encoded);
+	auto decoded = Lz4Compression::decode(s);*/
 }
 
 void PacketController::readFewIntHuffman()
@@ -250,7 +267,14 @@ void PacketController::writeFewIntLz()
 
 void PacketController::writeFewStringLz()
 {
-    
+	std::string str = "DAINIUS 01";
+	str += "KREIVYS 10";
+
+	int csize;
+	auto encoded = Lz4Compression::encode(str);
+	clearbuffer();
+	writebyte(MSG_FEW_STRING_LZ);
+	writestring(encoded);
 }
 
 void PacketController::writeManyIntLz()
@@ -260,7 +284,29 @@ void PacketController::writeManyIntLz()
 
 void PacketController::writeManyStringLz()
 {
-    
+	std::string str = "";
+	for (auto i = 0; i < 20; i++) {
+		str += "DAINIUS 01 ABCDEF HELLO HELLO BYE";
+		str += "KREIVYS 10 FGE FGE THANK YOU THANK YOU";
+		str += "Testas 23 BUYING Selling Looking for party";
+	}
+
+	
+	auto encoded = Lz4Compression::encode(str);
+	clearbuffer();
+	writebyte(MSG_MANY_STRING_LZ);
+
+	/*int csize = encoded.length();
+	writeint(csize);
+	for (int i = 0; i < csize; i++)
+	{
+		writebyte(encoded[i]);
+	}*/
+
+	//writeint(encoded.length());
+	//writechars((char *)encoded.c_str());
+
+	writestring(encoded);
 }
 
 void PacketController::writeFewIntHuffman()
