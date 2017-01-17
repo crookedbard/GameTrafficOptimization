@@ -2,7 +2,9 @@
 #ifndef Huffman_h
 #define Huffman_h
 
-
+#include <inttypes.h>
+typedef int64_t __int64;
+//typedef long long __int64;
 /*       huffman trees            */
 typedef struct hufftree {
         unsigned int freq;       //s1 freq

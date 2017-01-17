@@ -1,11 +1,14 @@
 
+// 64 bit integer
+//typedef ON__INT64 __int64 ;
 //#include "../stdafx.h"
+
 #include "huffman.h"
 #include <stdio.h>
-#include <tchar.h>
+//#include <tchar.h>
 #include <memory.h>
 #include <stdlib.h>
-
+//typedef long long __int64;
 
 
 /*    IN sour = uncompressed code usize BYTES

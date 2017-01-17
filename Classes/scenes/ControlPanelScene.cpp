@@ -21,7 +21,10 @@
 #include "VisibleRect.h"
 #include "HuffmanCompression.hpp"
 #include "Lz4Compression.hpp"
+//#include "Lz4Compression.hpp"
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS)
 #include "lz4_stream.h"
+#endif
 #endif
 
 USING_NS_CC;
@@ -635,10 +638,13 @@ void ControlPanelScene::onButtonTestLz(Ref* pSender, Widget::TouchEventType type
 //        auto result2 = Lz4Compression::decode(result);
 //        addMessage(result2);
         //Lz4Compression::exampleLz4();
+        Lz4Compression::encode(testBuffer);
+        
+        #if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS)
         std::stringstream input_stream(testBuffer);
         std::stringstream compressed_stream;
         
-        /*LZ4OutputStream lz4_out_stream(compressed_stream);
+        LZ4OutputStream lz4_out_stream(compressed_stream);
         
         std::copy(std::istreambuf_iterator<char>(input_stream),
                   std::istreambuf_iterator<char>(),
@@ -655,13 +661,14 @@ void ControlPanelScene::onButtonTestLz(Ref* pSender, Widget::TouchEventType type
         
         std::string cstr = compressed_stream.str();
         std::string dstr = decompressed_stream.str();
-        printf("\nINPUT TEXT:\n%s\n", cstr.c_str());
-        printf("\nINPUT TEXT:\n%s\n", dstr.c_str());
+        printf("\ncomp TEXT:\n%s\n", cstr.c_str());
+        printf("\ndecomp TEXT:\n%s\n", dstr.c_str());
         
         addMessage(cstr);
         addMessage(dstr);
         addMessage(doubleToString( cstr.length()));
-        addMessage(doubleToString( dstr.length()));*/
+        addMessage(doubleToString( dstr.length()));
+#endif
     }
 }
 

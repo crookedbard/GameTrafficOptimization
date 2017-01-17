@@ -7,121 +7,97 @@
 //
 
 #include "Lz4Compression.hpp"
-#include <cstdio>
-#include <cstring>
-#include <cstdlib>
-#include "lz4xx.h"
+#include "smallz4.h"
 
-//size_t BLOCKSIZE = 8192;
-//// initialize LZ4 encoder and decoder
-//LZ4Encoder encoder(BLOCKSIZE);
-//LZ4Decoder decoder(BLOCKSIZE);
-//
-//char* Lz4Compression::encode(char* buffer)
-//{
-//    // display results
-//    printf("\nINPUT TEXT:\n%s\n", buffer);
-//    // set up encoder and decoder
-//    
-//    
-//    // compressed buffer
-//    char* lzBuf;
-//    size_t lzBufSize;
-//    
-//    
-//    
-//    
-//    
-//    lzBufSize = 0; // initialize buffer size
-//    
-//    // encode
-//    char eos = '\0';
-//    encoder.open(&lzBuf, &lzBufSize);
-//    encoder.encode(buffer, strlen(buffer));
-//    encoder.encode(&eos, sizeof(eos));
-//    encoder.close();
-//    auto testsize = sizeof(lzBuf);
-//    auto testsize2 = strlen(lzBuf);
-//    printf("%d %d",(int)testsize,(int)testsize2);
-//        printf("\nEXAMPLE 2: %d BYTES OF DATA COMPRESSED TO %d BYTES - COMPRESSION RATE: %.2f%%\n", (int)encoder.getTotalByteRead(), (int)encoder.getTotalByteWritten(), (float)encoder.getTotalByteWritten() * 100.0 / encoder.getTotalByteRead());
-//    
-//    //free(buffer);
-//    return lzBuf;
-//}
-//
-//char* Lz4Compression::decode(char* buffer)
-//{
-//    // decomopressed buffer
-//    char *outBuf;
-//    size_t outSize;
-//    
-//    // dencode
-//    decoder.open(&outBuf, &outSize);
-//    decoder.decode(buffer, 4);//sizeof(buffer));
-//    
-//    
-//    // display results
-//    printf("\nOUTPUT TEXT:\n%s\n", outBuf);
-//    
-//
-//    
-//    printf("\nEXAMPLE 2: %d BYTES OF DATA COMPRESSED TO %d BYTES - DECOMPRESSION RATE: %.2f%%\n", (int)decoder.getTotalByteRead(), (int)decoder.getTotalByteWritten(), (float)decoder.getTotalByteWritten() * 100.0 / decoder.getTotalByteRead());
-//    
-//    //free(buffer);
-//    return outBuf;
-//}
+#define _CRT_SECURE_NO_WARNINGS
 
-char test_data[] = "Quick brown fox jumps over the lazy dog\n";
+#include "smallz4.h"
 
-int Lz4Compression::exampleLz4()
+#include <stdio.h>    // stdin/stdout/stderr, fopen, ...
+#ifdef _WIN32
+#include <io.h>     // isatty()
+#else
+#include <unistd.h> // isatty()
+#define _fileno fileno
+#define _isatty isatty
+#endif
+
+
+/// error handler
+static void error(const char* msg)
 {
-    
-    // set up encoder and decoder
-    size_t BLOCKSIZE = 8192;
-    
-    // compressed buffer
-    char* lzBuf;
-    size_t lzBufSize;
-    
-    // decomopressed buffer
-    char *outBuf;
-    size_t outSize;
-    
-    // initialize LZ4 encoder and decoder
-    LZ4Encoder encoder(BLOCKSIZE);
-    LZ4Decoder decoder(BLOCKSIZE);
-    
-    lzBufSize = 0; // initialize buffer size
-    
-    printf("\nEXAMPLE 2: \n(1) COMPRESS 20 TEST DATA\n(2) DECOMPRESS THE TEST DATA. \n");
-    
-    // encode
-    char eos = '\0';
-    encoder.open(&lzBuf, &lzBufSize);
-    for (int i = 0; i < 20; i++)
-    {
-        encoder.encode(test_data, strlen(test_data));
+    fprintf(stderr, "ERROR: %s\n", msg);
+    exit(1);
+}
+
+char * bufferIn;
+const unsigned int maxChainLength = 65536; // "unlimited" because search window contains only 2^16 bytes
+size_t getBytesFromIn(void* data, size_t numBytes)
+{
+    if (data && numBytes > 0){
+        data = bufferIn;
+        numBytes = std::strlen(bufferIn);
+        //return fread(data, 1, numBytes, in);
+        return sizeof(data);
     }
-    encoder.encode(&eos, sizeof(eos));
-    encoder.close();
-    
-    // encode
-    decoder.open(&outBuf, &outSize);
-    decoder.decode(lzBuf, lzBufSize);
-    
-    // display results
-    printf("\nINPUT TEXT:\n%s\n", test_data);
-    
-    printf("\nOUTPUT TEXT:\n%s\n", outBuf);
-    
-    printf("\nEXAMPLE 2: %d BYTES OF DATA COMPRESSED TO %d BYTES - COMPRESSION RATE: %.2f%%\n", (int)encoder.getTotalByteRead(), (int)encoder.getTotalByteWritten(), (float)encoder.getTotalByteWritten() * 100.0 / encoder.getTotalByteRead());
-    
-    printf("\nEXAMPLE 2: %d BYTES OF DATA COMPRESSED TO %d BYTES - DECOMPRESSION RATE: %.2f%%\n", (int)decoder.getTotalByteRead(), (int)decoder.getTotalByteWritten(), (float)decoder.getTotalByteWritten() * 100.0 / decoder.getTotalByteRead());
-    
-    free(lzBuf);
     
     return 0;
 }
+std::stringstream bufferOut;
+void sendBytesToOut(const void* data, size_t numBytes)
+{
+    if (data && numBytes > 0)
+        bufferOut << (unsigned char *)data;//fwrite(data, 1, numBytes, out);
+}
+
+/// read a single byte (with simple buffering)
+static unsigned char getByteFromIn()
+{
+    // modify buffer size as you like ... for most use cases, bigger buffer aren't faster anymore - and even reducing to 1 byte works !
+#define READ_BUFFER_SIZE 4*1024
+    static unsigned char readBuffer[READ_BUFFER_SIZE];
+    static unsigned int  pos       = 0;
+    static unsigned int  available = 0;
+    
+    // refill buffer
+    if (pos == available)
+    {
+        pos = 0;
+//        available = fread(readBuffer, 1, READ_BUFFER_SIZE, in);
+        if (available == 0)
+            error("out of data");
+    }
+    
+    // return a byte
+    return readBuffer[pos++];
+}
+const char* Lz4Compression::encode(char* buffer)
+{
+//    size_t (*f1)(void* data, size_t numBytes);
+//    f1 = &getBytesFromIn;
+//    //*f1(buffer, std::strlen(buffer));
+//    f1(buffer, std::strlen(buffer));
+    bufferIn = buffer;
+    smallz4::lz4(getBytesFromIn, sendBytesToOut, maxChainLength);
+    
+//    printf("%d %d",(int)testsize,(int)testsize2);
+//        printf("\nEXAMPLE 2: %d BYTES OF DATA COMPRESSED TO %d BYTES - COMPRESSION RATE: %.2f%%\n", (int)encoder.getTotalByteRead(), (int)encoder.getTotalByteWritten(), (float)encoder.getTotalByteWritten() * 100.0 / encoder.getTotalByteRead());
+    auto ret =bufferOut.str();
+    return ret.c_str();
+}
+
+char* Lz4Compression::decode(char* buffer)
+{
+//    size_t (*f1)(void* data, size_t numBytes);
+//    f1 = &getBytesFromIn;
+//    f1(buffer, std::strlen(buffer));
+//    smallz4::unlz4(getBytesFromIn, sendBytesToOut);
+    
+//    printf("\nEXAMPLE 2: %d BYTES OF DATA COMPRESSED TO %d BYTES - DECOMPRESSION RATE: %.2f%%\n", (int)decoder.getTotalByteRead(), (int)decoder.getTotalByteWritten(), (float)decoder.getTotalByteWritten() * 100.0 / decoder.getTotalByteRead());
+//    
+
+}
+
 
 //std::pair<EncodingResults, DecodingResults> Lz4Compression::performTest()
 //{

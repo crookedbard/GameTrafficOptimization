@@ -27,7 +27,7 @@
 class Lz4Compression
 {
 public:
-    static char* encode(char* buffer);
+    static const char* encode(char* buffer);
     static char* decode(char* buffer);
     static int exampleLz4();
 //    static std::pair<EncodingResults, DecodingResults> performTest();
