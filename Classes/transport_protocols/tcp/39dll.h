@@ -6,7 +6,7 @@
 #include "tools.h"
 #include "socket.h"
 #include <iostream>
-    
+
 //Sockets
 double tcpconnect(std::string ip, double port, double mode);
 double tcplisten(double port, double max, double mode);
@@ -15,20 +15,20 @@ char* tcpip(double sockid);
 double setnagle(double sockid, double value);
 double tcpconnected(double sockid);
 double udpconnect(double port, double mode);
-double sendmessage(double sockid, char*ip = (char *)"", double port = 0, double buffid = 0);
+double sendmessage(double sockid, char* ip = static_cast<char *>(""), double port = 0, double buffid = 0);
 double receivemessage(double sockid, double len = 0, double buffid = 0);
 double peekmessage(double sockid, double len, double buffid);
-double setformat(double sockid, double mode, char*sep);
+double setformat(double sockid, double mode, char* sep);
 char* lastinIP();
 double lastinPort();
 double setsync(double sockid, double mode);
 double closesock(double sockid);
 double socklasterror(double sockid);
 char* myhost();
-double compareip(char*ip, char*mask);
+double compareip(char* ip, char* mask);
 double sockexit();
 double sockstart();
-char* hostip(char*host);
+char* hostip(char* host);
 double getsocketid(double sockid);
 
 //Buffer Prototypes
@@ -39,7 +39,7 @@ int writeint(double val, double buffid = 0);
 int writeuint(double val, double buffid = 0);
 int writefloat(double val, double buffid = 0);
 int writedouble(double val, double buffid = 0);
-int writechars(char*str, double buffid = 0);
+int writechars(char* str, double buffid = 0);
 int writestring(std::string str, double buffid = 0);
 unsigned char readbyte(double buffid = 0);
 short readshort(double buffid = 0);
@@ -50,7 +50,7 @@ float readfloat(double buffid = 0);
 double readdouble(double buffid = 0);
 char* readchars(double len, double buffid = 0);
 char* readstring(double buffid = 0);
-char* readsep(char*sep, double buffid = 0);
+char* readsep(char* sep, double buffid = 0);
 double getpos(double pos, double buffid = 0);
 double clearbuffer(double buffid = 0);
 double buffsize(double buffid = 0);
@@ -69,23 +69,23 @@ double bufferencrypt(std::string pass, double buffid = 0);
 double adler32(double buffid);
 double bufferexists(double buffid);
 double netconnected();
-double fileopen(char*name, double mode);
-double fileclose(double fileid);
-double filewrite(double fileid, double buffid);
-double fileread(double fileid, double bytes, double buffid);
-double filepos(double fileid);
-double filesetpos(double fileid, double pos);
-double filesize(double fileid);
-double iptouint(char*ip);
+//double fileopen(char*name, double mode);
+//double fileclose(double fileid);
+//double filewrite(double fileid, double buffid);
+//double fileread(double fileid, double bytes, double buffid);
+//double filepos(double fileid);
+//double filesetpos(double fileid, double pos);
+//double filesize(double fileid);
+double iptouint(char* ip);
 char* uinttoip(double ip);
 
-int AddBuffer(CBuffer*b);
-int AddSocket(CSocket*b);
+int AddBuffer(CBuffer* b);
+int AddSocket(CSocket* b);
 //int AddFile(HANDLE b);
 double dllInit();
 double dllFree();
 
 //my custom
 CBuffer* getbuffer(double buffid = 0);
- 
+
 #endif // __39DLL_H__

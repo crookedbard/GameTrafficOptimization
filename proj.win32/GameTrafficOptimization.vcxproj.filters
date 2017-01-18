@@ -138,6 +138,9 @@
     <ClCompile Include="..\Classes\payload_compression\simd\SimdCompression.cpp">
       <Filter>src\payload_compression\simd</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\header_compression\rohc\RohcCompression.cpp">
+      <Filter>src\header_compression\rohc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -235,6 +238,9 @@
     </ClInclude>
     <ClInclude Include="..\libs\rohc\x86_64\include\rohc\rohc_traces.h">
       <Filter>src\header_compression\rohc\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\header_compression\rohc\RohcCompression.hpp">
+      <Filter>src\header_compression\rohc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -34,11 +34,10 @@
 #include <string.h>      /* for the strlen() */
 #include <rohc/rohc_buf.h>  /* for the rohc_buf_*() functions */
 
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS && CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
 /* includes required to use the compression part of the ROHC library */
 #include <time.h>             /* required by time() */
-#endif
 #include <rohc/rohc_comp.h>   /* for rohc_comp_*() functions */
+
 
 /* The size (in bytes) of the buffers used in the program */
 #define BUFFER_SIZE 2048
@@ -60,32 +59,32 @@ typedef unsigned int     size_t;
 struct iphdr
 {
 #if __BYTE_ORDER == __LITTLE_ENDIAN
-    unsigned int ihl:4;
-    unsigned int version:4;
+	unsigned int ihl:4;
+	unsigned int version:4;
 #elif __BYTE_ORDER == __BIG_ENDIAN
-    unsigned int version:4;
-    unsigned int ihl:4;
+	unsigned int version:4;
+	unsigned int ihl:4;
 #else
 # error  "Please fix <bits/endian.h>"
 #endif
 
-    uint8_t tos;
-    uint16_t tot_len;
-    uint16_t id;
-    uint16_t frag_off;
-    uint8_t ttl;
-    uint8_t protocol;
-    uint16_t check;
-    uint32_t saddr;
-    uint32_t daddr;
-    /*The options start here. */
+	uint8_t tos;
+	uint16_t tot_len;
+	uint16_t id;
+	uint16_t frag_off;
+	uint8_t ttl;
+	uint8_t protocol;
+	uint16_t check;
+	uint32_t saddr;
+	uint32_t daddr;
+	/*The options start here. */
 };
 
 /* return a random number every time it is called */
 static int gen_random_num(const struct rohc_comp *const comp,
-                          void *const user_context)
+						  void *const user_context)
 {
-    return rand();
+	return rand();
 }
 
 /* The main entry point of the program (arguments are not used) */
@@ -175,7 +174,7 @@ int performTest()
 
 	if(i != 0 && (i % 8) != 0) /* be sure to go to the line */
 	{
-	    printf("\n");
+		printf("\n");
 	}
 
 	/* compress the fake IP packet */
@@ -183,7 +182,7 @@ int performTest()
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
 	rohc_status = rohc_compress4(compressor, ip_packet, &rohc_packet); //unresolved external VC++
 	if (rohc_status != ROHC_STATUS_OK)
-    {
+	{
 		fprintf(stderr, "compression of fake IP packet failed: %s (%d)\n",
 			rohc_strerror(rohc_status), rohc_status);  //unresolved external VC++
 		/* cleanup compressor, then leave with an error code */

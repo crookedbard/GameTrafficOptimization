@@ -13,18 +13,18 @@ enum TimeVariables
 {
 	TIME_SECOND = 1,
 	TIME_MINUTE = TIME_SECOND * 60,
-	TIME_HOUR   = TIME_MINUTE * 60,
-	TIME_DAY	= TIME_HOUR * 24,
-	TIME_MONTH	= TIME_DAY * 30,
-	TIME_YEAR	= TIME_MONTH * 12
+	TIME_HOUR = TIME_MINUTE * 60,
+	TIME_DAY = TIME_HOUR * 24,
+	TIME_MONTH = TIME_DAY * 30,
+	TIME_YEAR = TIME_MONTH * 12
 };
 
 enum MsTimeVariables
 {
 	MSTIME_SECOND = 1000,
 	MSTIME_MINUTE = MSTIME_SECOND * 60,
-	MSTIME_HOUR   = MSTIME_MINUTE * 60,
-	MSTIME_DAY	  = MSTIME_HOUR * 24
+	MSTIME_HOUR = MSTIME_MINUTE * 60,
+	MSTIME_DAY = MSTIME_HOUR * 24
 };
 
 #ifdef WIN32
@@ -177,7 +177,7 @@ enum MsTimeVariables
 #endif
 
 #if PLATFORM == PLATFORM_WIN32
-	#define ASYNC_NET
+#define ASYNC_NET
 #endif
 
 #ifdef USE_EPOLL
@@ -218,7 +218,7 @@ enum MsTimeVariables
 #	define LIKELY( _x ) \
 		__builtin_expect( ( _x ), 1 )
 #	define UNLIKELY( _x ) \
- 		__builtin_expect( ( _x ), 0 )
+		__builtin_expect( ( _x ), 0 )
 #else
 #	define LIKELY( _x ) \
 		_x
@@ -266,7 +266,6 @@ enum MsTimeVariables
 #endif
 
 
-
 #ifdef _STLPORT_VERSION
 #define HM_NAMESPACE std
 using std::hash_map;
@@ -278,13 +277,13 @@ using stdext::hash_set;
 #define ENABLE_SHITTY_STL_HACKS 1
 
 /*
-        #   if GNUC_COMP_VER >= 430
-        #       define HashMap ::std::tr1::unordered_map
-        #               define HashSet ::std::tr1::unordered_set
-        #    else
-        #       define HashMap ::__gnu_cxx::hash_map
-        #       define HashSet ::__gnu_cxx::hash_set
-        #    endif
+		#   if GNUC_COMP_VER >= 430
+		#       define HashMap ::std::tr1::unordered_map
+		#               define HashSet ::std::tr1::unordered_set
+		#    else
+		#       define HashMap ::__gnu_cxx::hash_map
+		#       define HashSet ::__gnu_cxx::hash_set
+		#    endif
 */
 
 #define HashMap ::__gnu_cxx::hash_map
@@ -351,7 +350,7 @@ typedef unsigned __int64 uint64;
 typedef unsigned __int32 uint32;
 typedef unsigned __int16 uint16;
 typedef unsigned __int8 uint8;
-typedef float	Real;
+typedef float Real;
 #else
 
 typedef int64_t int64;
@@ -378,12 +377,12 @@ WGSERVER_INLINE static float swapfloat(float p)
 {
 	union { float asfloat; uint8 asbytes[4]; } u1, u2;
 	u1.asfloat = p;
-	/* swap! */
+/* swap! */
 	u2.asbytes[0] = u1.asbytes[3];
 	u2.asbytes[1] = u1.asbytes[2];
 	u2.asbytes[2] = u1.asbytes[1];
 	u2.asbytes[3] = u1.asbytes[0];
-    
+	
 	return u2.asfloat;
 }
 
@@ -391,7 +390,7 @@ WGSERVER_INLINE static double swapdouble(double p)
 {
 	union { double asfloat; uint8 asbytes[8]; } u1, u2;
 	u1.asfloat = p;
-	/* swap! */
+/* swap! */
 	u2.asbytes[0] = u1.asbytes[7];
 	u2.asbytes[1] = u1.asbytes[6];
 	u2.asbytes[2] = u1.asbytes[5];
@@ -408,7 +407,7 @@ WGSERVER_INLINE static void swapfloat(float * p)
 {
 	union { float asfloat; uint8 asbytes[4]; } u1, u2;
 	u1.asfloat = *p;
-	/* swap! */
+/* swap! */
 	u2.asbytes[0] = u1.asbytes[3];
 	u2.asbytes[1] = u1.asbytes[2];
 	u2.asbytes[2] = u1.asbytes[1];
@@ -420,7 +419,7 @@ WGSERVER_INLINE static void swapdouble(double * p)
 {
 	union { double asfloat; uint8 asbytes[8]; } u1, u2;
 	u1.asfloat = *p;
-	/* swap! */
+/* swap! */
 	u2.asbytes[0] = u1.asbytes[7];
 	u2.asbytes[1] = u1.asbytes[6];
 	u2.asbytes[2] = u1.asbytes[5];
@@ -450,13 +449,13 @@ Scripting system exports/imports
 */
 
 #ifdef WIN32
-	#ifndef SCRIPTLIB
-		#define SERVER_DECL __declspec(dllexport)
-		#define SCRIPT_DECL __declspec(dllimport)
-	#else
+#ifndef SCRIPTLIB
+#define SERVER_DECL __declspec(dllexport)
+#define SCRIPT_DECL __declspec(dllimport)
+#else
 		#define SERVER_DECL __declspec(dllimport)
 		#define SCRIPT_DECL __declspec(dllexport)
-	#endif
+#endif
 #else
 	#define SERVER_DECL 
 	#define SCRIPT_DECL 
@@ -514,13 +513,13 @@ Scripting system exports/imports
 #endif
 
 // fast int abs
-static inline int int32abs( const int value )
+static inline int int32abs(const int value)
 {
 	return (value ^ (value >> 31)) - (value >> 31);
 }
 
 // fast int abs and recast to unsigned
-static inline uint32 int32abs2uint32( const int value )
+static inline uint32 int32abs2uint32(const int value)
 {
 	return (uint32)(value ^ (value >> 31)) - (value >> 31);
 }
@@ -534,7 +533,7 @@ static inline int float2int32(const float value)
 		fld value
 		frndint
 		fistp i
-	}
+	};
 	return i;
 #else
 	union { int asInt[2]; double asDouble; } n;
@@ -583,7 +582,7 @@ static inline int long2int32(const double value)
 extern uint32 system_start_time_t;
 
 WGSERVER_INLINE uint32 now()
-{	
+{
 #ifdef WIN32
 	return GetTickCount();
 #else
@@ -628,6 +627,7 @@ struct WayPoint
 	{
 		o = 0.0f;
 	}
+
 	uint32 id;
 	float x;
 	float y;
@@ -641,33 +641,33 @@ struct WayPoint
 	uint32 backwardemoteid;
 	uint32 forwardskinid;
 	uint32 backwardskinid;
-
 };
 
 struct spawn_timed_emotes
 {
-	uint8		type; //1 standstate, 2 emotestate, 3 emoteoneshot
-	uint32		value; //get yar list elsewhere
-	char		*msg; //maybe we wish to say smething while changing emote state
-	uint8		msg_type; //yell ? say ?
-	uint8		msg_lang; //yell ? say ?
-	uint32		expire_after; //going to nex faze in
+	uint8 type; //1 standstate, 2 emotestate, 3 emoteoneshot
+	uint32 value; //get yar list elsewhere
+	char* msg; //maybe we wish to say smething while changing emote state
+	uint8 msg_type; //yell ? say ?
+	uint8 msg_lang; //yell ? say ?
+	uint32 expire_after; //going to nex faze in
 };
+
 typedef std::list<spawn_timed_emotes*> TimedEmoteList;
 
-WGSERVER_INLINE void reverse_array(uint8 * pointer, size_t count)
+WGSERVER_INLINE void reverse_array(uint8* pointer, size_t count)
 {
 	size_t x;
-	uint8 * temp = (uint8*)malloc(count);
+	auto temp = static_cast<uint8*>(malloc(count));
 	memcpy(temp, pointer, count);
-	for(x = 0; x < count; ++x)
-		pointer[x] = temp[count-x-1];
+	for (x = 0; x < count; ++x)
+			pointer[x] = temp[count - x - 1];
 	free(temp);
 }
 
 typedef std::vector<WayPoint*> WayPointMap;
 
-int32 GetTimePeriodFromString(const char * str);
+int32 GetTimePeriodFromString(const char* str);
 std::string ConvertTimeStampToString(uint32 timestamp);
 std::string ConvertTimeStampToDataTime(uint32 timestamp);
 
@@ -675,57 +675,57 @@ uint32 DecimalToMask(uint32 dec);
 
 WGSERVER_INLINE void wgs_TOLOWER(std::string& str)
 {
-	for(size_t i = 0; i < str.length(); ++i)
-		str[i] = (char)tolower(str[i]);
+	for (size_t i = 0; i < str.length(); ++i)
+			str[i] = static_cast<char>(tolower(str[i]));
 }
 
 WGSERVER_INLINE void wgs_TOUPPER(std::string& str)
 {
-	for(size_t i = 0; i < str.length(); ++i)
-		str[i] = (char)toupper(str[i]);
+	for (size_t i = 0; i < str.length(); ++i)
+			str[i] = static_cast<char>(toupper(str[i]));
 }
 
 // returns true if the ip hits the mask, otherwise false
-inline static bool ParseCIDRBan(unsigned int IP, unsigned int Mask, unsigned int MaskBits)
+static bool ParseCIDRBan(unsigned int IP, unsigned int Mask, unsigned int MaskBits)
 {
 	// CIDR bans are a compacted form of IP / Submask
 	// So 192.168.1.0/255.255.255.0 would be 192.168.1.0/24
 	// IP's in the 192.168l.1.x range would be hit, others not.
-	unsigned char * source_ip = (unsigned char*)&IP;
-	unsigned char * mask = (unsigned char*)&Mask;
+	auto source_ip = reinterpret_cast<unsigned char*>(&IP);
+	auto mask = reinterpret_cast<unsigned char*>(&Mask);
 	int full_bytes = MaskBits / 8;
 	int leftover_bits = MaskBits % 8;
 	//int byte;
 
 	// sanity checks for the data first
-	if( MaskBits > 32 )
+	if (MaskBits > 32)
 		return false;
 
 	// this is the table for comparing leftover bits
 	static const unsigned char leftover_bits_compare[9] = {
-		0x00,			// 00000000
-		0x80,			// 10000000
-		0xC0,			// 11000000
-		0xE0,			// 11100000
-		0xF0,			// 11110000
-		0xF8,			// 11111000
-		0xFC,			// 11111100
-		0xFE,			// 11111110
-		0xFF,			// 11111111 - This one isn't used
+		0x00, // 00000000
+		0x80, // 10000000
+		0xC0, // 11000000
+		0xE0, // 11100000
+		0xF0, // 11110000
+		0xF8, // 11111000
+		0xFC, // 11111100
+		0xFE, // 11111110
+		0xFF, // 11111111 - This one isn't used
 	};
 
 	// if we have any full bytes, compare them with memcpy
-	if( full_bytes > 0 )
+	if (full_bytes > 0)
 	{
-		if( memcmp( source_ip, mask, full_bytes ) != 0 )
+		if (memcmp(source_ip, mask, full_bytes) != 0)
 			return false;
 	}
 
 	// compare the left over bits
-	if( leftover_bits > 0 )
+	if (leftover_bits > 0)
 	{
-		if( ( source_ip[full_bytes] & leftover_bits_compare[leftover_bits] ) !=
-			( mask[full_bytes] & leftover_bits_compare[leftover_bits] ) )
+		if ((source_ip[full_bytes] & leftover_bits_compare[leftover_bits]) !=
+			(mask[full_bytes] & leftover_bits_compare[leftover_bits]))
 		{
 			// one of the bits does not match
 			return false;
@@ -736,11 +736,11 @@ inline static bool ParseCIDRBan(unsigned int IP, unsigned int Mask, unsigned int
 	return true;
 }
 
-inline static unsigned int MakeIP(const char * str)
+inline static unsigned int MakeIP(const char* str)
 {
 	unsigned int bytes[4];
 	unsigned int res;
-	if( sscanf(str, "%u.%u.%u.%u", &bytes[0], &bytes[1], &bytes[2], &bytes[3]) != 4 )
+	if (sscanf(str, "%u.%u.%u.%u", &bytes[0], &bytes[1], &bytes[2], &bytes[3]) != 4)
 		return 0;
 
 	res = bytes[0] | (bytes[1] << 8) | (bytes[2] << 16) | (bytes[3] << 24);
@@ -748,17 +748,17 @@ inline static unsigned int MakeIP(const char * str)
 }
 
 
-inline static unsigned int  GetANetwork(unsigned int ip)
+inline static unsigned int GetANetwork(unsigned int ip)
 {
 	return (ip & 0x000000FF);
 }
 
-inline static unsigned int  GetBNetwork(unsigned int ip)
+inline static unsigned int GetBNetwork(unsigned int ip)
 {
 	return (ip & 0x0000FFFF);
 }
 
-inline static unsigned int  GetCNetwork(unsigned int ip)
+inline static unsigned int GetCNetwork(unsigned int ip)
 {
 	return (ip & 0x00FFFFFF);
 }

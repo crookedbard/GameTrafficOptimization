@@ -19,7 +19,7 @@ public:
 	
 	#if defined( __WIN32__ ) || defined( WIN32 ) || defined( _WIN32 )
 		SOCKET sockid; //static int sockid;
-		CSocket(SOCKET sock); //CSocket(int sock);
+	explicit CSocket(SOCKET sock); //CSocket(int sock);
 	#else
 	#define closesocket(s) close(s);
 		static int sockid;
@@ -30,16 +30,16 @@ public:
 	~CSocket();
 	bool tcpconnect(char*address, int port, int mode);
 	bool tcplisten(int port, int max, int mode);
-	CSocket* tcpaccept(int mode);
-	char* tcpip();
-	void setnagle(bool enabled);
-	bool tcpconnected();
-	int setsync(int mode);
+	CSocket* tcpaccept(int mode) const;
+	char* tcpip() const;
+	void setnagle(bool enabled) const;
+	bool tcpconnected() const;
+	int setsync(int mode) const;
 	bool udpconnect(int port, int mode);
 	int sendmessage(char*ip, int port, CBuffer* source);
 	int receivemessage(int len, CBuffer*destination);
-	int peekmessage(int size, CBuffer*destination);
-	int lasterror();
+	int peekmessage(int size, CBuffer*destination) const;
+	static int lasterror();
 	static char* GetIp(char*address);
 	static int SockExit(void);
 	static int SockStart(void);

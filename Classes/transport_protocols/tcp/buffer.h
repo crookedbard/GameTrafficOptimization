@@ -36,13 +36,13 @@ public:
 	double readdouble();
 	char* readchars(int len);
 	char* readstring();
-	int bytesleft();
+	int bytesleft() const;
 	char* readsep(char* sep);
 	void StreamSet(int pos);
 	void clear();
 	int addBuffer(char*, int);
 	int addBuffer(CBuffer*);
-	char operator[](int index);
+	char operator[](int index) const;
 };
 
 #endif // __BUFFER_H__

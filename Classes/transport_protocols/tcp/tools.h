@@ -15,5 +15,7 @@ public:
 	static void encryptedbuffer(CBuffer*buff, std::string key);
 	static bool comparematch(char*string, char*wild);
 	static unsigned int adler32(CBuffer*buff);
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
     static std::vector<std::string> getIPAddresses();
+#endif
 };

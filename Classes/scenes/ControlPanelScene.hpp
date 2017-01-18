@@ -28,8 +28,8 @@ class ControlPanelScene : public cocos2d::Layer, public cocos2d::extension::Edit
 {
 public:
 	static cocos2d::Scene* createScene();
-	
-	virtual bool init();
+
+	bool init() override;
 
 	void menuCloseCallback(cocos2d::Ref* pSender);
 	void onButtonTcpListen(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
@@ -50,7 +50,7 @@ public:
 	bool loadPanel();
 	void addMessage(std::string msg);
 	std::string doubleToString(double dbl);
-	void update(float dt);
+	void update(float dt) override;
 	
 	CREATE_FUNC(ControlPanelScene);
 private:
@@ -80,8 +80,8 @@ private:
 	cocos2d::ui::CheckBox *_checkboxLz;
 	cocos2d::ui::CheckBox *_checkboxHuffman;
 	cocos2d::ui::Text *_textMessages;
-    
-    virtual void editBoxReturn( cocos2d::extension::EditBox* editBox );
+
+	void editBoxReturn( cocos2d::extension::EditBox* editBox ) override;
 //    virtual void editBoxEditingDidBegin(cocos2d::ui::EditBox* editBox);
 //    virtual void editBoxEditingDidEnd(cocos2d::ui::EditBox* editBox);
 //    virtual void editBoxTextChanged(cocos2d::ui::EditBox* editBox, const std::string& text);

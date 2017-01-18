@@ -61,8 +61,8 @@ std::string HuffmanCompression::decode(unsigned char * sour, int csize)
 
 /*std::pair<EncodingResults, DecodingResults> HuffmanCompression::performTest()
 {
-    EncodingResults encodingResults;
-    DecodingResults decodingResults;
-    return std::make_pair(encodingResults,decodingResults);
+	EncodingResults encodingResults;
+	DecodingResults decodingResults;
+	return std::make_pair(encodingResults,decodingResults);
 }
 */

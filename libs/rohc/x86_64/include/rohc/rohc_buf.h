@@ -215,21 +215,21 @@ static inline size_t rohc_buf_avail_len(const struct rohc_buf buf)
 	__attribute__((warn_unused_result, const));
 
 static inline uint8_t * rohc_buf_data_at(const struct rohc_buf buf,
-                                         const size_t offset)
+										 const size_t offset)
 	__attribute__((warn_unused_result, const));
 static inline uint8_t * rohc_buf_data(const struct rohc_buf buf)
 	__attribute__((warn_unused_result, const));
 
 static inline void rohc_buf_prepend(struct rohc_buf *const buf,
-                                    const uint8_t *const data,
-                                    const size_t len)
+									const uint8_t *const data,
+									const size_t len)
 	__attribute__((nonnull(1, 2)));
 static inline void rohc_buf_append(struct rohc_buf *const buf,
-                                   const uint8_t *const data,
-                                   const size_t len)
+								   const uint8_t *const data,
+								   const size_t len)
 	__attribute__((nonnull(1, 2)));
 static inline void rohc_buf_append_buf(struct rohc_buf *const dst,
-                                       const struct rohc_buf src)
+									   const struct rohc_buf src)
 	__attribute__((nonnull(1)));
 
 static inline void rohc_buf_reset(struct rohc_buf *const buf)
@@ -247,8 +247,8 @@ static inline void rohc_buf_reset(struct rohc_buf *const buf)
 static inline bool rohc_buf_is_malformed(const struct rohc_buf buf)
 {
 	return (buf.data == NULL ||
-	        buf.max_len == 0 ||
-	        (buf.offset + buf.len) > buf.max_len);
+			buf.max_len == 0 ||
+			(buf.offset + buf.len) > buf.max_len);
 }
 
 
@@ -359,7 +359,7 @@ static inline uint8_t * rohc_buf_data(const struct rohc_buf buf)
  * @ingroup rohc
  */
 static inline uint8_t * rohc_buf_data_at(const struct rohc_buf buf,
-                                         const size_t offset)
+										 const size_t offset)
 {
 	return (buf.data + buf.offset + offset);
 }
@@ -375,8 +375,8 @@ static inline uint8_t * rohc_buf_data_at(const struct rohc_buf buf,
  * @ingroup rohc
  */
 static inline void rohc_buf_prepend(struct rohc_buf *const buf,
-                                    const uint8_t *const data,
-                                    const size_t len)
+									const uint8_t *const data,
+									const size_t len)
 {
 	rohc_buf_push(buf, len);
 	memcpy(rohc_buf_data(*buf), data, len);
@@ -393,8 +393,8 @@ static inline void rohc_buf_prepend(struct rohc_buf *const buf,
  * @ingroup rohc
  */
 static inline void rohc_buf_append(struct rohc_buf *const buf,
-                     const uint8_t *const data,
-                     const size_t len)
+					 const uint8_t *const data,
+					 const size_t len)
 {
 #if defined(ROHC_EXTRA_ASSERT) && ROHC_EXTRA_ASSERT == 1
 	/* not enabled by default for perfs */
@@ -414,7 +414,7 @@ static inline void rohc_buf_append(struct rohc_buf *const buf,
  * @ingroup rohc
  */
 static inline void rohc_buf_append_buf(struct rohc_buf *const dst,
-                                       const struct rohc_buf src)
+									   const struct rohc_buf src)
 {
 #if defined(ROHC_EXTRA_ASSERT) && ROHC_EXTRA_ASSERT == 1
 	/* not enabled by default for perfs */

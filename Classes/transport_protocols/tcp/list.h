@@ -7,15 +7,15 @@ class CList
 	int buffsize;
 public:
 	int count;
-	CList(int buffsize);
+	explicit CList(int buffsize);
 	CList();
 	~CList();
 	int Add(void*item);
 	void Remove(void*item);
 	void Remove(int index);
 	void Clear();
-	void* operator[](int index);
-	void* item(int index);
-	void* find(void*item);
-	void set(int pos, void*item);
+	void* operator[](int index) const;
+	void* item(int index) const;
+	void* find(void*item) const;
+	void set(int pos, void*item) const;
 };
