@@ -29,7 +29,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "683"
             endingLineNumber = "683"
-            landmarkName = "ControlPanelScene::onButtonTestHuffman(Ref* pSender, Widget::TouchEventType type)"
+            landmarkName = "ControlPanelScene::onButtonSendFewInts(Ref* pSender, Widget::TouchEventType type)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -115,38 +115,6 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "105"
             endingLineNumber = "105">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../Classes/scenes/ControlPanelScene.cpp"
-            timestampString = "506298328.746424"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "644"
-            endingLineNumber = "644"
-            landmarkName = "ControlPanelScene::onButtonTestLz(Ref* pSender, Widget::TouchEventType type)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../Classes/scenes/ControlPanelScene.cpp"
-            timestampString = "506298156.565702"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "641"
-            endingLineNumber = "641"
-            landmarkName = "ControlPanelScene::onButtonTestLz(Ref* pSender, Widget::TouchEventType type)"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

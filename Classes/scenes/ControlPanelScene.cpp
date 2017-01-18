@@ -631,7 +631,7 @@ void ControlPanelScene::onButtonTestLz(Ref* pSender, Widget::TouchEventType type
     {
         addMessage("Testing LZ4!");
                 
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS)
+//#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS)
 		
 		auto buffer = "Testing Lz4!Testing Lz4!ABCZXNCMBZXCHGUIQiuwiqwjebnbyzixcuzyxciuzyxcuiyzxuciyzuxciyTesting Lz4!";
 		std::string cstr2 = Lz4Compression::encode(buffer);
@@ -640,7 +640,7 @@ void ControlPanelScene::onButtonTestLz(Ref* pSender, Widget::TouchEventType type
         addMessage(dstr2);
         addMessage(doubleToString(cstr2.length()));
         addMessage(doubleToString(dstr2.length()));
-#endif
+//#endif
     }
 }
 
