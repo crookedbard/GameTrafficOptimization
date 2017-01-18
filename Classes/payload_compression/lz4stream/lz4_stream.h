@@ -3,7 +3,13 @@
 
 // LZ4 Headers
 //#include <lz4frame.h>
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 #include "Classes\payload_compression\lz4stream\lib\lz4frame.h"
+#else
+#include "lz4frame.h"
+#endif
+
 
 // Standard headers
 #include <cassert>
