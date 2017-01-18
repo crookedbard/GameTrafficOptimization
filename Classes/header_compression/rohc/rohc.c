@@ -45,18 +45,18 @@
 
 /* The payload for the fake IP packet */
 #define FAKE_PAYLOAD "hello, ROHC world!"
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS && CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
+typedef signed __int64 int64_t;
+typedef signed __int32 int32_t;
+typedef signed __int16 int16_t;
+typedef signed __int8 int8_t;
 
-typedef signed __int64 int64;
-typedef signed __int32 int32;
-typedef signed __int16 int16;
-typedef signed __int8 int8;
-
-typedef unsigned __int64 uint64;
-typedef unsigned __int32 uint32;
-typedef unsigned __int16 uint16;
-typedef unsigned __int8 uint8;
+typedef unsigned __int64 uint64_t;
+typedef unsigned __int32 uint32_t;
+typedef unsigned __int16 uint16_t;
+typedef unsigned __int8 uint8_t;
 typedef unsigned int     size_t;
-
+#endif
 struct iphdr
 {
 #if __BYTE_ORDER == __LITTLE_ENDIAN
@@ -69,15 +69,15 @@ struct iphdr
 # error  "Please fix <bits/endian.h>"
 #endif
 
-    uint8 tos;
-    uint16 tot_len;
-    uint16 id;
-    uint16 frag_off;
-    uint8 ttl;
-    uint8 protocol;
-    uint16 check;
-    uint32 saddr;
-    uint32 daddr;
+    uint8_t tos;
+    uint16_t tot_len;
+    uint16_t id;
+    uint16_t frag_off;
+    uint8_t ttl;
+    uint8_t protocol;
+    uint16_t check;
+    uint32_t saddr;
+    uint32_t daddr;
     /*The options start here. */
 };
 
@@ -94,13 +94,13 @@ int performTest()
 	struct rohc_comp *compressor;  /* the ROHC compressor */
 
 	/* the buffer that will contain the IPv4 packet to compress */
-	uint8 ip_buffer[BUFFER_SIZE];
+	uint8_t ip_buffer[BUFFER_SIZE];
 	/* the packet that will contain the IPv4 packet to compress */
 	struct rohc_buf ip_packet = rohc_buf_init_empty(ip_buffer, BUFFER_SIZE);
 	/* the header of the IPv4 packet */
 	struct iphdr *ip_header;
 
-	uint8 rohc_buffer[BUFFER_SIZE];
+	uint8_t rohc_buffer[BUFFER_SIZE];
 	/* the packet that will contain the resulting ROHC packet */
 	struct rohc_buf rohc_packet = rohc_buf_init_empty(rohc_buffer, BUFFER_SIZE);
 
@@ -117,17 +117,18 @@ int performTest()
 
 	/* create a ROHC compressor with good default parameters */
 	printf("create the ROHC compressor\n");
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS && CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
 	compressor = rohc_comp_new2(ROHC_SMALL_CID, ROHC_SMALL_CID_MAX, //unresolved external VC++
 		gen_random_num, NULL);
-#endif
+
 	if (compressor == NULL)
 	{
 		fprintf(stderr, "failed create the ROHC compressor\n");
 		/* leave with an error code */
 		return 1;
 	}
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS && CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
+#endif
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
 	/* enable the IP-only compression profile */
 	printf("enable the IP-only compression profile\n");
 	if (!rohc_comp_enable_profile(compressor, ROHC_PROFILE_IP))
@@ -146,7 +147,7 @@ int performTest()
 	ip_header->ihl = 5; /* min. IPv4 header length (in 32-bit words) */
 	ip_packet.len += ip_header->ihl * 4;
 	ip_header->tos = 0; /* TOS is not important for the example */
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS && CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
 	ip_header->tot_len = htons(ip_packet.len + strlen(FAKE_PAYLOAD)); //unresolved external VC++
 #endif
 	ip_header->id = 0; /* ID is not important for the example */
@@ -160,7 +161,7 @@ int performTest()
 	ip_header->daddr = htonl(0x05060708); /* destination addr. 5.6.7.8 */ //unresolved external VC++
 #endif
 	/* copy the payload just after the IP header */
-	rohc_buf_append(&ip_packet, (uint8 *)FAKE_PAYLOAD, strlen(FAKE_PAYLOAD));
+	rohc_buf_append(&ip_packet, (uint8_t *)FAKE_PAYLOAD, strlen(FAKE_PAYLOAD));
 
 	/* dump the newly-created IP packet on terminal */
 	for (i = 0; i < ip_packet.len; i++)
@@ -179,20 +180,18 @@ int performTest()
 
 	/* compress the fake IP packet */
 	printf("compress the fake IP packet\n");
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS && CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)  
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
 	rohc_status = rohc_compress4(compressor, ip_packet, &rohc_packet); //unresolved external VC++
-#endif
 	if (rohc_status != ROHC_STATUS_OK)
-	{
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS && CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)  
+    {
 		fprintf(stderr, "compression of fake IP packet failed: %s (%d)\n",
 			rohc_strerror(rohc_status), rohc_status);  //unresolved external VC++
 		/* cleanup compressor, then leave with an error code */
 		rohc_comp_free(compressor); //unresolved external VC++ 
-#endif
+
 		return 1;
 	}
-
+#endif
 	/* dump the ROHC packet on terminal */
 	printf("ROHC packet resulting from the ROHC compression:\n");
 	for (i = 0; i < rohc_packet.len; i++)
@@ -209,7 +208,7 @@ int performTest()
 	}
 
 	printf("destroy the ROHC decompressor\n");
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS && CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)  
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
 	rohc_comp_free(compressor);  //unresolved external VC++
 #endif
 	/* leave the program with a success code */

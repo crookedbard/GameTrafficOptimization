@@ -15,12 +15,14 @@
 #include "controllers\PacketController.h"
 #include "payload_compression\huffman\HuffmanCompression.hpp"
 #include "payload_compression\lz4stream\Lz4Compression.hpp"
+#include "header_compression\rohc\RohcCompression.hpp"
 #else
 #include "39dll.h"
 #include "PacketController.h"
 #include "VisibleRect.h"
 #include "HuffmanCompression.hpp"
 #include "Lz4Compression.hpp"
+#include "RohcCompression.hpp"
 //#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS)
 //#endif
 #endif
@@ -426,23 +428,11 @@ void ControlPanelScene::editBoxReturn( cocos2d::extension::EditBox* editBox )
     }
     if(seglist.size() < 2) return;
     auto trimStr = ss.str();
-    //trimStr = std::replace(trimStr.begin(),trimStr.end()," ","");
-    //editBox->setText(std::replace(ss.str(),'',''));
     _ipAddress = seglist[0];
     _port = std::stod(seglist[1]);
 
     addMessage("New ip: "+ _ipAddress +" port: " + doubleToString(_port));
-    //printf("Ip set to: %s", str);
-    // Do something useful
 }
-//void ControlPanelScene::editBoxEditingDidBegin(EditBox *editBox) {
-//}
-//
-//void ControlPanelScene::editBoxEditingDidEnd(EditBox *editBox) {
-//}
-//
-//void ControlPanelScene::editBoxTextChanged(EditBox *editBox, const std::string& text) {
-//}
 
 void ControlPanelScene::onButtonTcpListen(Ref* pSender, Widget::TouchEventType type)
 {
@@ -622,6 +612,7 @@ void ControlPanelScene::onButtonTestRohc(Ref* pSender, Widget::TouchEventType ty
     if (type == Widget::TouchEventType::ENDED)
     {
         addMessage("Testing ROHC!");
+        RohcCompression::compress((char*)"payload data");
     }
 }
 

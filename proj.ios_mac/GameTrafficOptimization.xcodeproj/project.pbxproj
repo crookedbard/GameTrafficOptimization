@@ -60,6 +60,8 @@
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
 		570797141E2C044900E450FC /* lz4_input_stream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5707970B1E2C044900E450FC /* lz4_input_stream.cpp */; };
 		570797161E2C044900E450FC /* lz4_output_stream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5707970C1E2C044900E450FC /* lz4_output_stream.cpp */; };
+		57568A721E2FD65F00B2BD4F /* RohcCompression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57568A701E2FD65F00B2BD4F /* RohcCompression.cpp */; };
+		57568A741E2FDEBF00B2BD4F /* RohcCompression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57568A701E2FD65F00B2BD4F /* RohcCompression.cpp */; };
 		576C3F411E25B44800D03ECB /* Huffman.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 576C3F3F1E25B44800D03ECB /* Huffman.cpp */; };
 		576C3F421E25B46800D03ECB /* Huffman.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 576C3F3F1E25B44800D03ECB /* Huffman.cpp */; };
 		576C3F441E25B53900D03ECB /* sctp.c in Sources */ = {isa = PBXBuildFile; fileRef = 576C3F431E25B53900D03ECB /* sctp.c */; };
@@ -82,8 +84,6 @@
 		57AA28091E22A11B00895B24 /* ControlPanelScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57AA28061E22A11B00895B24 /* ControlPanelScene.cpp */; };
 		57AA280F1E22A96A00895B24 /* cocosui in Resources */ = {isa = PBXBuildFile; fileRef = 57AA280E1E22A96A00895B24 /* cocosui */; };
 		57AA28101E22A96A00895B24 /* cocosui in Resources */ = {isa = PBXBuildFile; fileRef = 57AA280E1E22A96A00895B24 /* cocosui */; };
-		57AA28121E22BA4700895B24 /* rohc.c in Sources */ = {isa = PBXBuildFile; fileRef = 57AA28111E22BA4700895B24 /* rohc.c */; };
-		57AA28131E22BA4700895B24 /* rohc.c in Sources */ = {isa = PBXBuildFile; fileRef = 57AA28111E22BA4700895B24 /* rohc.c */; };
 		57AA28291E22F9AB00895B24 /* 39dll.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57AA281D1E22F9AB00895B24 /* 39dll.cpp */; };
 		57AA282A1E22F9AB00895B24 /* buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57AA281F1E22F9AB00895B24 /* buffer.cpp */; };
 		57AA282B1E22F9AB00895B24 /* list.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57AA28221E22F9AB00895B24 /* list.cpp */; };
@@ -213,6 +213,8 @@
 		5707970B1E2C044900E450FC /* lz4_input_stream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lz4_input_stream.cpp; path = payload_compression/lz4stream/lz4_input_stream.cpp; sourceTree = "<group>"; };
 		5707970C1E2C044900E450FC /* lz4_output_stream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lz4_output_stream.cpp; path = payload_compression/lz4stream/lz4_output_stream.cpp; sourceTree = "<group>"; };
 		5707970E1E2C044900E450FC /* lz4_stream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lz4_stream.h; path = payload_compression/lz4stream/lz4_stream.h; sourceTree = "<group>"; };
+		57568A701E2FD65F00B2BD4F /* RohcCompression.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RohcCompression.cpp; path = header_compression/rohc/RohcCompression.cpp; sourceTree = "<group>"; };
+		57568A711E2FD65F00B2BD4F /* RohcCompression.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = RohcCompression.hpp; path = header_compression/rohc/RohcCompression.hpp; sourceTree = "<group>"; };
 		576C3F061E25930400D03ECB /* bitpacking.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = bitpacking.o; path = ../Classes/payload_compression/simdcpp/libs/bitpacking.o; sourceTree = "<group>"; };
 		576C3F071E25930400D03ECB /* for.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = for.o; path = ../Classes/payload_compression/simdcpp/libs/for.o; sourceTree = "<group>"; };
 		576C3F081E25930400D03ECB /* frameofreference.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = frameofreference.o; path = ../Classes/payload_compression/simdcpp/libs/frameofreference.o; sourceTree = "<group>"; };
@@ -248,7 +250,6 @@
 		57AA28061E22A11B00895B24 /* ControlPanelScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ControlPanelScene.cpp; path = scenes/ControlPanelScene.cpp; sourceTree = "<group>"; };
 		57AA28071E22A11B00895B24 /* ControlPanelScene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ControlPanelScene.hpp; path = scenes/ControlPanelScene.hpp; sourceTree = "<group>"; };
 		57AA280E1E22A96A00895B24 /* cocosui */ = {isa = PBXFileReference; lastKnownFileType = folder; path = cocosui; sourceTree = "<group>"; };
-		57AA28111E22BA4700895B24 /* rohc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = rohc.c; path = header_compression/rohc/rohc.c; sourceTree = "<group>"; };
 		57AA281D1E22F9AB00895B24 /* 39dll.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = 39dll.cpp; path = transport_protocols/tcp/39dll.cpp; sourceTree = "<group>"; };
 		57AA281E1E22F9AB00895B24 /* 39dll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = 39dll.h; path = transport_protocols/tcp/39dll.h; sourceTree = "<group>"; };
 		57AA281F1E22F9AB00895B24 /* buffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = buffer.cpp; path = transport_protocols/tcp/buffer.cpp; sourceTree = "<group>"; };
@@ -633,7 +634,8 @@
 		57AA276B1E21674200895B24 /* rohc */ = {
 			isa = PBXGroup;
 			children = (
-				57AA28111E22BA4700895B24 /* rohc.c */,
+				57568A701E2FD65F00B2BD4F /* RohcCompression.cpp */,
+				57568A711E2FD65F00B2BD4F /* RohcCompression.hpp */,
 			);
 			name = rohc;
 			sourceTree = "<group>";
@@ -829,7 +831,6 @@
 				57CFFDE71E2EB6C2005C0751 /* lz4.c in Sources */,
 				5775A8321E2E97D7001C5BC7 /* Lz4Compression.cpp in Sources */,
 				57AA28081E22A11B00895B24 /* ControlPanelScene.cpp in Sources */,
-				57AA28121E22BA4700895B24 /* rohc.c in Sources */,
 				57EA9DBC1E298473006B3928 /* HuffmanCompression.cpp in Sources */,
 				57AA282B1E22F9AB00895B24 /* list.cpp in Sources */,
 				57CFFDE91E2EB6C2005C0751 /* lz4hc.c in Sources */,
@@ -840,6 +841,7 @@
 				576C3F411E25B44800D03ECB /* Huffman.cpp in Sources */,
 				57AA282E1E22F9AB00895B24 /* tools.cpp in Sources */,
 				57AA282A1E22F9AB00895B24 /* buffer.cpp in Sources */,
+				57568A721E2FD65F00B2BD4F /* RohcCompression.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				57AA282C1E22F9AB00895B24 /* md5.cpp in Sources */,
 				57CFFDEA1E2EB6C2005C0751 /* xxhash.c in Sources */,
@@ -852,6 +854,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57568A741E2FDEBF00B2BD4F /* RohcCompression.cpp in Sources */,
 				57CFFDEC1E2EB6D9005C0751 /* lz4.c in Sources */,
 				57CFFDED1E2EB6D9005C0751 /* lz4frame.c in Sources */,
 				57CFFDEE1E2EB6D9005C0751 /* lz4hc.c in Sources */,
@@ -872,7 +875,6 @@
 				57AA28091E22A11B00895B24 /* ControlPanelScene.cpp in Sources */,
 				57AA276C1E21690A00895B24 /* Timer.cpp in Sources */,
 				57AA276E1E21690A00895B24 /* Utils.cpp in Sources */,
-				57AA28131E22BA4700895B24 /* rohc.c in Sources */,
 				57AA27701E21690A00895B24 /* VisibleRect.cpp in Sources */,
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
@@ -919,8 +921,8 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LIBRARY_SEARCH_PATHS = /usr/local/lib;
-				ONLY_ACTIVE_ARCH = YES;
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../libs/rohc/armv7/lib";
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-I/usr/local/include";
 				OTHER_LDFLAGS = (
 					"$(_COCOS_LIB_IOS_BEGIN)",
@@ -932,7 +934,7 @@
 				STRIP_PNG_TEXT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(_COCOS_HEADER_IOS_BEGIN) $(_COCOS_HEADER_IOS_END)";
-				VALID_ARCHS = "arm64 armv7 armv7s";
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Debug;
 		};
@@ -955,9 +957,10 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(inherited)";
+				"HEADER_SEARCH_PATHS[arch=*]" = "$(inherited)";
 				INFOPLIST_FILE = ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../libs/rohc/armv7/lib";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"$(_COCOS_LIB_IOS_BEGIN)",
@@ -969,7 +972,7 @@
 				STRIP_PNG_TEXT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(_COCOS_HEADER_IOS_BEGIN) $(_COCOS_HEADER_IOS_END)";
-				VALID_ARCHS = "arm64 armv7 armv7s";
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Release;
 		};
@@ -1003,7 +1006,7 @@
 				OTHER_LDFLAGS = (
 					"$(_COCOS_LIB_MAC_BEGIN)",
 					"$(_COCOS_LIB_MAC_END)",
-					"-llz4",
+					"-lrohc",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.CrookedBard.GameTrafficOptimization;
 				SUPPORTED_PLATFORMS = macosx;
@@ -1040,7 +1043,7 @@
 				OTHER_LDFLAGS = (
 					"$(_COCOS_LIB_MAC_BEGIN)",
 					"$(_COCOS_LIB_MAC_END)",
-					"-llz4",
+					"-lrohc",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.CrookedBard.GameTrafficOptimization;
 				SUPPORTED_PLATFORMS = macosx;
