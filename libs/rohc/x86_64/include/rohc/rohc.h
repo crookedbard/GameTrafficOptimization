@@ -240,6 +240,9 @@ typedef enum
 /*
  * Prototypes of public functions
  */
+#if defined( __WIN32__ ) || defined( WIN32 ) || defined( _WIN32 )
+#define __attribute__(x)
+#endif
 
 char * ROHC_EXPORT rohc_version(void)
 	__attribute__((warn_unused_result, const));

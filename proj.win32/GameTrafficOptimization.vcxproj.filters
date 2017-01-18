@@ -52,6 +52,9 @@
     <Filter Include="src\payload_compression\simd">
       <UniqueIdentifier>{83df6f3d-1c0b-4c31-90c0-c69614795ad2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\header_compression\rohc\include">
+      <UniqueIdentifier>{61a7cbb9-8241-41c0-be8b-74d6de63bbfd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -211,6 +214,27 @@
     </ClInclude>
     <ClInclude Include="..\Classes\payload_compression\simd\SimdCompression.hpp">
       <Filter>src\payload_compression\simd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\rohc\x86_64\include\rohc\rohc.h">
+      <Filter>src\header_compression\rohc\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\rohc\x86_64\include\rohc\rohc_buf.h">
+      <Filter>src\header_compression\rohc\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\rohc\x86_64\include\rohc\rohc_comp.h">
+      <Filter>src\header_compression\rohc\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\rohc\x86_64\include\rohc\rohc_decomp.h">
+      <Filter>src\header_compression\rohc\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\rohc\x86_64\include\rohc\rohc_packets.h">
+      <Filter>src\header_compression\rohc\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\rohc\x86_64\include\rohc\rohc_time.h">
+      <Filter>src\header_compression\rohc\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\rohc\x86_64\include\rohc\rohc_traces.h">
+      <Filter>src\header_compression\rohc\include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

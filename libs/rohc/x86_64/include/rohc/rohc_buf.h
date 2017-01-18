@@ -196,7 +196,9 @@ struct rohc_buf
 #define rohc_buf_byte(__buf) \
 	rohc_buf_byte_at((__buf), 0)
 
-
+#if defined( __WIN32__ ) || defined( WIN32 ) || defined( _WIN32 )
+#define __attribute__(x)
+#endif
 
 static inline bool rohc_buf_is_malformed(const struct rohc_buf buf)
 	__attribute__((warn_unused_result, pure));
