@@ -130,6 +130,16 @@ struct rohc_buf
  *
  * @ingroup rohc
  */
+#if defined( __WIN32__ ) || defined( WIN32 ) || defined( _WIN32 )
+#define rohc_buf_init_empty(__data, __max_len) \
+	{ \
+		{  0, 0 }, \
+		__data, \
+		__max_len, \
+		0, \
+		0 \
+	}
+#else
 #define rohc_buf_init_empty(__data, __max_len) \
 	{ \
 		.time = { .sec = 0, .nsec = 0, }, \
@@ -138,7 +148,7 @@ struct rohc_buf
 		.offset = 0, \
 		.len = 0, \
 	}
-
+#endif
 
 /**
  * @brief Initialize the given network buffer with all its data

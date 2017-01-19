@@ -24,38 +24,51 @@
  *   https://rohc-lib.org/support/mailing-list/
  */
 
-#include <stdio.h>  /* for the printf() function */
-#include <rohc/rohc.h>
+//#include <stdio.h>  /* for the printf() function */
+//#include <rohc/rohc.h>
 //#include "transport_protocols\tcp\Common.h"
-/* includes required to create a fake IP packet */
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS && CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
-#include <netinet/ip.h>  /* for the IPv4 header */
-#endif
+///* includes required to create a fake IP packet */
+//#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS && CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
+//#include <netinet/ip.h>  /* for the IPv4 header */
+//#endif
+//#include <string.h>      /* for the strlen() */
+//#include <rohc/rohc_buf.h>  /* for the rohc_buf_*() functions */
+//
+///* includes required to use the compression part of the ROHC library */
+//#include <time.h>             /* required by time() */
+//#include <rohc/rohc_comp.h>   /* for rohc_comp_*() functions */
+#include <stdio.h>  /* for the printf() function */
 #include <string.h>      /* for the strlen() */
+#include <time.h>		/* required by time() */
+#include <rohc/rohc.h> /* includes required to use the compression part of the ROHC library */
 #include <rohc/rohc_buf.h>  /* for the rohc_buf_*() functions */
-
-/* includes required to use the compression part of the ROHC library */
-#include <time.h>             /* required by time() */
 #include <rohc/rohc_comp.h>   /* for rohc_comp_*() functions */
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+//#include "transport_protocols/tcp/Common.h"
 
+//#include <winsock2.h>
+//#include <ws2tcpip.h>
+//typedef unsigned int     size_t;
+#else
+#include "Common.h"
+//#include <sys/time.h>
+//#include <sys/types.h>
+//#include <sys/ioctl.h>
+//#include <sys/socket.h>
+//#include <netinet/in.h>
+//#include <arpa/inet.h>
+//#include <unistd.h>
+//#include <signal.h>
+//#include <netdb.h>
+//#include <ifaddrs.h> //to get ip on unix
+#endif
 /* The size (in bytes) of the buffers used in the program */
 #define BUFFER_SIZE 2048
 
 /* The payload for the fake IP packet */
 #define FAKE_PAYLOAD "hello, ROHC world!"
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS && CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
-typedef signed __int64 int64_t;
-typedef signed __int32 int32_t;
-typedef signed __int16 int16_t;
-typedef signed __int8 int8_t;
 
-typedef unsigned __int64 uint64_t;
-typedef unsigned __int32 uint32_t;
-typedef unsigned __int16 uint16_t;
-typedef unsigned __int8 uint8_t;
-typedef unsigned int     size_t;
-#endif
 struct iphdr
 {
 #if __BYTE_ORDER == __LITTLE_ENDIAN

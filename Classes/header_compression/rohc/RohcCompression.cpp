@@ -13,8 +13,6 @@
 #include <rohc/rohc.h> /* includes required to use the compression part of the ROHC library */
 #include <rohc/rohc_buf.h>  /* for the rohc_buf_*() functions */
 #include <rohc/rohc_comp.h>   /* for rohc_comp_*() functions */
-//gcc libraries
-//include <netinet/ip.h>  /* for the IPv4 header */
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 #include "transport_protocols/tcp/Common.h"
@@ -65,25 +63,19 @@ bool RohcCompression::compress(char* payload)
 
 	/* the buffer that will contain the IPv4 packet to compress */
 	uint8_t ip_buffer[BUFFER_SIZE];
-	/* the packet that will contain the IPv4 packet to compress */
 
-	struct rohc_buf ip_packet; // rohc_buf_init_empty(ip_buffer, BUFFER_SIZE);
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
-	ip_packet = rohc_buf_init_empty(ip_buffer, BUFFER_SIZE);
-#endif
-	/* the header of the IPv4 packet */
-	struct iphdr* ip_header;
+	/* the packet that will contain the IPv4 packet to compress */
+	struct rohc_buf ip_packet = rohc_buf_init_empty(ip_buffer, BUFFER_SIZE);
+	//ip_packet = { {0,0}, ip_buffer, BUFFER_SIZE ,0 ,0 };
+
+	struct iphdr* ip_header; /* the header of the IPv4 packet */
 
 	uint8_t rohc_buffer[BUFFER_SIZE];
 	/* the packet that will contain the resulting ROHC packet */
-	struct rohc_buf rohc_packet;// = rohc_buf_init_empty(rohc_buffer, BUFFER_SIZE);
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
-	rohc_packet = rohc_buf_init_empty(rohc_buffer, BUFFER_SIZE);
-#endif
-	//#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS && CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
+	struct rohc_buf rohc_packet = rohc_buf_init_empty(rohc_buffer, BUFFER_SIZE);
+
 	rohc_status_t rohc_status;
 	size_t i;
-	//#endif
 
 	/* print the purpose of the program on the console */
 	printf("This program will compress one single IPv4 packet\n");
@@ -93,10 +85,9 @@ bool RohcCompression::compress(char* payload)
 
 	/* create a ROHC compressor with good default parameters */
 	printf("create the ROHC compressor\n");
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
-	compressor = rohc_comp_new2(ROHC_SMALL_CID, ROHC_SMALL_CID_MAX, //unresolved external VC++
-								gen_random_num, nullptr);
 
+	compressor = rohc_comp_new2(ROHC_SMALL_CID, ROHC_SMALL_CID_MAX, gen_random_num, nullptr); //unresolved external VC++
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
 	if (compressor == nullptr)
 	{
 		fprintf(stderr, "failed create the ROHC compressor\n");
@@ -123,7 +114,7 @@ bool RohcCompression::compress(char* payload)
 	ip_packet.len += ip_header->ihl * 4;
 	ip_header->tos = 0; /* TOS is not important for the example */
 	//#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
-	ip_header->tot_len = htons(ip_packet.len + strlen(FAKE_PAYLOAD)); //turi veikt. socket.cpp veikia unresolved external VC++
+	//ip_header->tot_len = htons(ip_packet.len + strlen(FAKE_PAYLOAD)); //turi veikt. socket.cpp veikia unresolved external VC++
 	//#endif
 	ip_header->id = 0; /* ID is not important for the example */
 	ip_header->frag_off = 0; /* No packet fragmentation */
