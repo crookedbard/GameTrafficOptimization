@@ -4,10 +4,12 @@
 #include "transport_protocols\tcp\39dll.h"
 #include "payload_compression\huffman\HuffmanCompression.hpp"
 #include "payload_compression\lz4stream\Lz4Compression.hpp"
+#include "utils/ScreenLog.hpp"
 #else
 #include "39dll.h"
 #include "HuffmanCompression.hpp"
 #include "Lz4Compression.hpp"
+#include "ScreenLog.hpp"
 #endif
 
 
@@ -144,6 +146,8 @@ void PacketController::readFewString()
 	auto string1 = readstring();
 	auto string2 = readstring();
 
+    g_screenLog->log( LL_DEBUG, "%s", string1);
+    g_screenLog->log( LL_DEBUG, "%s", string2);
 	//auto chars1 = readchars();
 	//auto chars2 = readchars();
 }
@@ -157,6 +161,7 @@ void PacketController::readManyString()
 {
 	for (int i = 0; i < 15; i++) {
 		auto str = readstring();
+        g_screenLog->log( LL_DEBUG, "%s", str);
 	}
 }
 
@@ -169,6 +174,7 @@ void PacketController::readFewStringLz()
 {
 	auto encoded = readstring();
 	auto decoded = Lz4Compression::decode(encoded);
+    g_screenLog->log( LL_DEBUG, "%s", decoded.c_str());
 }
 
 void PacketController::readManyIntLz()
@@ -183,7 +189,7 @@ void PacketController::readManyStringLz()
 
 	std::string encoded = readstring();
 	auto decoded = Lz4Compression::decode(encoded); //it doesn't decode properly...
-
+    g_screenLog->log( LL_DEBUG, "%s", decoded.c_str());
 	//also doesn't work:
 	/*auto csize = readint();
 	auto encoded = new char[csize];
@@ -209,7 +215,7 @@ void PacketController::readFewStringHuffman()
 		encoded[i] = readbyte();
 	}
 	auto decoded = HuffmanCompression::decode(encoded, csize);
-
+    g_screenLog->log( LL_DEBUG, "%s", decoded.c_str());
 }
 
 void PacketController::readManyIntHuffman()
@@ -226,6 +232,7 @@ void PacketController::readManyStringHuffman()
 		encoded[i] = readbyte();
 	}
 	auto decoded = HuffmanCompression::decode(encoded, csize);
+    g_screenLog->log( LL_DEBUG, "%s", decoded.c_str());
 }
 
 void PacketController::writeFewInt()

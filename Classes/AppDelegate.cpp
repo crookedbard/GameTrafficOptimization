@@ -2,8 +2,10 @@
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 #include "scenes\ControlPanelScene.hpp"
+#include "utils\ScreenLog.h"
 #else
 #include "ControlPanelScene.hpp"
+#include "ScreenLog.hpp"
 #endif
 
 USING_NS_CC;
@@ -15,9 +17,13 @@ static cocos2d::Size largeResolutionSize = cocos2d::Size(2048, 1536);
 
 AppDelegate::AppDelegate()
 {
+    g_screenLog = new ScreenLog();
+    g_screenLog->setLevelMask( LL_DEBUG | LL_INFO | LL_WARNING | LL_ERROR | LL_FATAL | LL_TRACE );
+    g_screenLog->setFontFile( "UbuntuMono-R.ttf" );
+    g_screenLog->setTimeoutSeconds( 15 );
 }
 
-AppDelegate::~AppDelegate() 
+AppDelegate::~AppDelegate()
 {
 }
 
@@ -55,7 +61,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 
     // turn on display FPS
-    director->setDisplayStats(true);
+    director->setDisplayStats(false);
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0f / 60);
@@ -84,6 +90,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // create a scene. it's an autorelease object
     auto scene = ControlPanelScene::createScene();
 
+    // attach screenlog to the scene about to become active
+    g_screenLog->attachToScene( scene );
+    
     // run
     director->runWithScene(scene);
 

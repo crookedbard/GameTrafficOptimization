@@ -20,11 +20,28 @@
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 #include "transport_protocols/tcp/Common.h"
+#include "utils/ScreenLog.hpp"
 //#include "transport_protocols/tcp/socket"
 #else
 #include "Common.h"
+#include "ScreenLog.hpp"
 //#include "socket.h"
 #endif
+
+//#define printf(MESSAGE,args...) g_screenLog->log( LL_DEBUG, MESSAGE, args);
+//#define printf(MESSAGE) g_screenLog->log( LL_DEBUG, MESSAGE);
+#define printf(MESSAGE,args...) { \
+const char *A[] = {MESSAGE}; \
+if(sizeof(A) > 0) {\
+g_screenLog->log( LL_DEBUG, *A, ##args); \
+} else {\
+g_screenLog->log( LL_DEBUG, "\n"); \
+}\
+}
+
+//printf("%s %d",__FILE__,__LINE__); fflush(stdout);\
+//printf("::"); \
+//printf(*A,##args); \
 
 /* The size (in bytes) of the buffers used in the program */
 #define BUFFER_SIZE 2048

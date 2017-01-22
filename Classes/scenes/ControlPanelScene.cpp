@@ -11,6 +11,7 @@
 //problem with paths
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 #include "utils/VisibleRect.h"
+#include "utils/ScreenLog.hpp"
 #include "transport_protocols/tcp/39dll.h"
 #include "controllers/PacketController.h"
 #include "payload_compression/huffman/HuffmanCompression.hpp"
@@ -20,6 +21,7 @@
 #include "39dll.h"
 #include "PacketController.h"
 #include "VisibleRect.h"
+#include "ScreenLog.hpp"
 #include "HuffmanCompression.hpp"
 #include "Lz4Compression.hpp"
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS)
@@ -79,7 +81,8 @@ void ControlPanelScene::update(float dt)
 		{
 			std::string ip(lastinIP());
 			std::string sok = doubleToString(incomingSocket);
-			addMessage("Trying to connect " + ip + ", socket: " + sok);
+			//addMessage("Trying to connect " + ip + ", socket: " + sok);
+            g_screenLog->log( LL_INFO, "Someones connecting: %s socket: %s", ip.c_str(), sok.c_str() );
 
 			auto exists = false;
 			for (auto i : _connections)
@@ -103,13 +106,15 @@ void ControlPanelScene::update(float dt)
 				auto size = receivemessage(_connections[i].second);
 				if (size > 0)
 				{
-					addMessage("Packet received. Size: " + doubleToString(size));
+					//addMessage("Packet received. Size: " + doubleToString(size));
+                    g_screenLog->log( LL_INFO, "Packet received. Size: %s", doubleToString(size).c_str());
 					//handle packet payload
 					PacketController::read();
 				}
 				if (size == 0)
 				{
-					addMessage("Connection ended: " + _connections[i].first);
+					//addMessage("Connection ended: " + _connections[i].first);
+                    g_screenLog->log( LL_WARNING, "Connection ended: %s", _connections[i].first.c_str());
 					_connections.erase(_connections.begin() + i);
 				}
 			}
@@ -120,13 +125,15 @@ void ControlPanelScene::update(float dt)
 		auto size = receivemessage(_tcpSocket);
 		if (size > 0)
 		{
-			addMessage("Packet received. Size: " + doubleToString(size));
+			//addMessage("Packet received. Size: " + doubleToString(size));
+            g_screenLog->log( LL_INFO, "Packet received. Size: %s", doubleToString(size).c_str());
 			//handle packet payload
 			PacketController::read();
 		}
 		else if (size == 0)
 		{
-			addMessage("Connection to server ended.");
+			//addMessage("Connection to server ended.");
+            g_screenLog->log( LL_WARNING, "Connection to server ended.");
 			onButtonTcpConnect(nullptr, Widget::TouchEventType::ENDED);
 			//closesock(_tcpSocket);
 		}
@@ -276,9 +283,10 @@ bool ControlPanelScene::loadPanel()
 		_buttonTestRohc->addTouchEventListener(CC_CALLBACK_2(ControlPanelScene::onButtonTestRohc, this));
         
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-        _checkboxRohc->setEnabled(false);
         _buttonTestRohc->setEnabled(false);
 #endif
+        _checkboxRohc->setEnabled(false); //not implemented yet
+        
 		//line 6. Payload compression
 		line += 1.0f;
 		auto labelPayloadCompression = Label::createWithTTF("Payload compression", FONT_NAME, FONT_SIZE);
@@ -394,21 +402,23 @@ bool ControlPanelScene::loadPanel()
 		_textMessages->setAnchorPoint(Vec2(0.0f, 1.0f));
 		scrollView->addChild(_textMessages);
 
-		addMessage("Result area");
+		//addMessage("Result area");
 
 		auto host = myhost();
 		if (host != NULL)
 		{
-			addMessage(host);
+			//addMessage(host);
+            g_screenLog->log( LL_INFO, "Host: %s", host);
 			auto hostIp = hostip(host);
-			if (hostIp != NULL) addMessage(hostIp);
+			if (hostIp != NULL) g_screenLog->log( LL_INFO, "Host ip: %s", hostIp);//addMessage(hostIp);
 		}
 
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
 		auto ips = CTools::getIPAddresses();
 		for(auto i : ips)
 		{
-			addMessage(i);
+			//addMessage(i);
+            g_screenLog->log( LL_INFO, "\%s", i.c_str());
 		}
 #endif
 	}
@@ -417,7 +427,8 @@ bool ControlPanelScene::loadPanel()
 		std::string ex = "Standard exception: ";
 		ex += e.what();
 		ex += "\n";
-		printf("%s", ex.c_str());
+		//printf("%s", ex.c_str());
+        g_screenLog->log( LL_ERROR, "%s", ex.c_str());
 		return false;
 	}
 	return true;
@@ -440,7 +451,8 @@ void ControlPanelScene::editBoxReturn(cocos2d::extension::EditBox* editBox)
 	_ipAddress = seglist[0];
 	_port = std::stod(seglist[1]);
 
-	addMessage("New ip: " + _ipAddress + " port: " + doubleToString(_port));
+	//addMessage("New ip: " + _ipAddress + " port: " + doubleToString(_port));
+    g_screenLog->log( LL_INFO, "New ip: %s:%s", _ipAddress.c_str(), doubleToString(_port).c_str());
 }
 
 void ControlPanelScene::onButtonTcpListen(Ref* pSender, Widget::TouchEventType type)
@@ -454,7 +466,8 @@ void ControlPanelScene::onButtonTcpListen(Ref* pSender, Widget::TouchEventType t
 
 			if (socket <= 0)
 			{
-				addMessage("Listening socket could not be opened on port " + doubleToString(_port));
+				//addMessage("Listening socket could not be opened on port " + doubleToString(_port));
+                g_screenLog->log( LL_ERROR, "Listening socket could not be opened on port %s", doubleToString(_port).c_str());
 				closesock(_tcpSocket);
 				return;
 			}
@@ -463,7 +476,8 @@ void ControlPanelScene::onButtonTcpListen(Ref* pSender, Widget::TouchEventType t
 				setformat(_tcpSocket, 2, 0);
 				setnagle(_tcpSocket, false);
 				//setsync(_tcpSocket, 1);
-				addMessage("Server listening on port " + doubleToString(_port));
+				//addMessage("Server listening on port " + doubleToString(_port));
+                g_screenLog->log( LL_INFO, "Server listening on port %s", doubleToString(_port).c_str());
 			}
 
 			_isTcpServer = true;
@@ -506,7 +520,8 @@ void ControlPanelScene::onButtonTcpConnect(Ref* pSender, Widget::TouchEventType 
 
 			if (_tcpSocket <= 0)
 			{
-				addMessage("Failed to connect!");
+				//addMessage("Failed to connect!");
+                g_screenLog->log( LL_ERROR, "Failed to connect");
 				closesock(_tcpSocket);
 				return;
 			}
@@ -624,7 +639,8 @@ void ControlPanelScene::onButtonTestRohc(Ref* pSender, Widget::TouchEventType ty
 	if (type == Widget::TouchEventType::ENDED)
 	{
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS && CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
-		addMessage("Testing ROHC!");
+		//addMessage("Testing ROHC!");
+        g_screenLog->log( LL_INFO, "Testing ROHC:");
 		//RohcCompression::compress((char*)"payload data");
         RohcCompression::performTest();
 #endif
@@ -635,17 +651,19 @@ void ControlPanelScene::onButtonTestLz(Ref* pSender, Widget::TouchEventType type
 {
 	if (type == Widget::TouchEventType::ENDED)
 	{
-		addMessage("Testing LZ4!");
-
-		//#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS)
-
+        g_screenLog->log( LL_INFO, "Testing LZ4:" );
+        
 		auto buffer = "Testing Lz4!Testing Lz4!ABCZXNCMBZXCHGUIQiuwiqwjebnbyzixcuzyxciuzyxcuiyzxuciyzuxciyTesting Lz4!";
 		std::string cstr2 = Lz4Compression::encode(buffer);
 		std::string dstr2 = Lz4Compression::decode(cstr2);
 
-		addMessage(dstr2);
-		addMessage(doubleToString(cstr2.length()));
-		addMessage(doubleToString(dstr2.length()));
+        g_screenLog->log( LL_DEBUG, "Dempressed string = %s", dstr2.c_str());
+        g_screenLog->log( LL_DEBUG, "Compressed length = %d", cstr2.length());
+        g_screenLog->log( LL_DEBUG, "Dempressed length = %d", dstr2.length());
+        
+		//addMessage(dstr2);
+		//addMessage(doubleToString(cstr2.length()));
+		//addMessage(doubleToString(dstr2.length()));
 		//#endif
 	}
 }
@@ -654,7 +672,8 @@ void ControlPanelScene::onButtonTestHuffman(Ref* pSender, Widget::TouchEventType
 {
 	if (type == Widget::TouchEventType::ENDED)
 	{
-		addMessage("Testing Huffman!");
+		//addMessage("Testing Huffman!");
+        g_screenLog->log( LL_INFO, "Testing Huffman:" );
 		/*char *testBuffer = (char*)"Huff";
 		auto result = HuffmanCompression::encode(testBuffer);
 		//addMessage(result);
@@ -671,20 +690,21 @@ void ControlPanelScene::onButtonSendFewInts(Ref* pSender, Widget::TouchEventType
 		else if (_huffman) PacketController::write(MSG_FEW_INT_HUFFMAN);
 		else PacketController::write(MSG_FEW_INT);
 
-		double sizet, payloadSize;
+		double /*sizet,*/ payloadSize;
 		if (_isTcpClient)
 		{
-			sizet = sendmessage(_tcpSocket);
+			sendmessage(_tcpSocket);
 		}
 		if (_isTcpServer)
 		{
 			for (auto i : _connections)
 				{
-					sizet = sendmessage(i.second);
+					sendmessage(i.second);
 				}
 		}
 		payloadSize = buffsize();
-		addMessage("Sending packet with size: " + doubleToString(payloadSize) + " " + doubleToString(sizet));
+        g_screenLog->log( LL_INFO, "Sending packet with size: %s", doubleToString(payloadSize).c_str());
+        //addMessage("Sending packet with size: " + doubleToString(payloadSize) + " " + doubleToString(sizet));
 		//auto buff = getBuffer();
 		//std::string s(buff->data);
 		//addMessage("buff data: " + s);
@@ -696,7 +716,7 @@ void ControlPanelScene::onButtonSendFewStrings(Ref* pSender, Widget::TouchEventT
 {
 	if (type == Widget::TouchEventType::ENDED && (_isTcpClient || _isTcpServer))
 	{
-		addMessage("SendFewStrings");
+		//addMessage("SendFewStrings");
 		if (_lz) PacketController::write(MSG_FEW_STRING_LZ);
 		else if (_huffman) PacketController::write(MSG_FEW_STRING_HUFFMAN);
 		else PacketController::write(MSG_FEW_STRING);
@@ -716,7 +736,8 @@ void ControlPanelScene::onButtonSendFewStrings(Ref* pSender, Widget::TouchEventT
 				}
 		}
 		payloadSize = buffsize();
-		addMessage("Sending packet with size: " + doubleToString(payloadSize));// +" " + doubleToString(sizet));
+		//addMessage("Sending packet with size: " + doubleToString(payloadSize));// +" " + doubleToString(sizet));
+        g_screenLog->log( LL_INFO, "Sending packet with size: %s", doubleToString(payloadSize).c_str());
 	}
 }
 
@@ -724,7 +745,8 @@ void ControlPanelScene::onButtonSendManyInts(Ref* pSender, Widget::TouchEventTyp
 {
 	if (type == Widget::TouchEventType::ENDED)
 	{
-		addMessage("Sending many ints: 123, 456, 789 ...");
+		//addMessage("Sending many ints: 123, 456, 789 ...");
+        
 	}
 }
 
@@ -732,7 +754,7 @@ void ControlPanelScene::onButtonSendManyStrigs(Ref* pSender, Widget::TouchEventT
 {
 	if (type == Widget::TouchEventType::ENDED && (_isTcpClient || _isTcpServer))
 	{
-		addMessage("SendManyStrings");
+		//addMessage("SendManyStrings");
 		if (_lz) PacketController::write(MSG_MANY_STRING_LZ);
 		else if (_huffman) PacketController::write(MSG_MANY_STRING_HUFFMAN);
 		else PacketController::write(MSG_MANY_STRING);
@@ -750,7 +772,8 @@ void ControlPanelScene::onButtonSendManyStrigs(Ref* pSender, Widget::TouchEventT
 				}
 		}
 		payloadSize = buffsize();
-		addMessage("Sending packet with size: " + doubleToString(payloadSize));
+		//addMessage("Sending packet with size: " + doubleToString(payloadSize));
+        g_screenLog->log( LL_INFO, "Sending packet with size: %s", doubleToString(payloadSize).c_str());
 	}
 }
 

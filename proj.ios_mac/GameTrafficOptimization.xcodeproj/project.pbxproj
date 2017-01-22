@@ -109,6 +109,8 @@
 		57CFFDEF1E2EB6D9005C0751 /* xxhash.c in Sources */ = {isa = PBXBuildFile; fileRef = 57CFFDE51E2EB6C2005C0751 /* xxhash.c */; };
 		57EA9DBC1E298473006B3928 /* HuffmanCompression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57EA9DBA1E298472006B3928 /* HuffmanCompression.cpp */; };
 		57EA9DBD1E298473006B3928 /* HuffmanCompression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57EA9DBA1E298472006B3928 /* HuffmanCompression.cpp */; };
+		57F18A191E34C58B00D031D1 /* ScreenLog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F18A171E34C58B00D031D1 /* ScreenLog.cpp */; };
+		57F18A1A1E34C58B00D031D1 /* ScreenLog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F18A171E34C58B00D031D1 /* ScreenLog.cpp */; };
 		8262943E1AAF051F00CB7CF7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8262943D1AAF051F00CB7CF7 /* Security.framework */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
@@ -277,6 +279,8 @@
 		57CFFDE61E2EB6C2005C0751 /* xxhash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = xxhash.h; path = payload_compression/lz4stream/lib/xxhash.h; sourceTree = "<group>"; };
 		57EA9DBA1E298472006B3928 /* HuffmanCompression.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HuffmanCompression.cpp; path = payload_compression/huffman/HuffmanCompression.cpp; sourceTree = "<group>"; };
 		57EA9DBB1E298473006B3928 /* HuffmanCompression.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = HuffmanCompression.hpp; path = payload_compression/huffman/HuffmanCompression.hpp; sourceTree = "<group>"; };
+		57F18A171E34C58B00D031D1 /* ScreenLog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScreenLog.cpp; path = utils/ScreenLog.cpp; sourceTree = "<group>"; };
+		57F18A181E34C58B00D031D1 /* ScreenLog.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScreenLog.hpp; path = utils/ScreenLog.hpp; sourceTree = "<group>"; };
 		8262943D1AAF051F00CB7CF7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -553,6 +557,8 @@
 				57AA27611E21671100895B24 /* Utils.h */,
 				57AA27621E21671100895B24 /* VisibleRect.cpp */,
 				57AA27631E21671100895B24 /* VisibleRect.h */,
+				57F18A171E34C58B00D031D1 /* ScreenLog.cpp */,
+				57F18A181E34C58B00D031D1 /* ScreenLog.hpp */,
 			);
 			name = utils;
 			sourceTree = "<group>";
@@ -834,6 +840,7 @@
 				57EA9DBC1E298473006B3928 /* HuffmanCompression.cpp in Sources */,
 				57AA282B1E22F9AB00895B24 /* list.cpp in Sources */,
 				57CFFDE91E2EB6C2005C0751 /* lz4hc.c in Sources */,
+				57F18A191E34C58B00D031D1 /* ScreenLog.cpp in Sources */,
 				576C3F441E25B53900D03ECB /* sctp.c in Sources */,
 				57CFFDE81E2EB6C2005C0751 /* lz4frame.c in Sources */,
 				57C011961E24236F006E6C4E /* HudLayer.cpp in Sources */,
@@ -854,6 +861,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57F18A1A1E34C58B00D031D1 /* ScreenLog.cpp in Sources */,
 				57568A741E2FDEBF00B2BD4F /* RohcCompression.cpp in Sources */,
 				57CFFDEC1E2EB6D9005C0751 /* lz4.c in Sources */,
 				57CFFDED1E2EB6D9005C0751 /* lz4frame.c in Sources */,
