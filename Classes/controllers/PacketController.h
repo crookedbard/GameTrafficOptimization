@@ -21,38 +21,38 @@ class PacketController
 public:
 
 	static void read();
-    static void write(int msg);
+	static void write(int msg);
 
 private:
-    static void readFewInt();
-    static void readFewString();
-    static void readManyInt();
-    static void readManyString();
-    
-    static void readFewIntLz();
-    static void readFewStringLz();
-    static void readManyIntLz();
-    static void readManyStringLz();
-    
-    static void readFewIntHuffman();
-    static void readFewStringHuffman();
-    static void readManyIntHuffman();
-    static void readManyStringHuffman();
-    
-    static void writeFewInt();
-    static void writeFewString();
-    static void writeManyInt();
-    static void writeManyString();
-    
-    static void writeFewIntLz();
-    static void writeFewStringLz();
-    static void writeManyIntLz();
-    static void writeManyStringLz();
-    
-    static void writeFewIntHuffman();
-    static void writeFewStringHuffman();
-    static void writeManyIntHuffman();
-    static void writeManyStringHuffman();
+	static void readFewInt();
+	static void readFewString();
+	static void readManyInt();
+	static void readManyString();
+	
+	static void readFewIntLz();
+	static void readFewStringLz();
+	static void readManyIntLz();
+	static void readManyStringLz();
+	
+	static void readFewIntHuffman();
+	static void readFewStringHuffman();
+	static void readManyIntHuffman();
+	static void readManyStringHuffman();
+	
+	static void writeFewInt();
+	static void writeFewString();
+	static void writeManyInt();
+	static void writeManyString();
+	
+	static void writeFewIntLz();
+	static void writeFewStringLz();
+	static void writeManyIntLz();
+	static void writeManyStringLz();
+	
+	static void writeFewIntHuffman();
+	static void writeFewStringHuffman();
+	static void writeManyIntHuffman();
+	static void writeManyStringHuffman();
 };
 
 #endif // __PACKET_CONTROLLER_H__

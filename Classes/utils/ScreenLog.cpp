@@ -30,11 +30,11 @@ float getTimeMillis() {
 
 ScreenLog::ScreenLog()
 {
-    pthread_mutexattr_t Attr;
-    pthread_mutexattr_init(&Attr);
-    pthread_mutexattr_settype(&Attr, PTHREAD_MUTEX_RECURSIVE);
+    //pthread_mutexattr_t Attr;
+    //pthread_mutexattr_init(&Attr);
+    //pthread_mutexattr_settype(&Attr, PTHREAD_MUTEX_RECURSIVE);
     
-    pthread_mutex_init(&m_contentMutex, &Attr);
+    //pthread_mutex_init(&m_contentMutex, &Attr);
     
     m_timeout = 5000;//ms
     m_level = 0;
@@ -47,12 +47,12 @@ ScreenLog::~ScreenLog()
     Director::getInstance()->getScheduler()->unscheduleUpdate(this);
     
     {
-        ScopeLock lock(&m_contentMutex);
+        //ScopeLock lock(&m_contentMutex);
         for (unsigned int i = 0; i < m_messages.size(); i++)
             delete m_messages[i];
     }
     
-    pthread_mutex_destroy(&m_contentMutex);
+    //pthread_mutex_destroy(&m_contentMutex);
 }
 
 void ScreenLog::setFontFile(string file)
@@ -80,7 +80,7 @@ void ScreenLog::attachToScene(cocos2d::Scene* scene)
 
 screenLogMessage* ScreenLog::log(int p_level, const char *p_str, ...)
 {
-    ScopeLock lock(&m_contentMutex);
+    //ScopeLock lock(&m_contentMutex);
     
     if (! p_str )
         return NULL;
@@ -104,7 +104,7 @@ screenLogMessage* ScreenLog::log(int p_level, const char *p_str, ...)
 
 void ScreenLog::setMessageText(screenLogMessage *slm, const char *p_str, ...)
 {
-    ScopeLock lock(&m_contentMutex);
+    //ScopeLock lock(&m_contentMutex);
     
     //loop through to find matching message, in case it has already gone
     bool messageStillExists = false;
@@ -128,7 +128,7 @@ void ScreenLog::setMessageText(screenLogMessage *slm, const char *p_str, ...)
 
 void ScreenLog::update(float dt)
 {
-    ScopeLock lock(&m_contentMutex);
+    //ScopeLock lock(&m_contentMutex);
     
     for (int i = 0; i < m_messages.size(); i++) {
         screenLogMessage* slm = m_messages[i];
@@ -151,7 +151,7 @@ void ScreenLog::update(float dt)
 
 void ScreenLog::moveLabelsUp(int maxIndex)
 {
-    ScopeLock lock(&m_contentMutex);
+    //ScopeLock lock(&m_contentMutex);
     
     float screenHeightPixels = SCREENLOG_SCREEN_HEIGHT_PIXELS; //Director::getInstance()->getWinSize().height;
     float fontSize =  screenHeightPixels / (float)SCREENLOG_NUM_LINES - 1;
@@ -169,7 +169,7 @@ void ScreenLog::moveLabelsUp(int maxIndex)
 
 void ScreenLog::clearEntries()
 {
-    ScopeLock lock(&m_contentMutex);
+    //ScopeLock lock(&m_contentMutex);
     
     for (unsigned int i = 0; i < m_messages.size(); i++)
         delete m_messages[i];
@@ -179,7 +179,7 @@ void ScreenLog::clearEntries()
 void screenLogMessage::setLabelText(string msg)
 {
     // can be called from other threads, delay label creation to main thread to make sure OpenGL works
-    ScopeLock lock(&m_layer->m_contentMutex);
+    //ScopeLock lock(&m_layer->m_contentMutex);
     
     m_text = msg;
     m_dirty = true;

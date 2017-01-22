@@ -57,7 +57,7 @@ private:
     int m_level;
     float m_timeout;
     std::vector<screenLogMessage*> m_messages;
-    pthread_mutex_t m_contentMutex;
+    //pthread_mutex_t m_contentMutex;
     
 public:
     
@@ -81,17 +81,17 @@ extern ScreenLog* g_screenLog;
 
 //////////////////////////////////////////////////////////////////////
 
-class ScopeLock {
-public:
-    pthread_mutex_t* m_mutex;
-    ScopeLock(pthread_mutex_t* m) {
-        m_mutex = m;
-        pthread_mutex_lock(m_mutex);
-    }
-    ~ScopeLock() {
-        pthread_mutex_unlock(m_mutex);
-    }
-};
+//class ScopeLock {
+//public:
+//    pthread_mutex_t* m_mutex;
+//    ScopeLock(pthread_mutex_t* m) {
+//        m_mutex = m;
+//        pthread_mutex_lock(m_mutex);
+//    }
+//    ~ScopeLock() {
+//        pthread_mutex_unlock(m_mutex);
+//    }
+//};
 
 //////////////////////////////////////////////////////////////////////
 

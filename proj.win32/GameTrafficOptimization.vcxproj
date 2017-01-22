@@ -106,8 +106,8 @@
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>..\libs\sctp\windows\lib;$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\libs\sctp\windows\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LibraryPath>$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A\lib;$(LibraryPath)</LibraryPath>
@@ -135,7 +135,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>%(AdditionalDependencies);$(_COCOS_LIB_WIN32_BEGIN);$(_COCOS_LIB_WIN32_END);librohc.a</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies);$(_COCOS_LIB_WIN32_BEGIN);$(_COCOS_LIB_WIN32_END);librohc.a;usrsctp.lib</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories);$(_COCOS_LIB_PATH_WIN32_BEGIN);$(_COCOS_LIB_PATH_WIN32_END);..\libs\rohc\i686-pc-mingw32_host-X86_64\lib</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -261,7 +261,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\controllers\PacketController.cpp" />
-    <ClCompile Include="..\Classes\header_compression\rohc\rohc.c" />
     <ClCompile Include="..\Classes\header_compression\rohc\RohcCompression.cpp" />
     <ClCompile Include="..\Classes\layers\HudLayer.cpp" />
     <ClCompile Include="..\Classes\payload_compression\huffman\huffman.cpp" />
@@ -283,6 +282,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\transport_protocols\tcp\md5.cpp" />
     <ClCompile Include="..\Classes\transport_protocols\tcp\socket.cpp" />
     <ClCompile Include="..\Classes\transport_protocols\tcp\tools.cpp" />
+    <ClCompile Include="..\Classes\utils\ScreenLog.cpp" />
     <ClCompile Include="..\Classes\utils\Timer.cpp" />
     <ClCompile Include="..\Classes\utils\Utils.cpp" />
     <ClCompile Include="..\Classes\utils\VisibleRect.cpp" />
@@ -311,16 +311,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\transport_protocols\tcp\list.h" />
     <ClInclude Include="..\Classes\transport_protocols\tcp\socket.h" />
     <ClInclude Include="..\Classes\transport_protocols\tcp\tools.h" />
+    <ClInclude Include="..\Classes\utils\ScreenLog.hpp" />
     <ClInclude Include="..\Classes\utils\Timer.h" />
     <ClInclude Include="..\Classes\utils\Utils.h" />
     <ClInclude Include="..\Classes\utils\VisibleRect.h" />
-    <ClInclude Include="..\libs\rohc\x86_64\include\rohc\rohc.h" />
-    <ClInclude Include="..\libs\rohc\x86_64\include\rohc\rohc_buf.h" />
-    <ClInclude Include="..\libs\rohc\x86_64\include\rohc\rohc_comp.h" />
-    <ClInclude Include="..\libs\rohc\x86_64\include\rohc\rohc_decomp.h" />
-    <ClInclude Include="..\libs\rohc\x86_64\include\rohc\rohc_packets.h" />
-    <ClInclude Include="..\libs\rohc\x86_64\include\rohc\rohc_time.h" />
-    <ClInclude Include="..\libs\rohc\x86_64\include\rohc\rohc_traces.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>

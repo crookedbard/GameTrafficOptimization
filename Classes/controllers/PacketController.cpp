@@ -15,130 +15,130 @@
 
 void PacketController::read()
 {
-    //Handle incoming messages
-    //  if (server::bufferEncrypt)
-    //	{
-    //Only decrypt if we're using an encryption password
-    //		bufferencrypt(server::bufferPassword);
-    //	}
-    
-    auto id = static_cast<int>(readbyte());
-    
-    switch (id)
-    {
-        case MSG_FEW_INT:
-            readFewInt();
-            break;
-            
-        case MSG_FEW_STRING:
-            readFewString();
-            break;
-            
-        case MSG_MANY_INT:
-            readManyInt();
-            break;
-            
-        case MSG_MANY_STRING:
-            readManyString();
-            break;
+	//Handle incoming messages
+	//  if (server::bufferEncrypt)
+	//	{
+	//Only decrypt if we're using an encryption password
+	//		bufferencrypt(server::bufferPassword);
+	//	}
+	
+	auto id = static_cast<int>(readbyte());
+	
+	switch (id)
+	{
+		case MSG_FEW_INT:
+			readFewInt();
+			break;
+			
+		case MSG_FEW_STRING:
+			readFewString();
+			break;
+			
+		case MSG_MANY_INT:
+			readManyInt();
+			break;
+			
+		case MSG_MANY_STRING:
+			readManyString();
+			break;
 
-        case MSG_FEW_INT_LZ:
-            readFewIntLz();
-            break;
-            
-        case MSG_FEW_STRING_LZ:
-            readFewStringLz();
-            break;
-            
-        case MSG_MANY_INT_LZ:
-            readManyIntLz();
-            break;
-            
-        case MSG_MANY_STRING_LZ:
-            readManyStringLz();
-            break;
-            
-        case MSG_FEW_INT_HUFFMAN:
-            readFewIntHuffman();
-            break;
-            
-        case MSG_FEW_STRING_HUFFMAN:
-            readFewStringHuffman();
-            break;
-            
-        case MSG_MANY_INT_HUFFMAN:
-            readManyIntHuffman();
-            break;
-            
-        case MSG_MANY_STRING_HUFFMAN:
-            readManyStringHuffman();
-            break;
-            
-        default:
-            break;
-    }
+		case MSG_FEW_INT_LZ:
+			readFewIntLz();
+			break;
+			
+		case MSG_FEW_STRING_LZ:
+			readFewStringLz();
+			break;
+			
+		case MSG_MANY_INT_LZ:
+			readManyIntLz();
+			break;
+			
+		case MSG_MANY_STRING_LZ:
+			readManyStringLz();
+			break;
+			
+		case MSG_FEW_INT_HUFFMAN:
+			readFewIntHuffman();
+			break;
+			
+		case MSG_FEW_STRING_HUFFMAN:
+			readFewStringHuffman();
+			break;
+			
+		case MSG_MANY_INT_HUFFMAN:
+			readManyIntHuffman();
+			break;
+			
+		case MSG_MANY_STRING_HUFFMAN:
+			readManyStringHuffman();
+			break;
+			
+		default:
+			break;
+	}
 }
 
 void PacketController::write(int msg)
 {
-    switch (msg)
-    {
-        case MSG_FEW_INT:
-            writeFewInt();
-            break;
-            
-        case MSG_FEW_STRING:
-            writeFewString();
-            break;
-            
-        case MSG_MANY_INT:
-            writeManyInt();
-            break;
-            
-        case MSG_MANY_STRING:
-            writeManyString();
-            break;
-            
-        case MSG_FEW_INT_LZ:
-            writeFewIntLz();
-            break;
-            
-        case MSG_FEW_STRING_LZ:
-            writeFewStringLz();
-            break;
-            
-        case MSG_MANY_INT_LZ:
-            writeManyIntLz();
-            break;
-            
-        case MSG_MANY_STRING_LZ:
-            writeManyStringLz();
-            break;
-            
-        case MSG_FEW_INT_HUFFMAN:
-            writeFewIntHuffman();
-            break;
-            
-        case MSG_FEW_STRING_HUFFMAN:
-            writeFewStringHuffman();
-            break;
-            
-        case MSG_MANY_INT_HUFFMAN:
-            writeManyIntHuffman();
-            break;
-            
-        case MSG_MANY_STRING_HUFFMAN:
-            writeManyStringHuffman();
-            break;
-            
-        default:
-            break;
-    }
+	switch (msg)
+	{
+		case MSG_FEW_INT:
+			writeFewInt();
+			break;
+			
+		case MSG_FEW_STRING:
+			writeFewString();
+			break;
+			
+		case MSG_MANY_INT:
+			writeManyInt();
+			break;
+			
+		case MSG_MANY_STRING:
+			writeManyString();
+			break;
+			
+		case MSG_FEW_INT_LZ:
+			writeFewIntLz();
+			break;
+			
+		case MSG_FEW_STRING_LZ:
+			writeFewStringLz();
+			break;
+			
+		case MSG_MANY_INT_LZ:
+			writeManyIntLz();
+			break;
+			
+		case MSG_MANY_STRING_LZ:
+			writeManyStringLz();
+			break;
+			
+		case MSG_FEW_INT_HUFFMAN:
+			writeFewIntHuffman();
+			break;
+			
+		case MSG_FEW_STRING_HUFFMAN:
+			writeFewStringHuffman();
+			break;
+			
+		case MSG_MANY_INT_HUFFMAN:
+			writeManyIntHuffman();
+			break;
+			
+		case MSG_MANY_STRING_HUFFMAN:
+			writeManyStringHuffman();
+			break;
+			
+		default:
+			break;
+	}
 }
 
 void PacketController::readFewInt()
 {
-    
+	
 }
 
 void PacketController::readFewString()
@@ -146,40 +146,40 @@ void PacketController::readFewString()
 	auto string1 = readstring();
 	auto string2 = readstring();
 
-    g_screenLog->log( LL_DEBUG, "%s", string1);
-    g_screenLog->log( LL_DEBUG, "%s", string2);
+	g_screenLog->log( LL_DEBUG, "%s", string1);
+	g_screenLog->log( LL_DEBUG, "%s", string2);
 	//auto chars1 = readchars();
 	//auto chars2 = readchars();
 }
 
 void PacketController::readManyInt()
 {
-    
+	
 }
 
 void PacketController::readManyString()
 {
 	for (int i = 0; i < 15; i++) {
 		auto str = readstring();
-        g_screenLog->log( LL_DEBUG, "%s", str);
+		g_screenLog->log( LL_DEBUG, "%s", str);
 	}
 }
 
 void PacketController::readFewIntLz()
 {
-    
+	
 }
 
 void PacketController::readFewStringLz()
 {
 	auto encoded = readstring();
 	auto decoded = Lz4Compression::decode(encoded);
-    g_screenLog->log( LL_DEBUG, "%s", decoded.c_str());
+	g_screenLog->log( LL_DEBUG, "%s", decoded.c_str());
 }
 
 void PacketController::readManyIntLz()
 {
-    
+	
 }
 
 void PacketController::readManyStringLz()
@@ -189,7 +189,7 @@ void PacketController::readManyStringLz()
 
 	std::string encoded = readstring();
 	auto decoded = Lz4Compression::decode(encoded); //it doesn't decode properly...
-    g_screenLog->log( LL_DEBUG, "%s", decoded.c_str());
+	g_screenLog->log( LL_DEBUG, "%s", decoded.c_str());
 	//also doesn't work:
 	/*auto csize = readint();
 	auto encoded = new char[csize];
@@ -203,7 +203,7 @@ void PacketController::readManyStringLz()
 
 void PacketController::readFewIntHuffman()
 {
-    
+	
 }
 
 void PacketController::readFewStringHuffman()
@@ -215,12 +215,12 @@ void PacketController::readFewStringHuffman()
 		encoded[i] = readbyte();
 	}
 	auto decoded = HuffmanCompression::decode(encoded, csize);
-    g_screenLog->log( LL_DEBUG, "%s", decoded.c_str());
+	g_screenLog->log( LL_DEBUG, "%s", decoded.c_str());
 }
 
 void PacketController::readManyIntHuffman()
 {
-    
+	
 }
 
 void PacketController::readManyStringHuffman()
@@ -232,15 +232,15 @@ void PacketController::readManyStringHuffman()
 		encoded[i] = readbyte();
 	}
 	auto decoded = HuffmanCompression::decode(encoded, csize);
-    g_screenLog->log( LL_DEBUG, "%s", decoded.c_str());
+	g_screenLog->log( LL_DEBUG, "%s", decoded.c_str());
 }
 
 void PacketController::writeFewInt()
 {
-    clearbuffer();
-    writebyte(MSG_FEW_INT);
-    writeint(123);
-    writeint(456);
+	clearbuffer();
+	writebyte(MSG_FEW_INT);
+	writeint(123);
+	writeint(456);
 }
 
 void PacketController::writeFewString()
@@ -253,7 +253,7 @@ void PacketController::writeFewString()
 
 void PacketController::writeManyInt()
 {
-    
+	
 }
 
 void PacketController::writeManyString()
@@ -269,7 +269,7 @@ void PacketController::writeManyString()
 
 void PacketController::writeFewIntLz()
 {
-    
+	
 }
 
 void PacketController::writeFewStringLz()
@@ -286,7 +286,7 @@ void PacketController::writeFewStringLz()
 
 void PacketController::writeManyIntLz()
 {
-    
+	
 }
 
 void PacketController::writeManyStringLz()
@@ -318,15 +318,15 @@ void PacketController::writeManyStringLz()
 
 void PacketController::writeFewIntHuffman()
 {
-    /*clearbuffer();
-    writeint(123);
-    writeint(456);
-    auto buffer = getbuffer();
-    auto encoded = HuffmanCompression::encode(buffer->data);
-    clearbuffer();
-    writebyte(MSG_FEW_INT);
-    writechars("");//huffman tree
-    writechars("");//huffman tree
+	/*clearbuffer();
+	writeint(123);
+	writeint(456);
+	auto buffer = getbuffer();
+	auto encoded = HuffmanCompression::encode(buffer->data);
+	clearbuffer();
+	writebyte(MSG_FEW_INT);
+	writechars("");//huffman tree
+	writechars("");//huffman tree
 	*/
 }
 
@@ -356,7 +356,7 @@ void PacketController::writeFewStringHuffman()
 
 void PacketController::writeManyIntHuffman()
 {
-    
+	
 }
 
 void PacketController::writeManyStringHuffman()
