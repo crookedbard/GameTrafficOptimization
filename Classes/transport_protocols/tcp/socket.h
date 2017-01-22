@@ -37,6 +37,9 @@ public:
 	int setsync(int mode) const;
 	bool udpconnect(int port, int mode);
 	int sendmessage(char*ip, int port, CBuffer* source);
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS && CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
+    int sendmessageRohc(char*ip, int port, CBuffer* source);
+#endif
 	int receivemessage(int len, CBuffer*destination);
 	int peekmessage(int size, CBuffer*destination) const;
 	static int lasterror();

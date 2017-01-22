@@ -15,16 +15,16 @@
 #include "controllers/PacketController.h"
 #include "payload_compression/huffman/HuffmanCompression.hpp"
 #include "payload_compression/lz4stream/Lz4Compression.hpp"
-#include "header_compression/rohc/RohcCompression.hpp"
+//#include "header_compression/rohc/RohcCompression.hpp" //we dont have libs for it.
 #else
 #include "39dll.h"
 #include "PacketController.h"
 #include "VisibleRect.h"
 #include "HuffmanCompression.hpp"
 #include "Lz4Compression.hpp"
-#include "RohcCompression.hpp"
-//#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS)
-//#endif
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS)
+#include "RohcCompression.hpp" //doesnt work on Iphone 5 and on emulator 5. but it works on emu >=6
+#endif
 #endif
 
 USING_NS_CC;
@@ -274,7 +274,11 @@ bool ControlPanelScene::loadPanel()
 		_buttonTestRohc->setPosition(Vec2(innerWidth / 2.0f + 90.0f, scrollView->getInnerContainerSize().height - LINE_HEIGHT * line));
 		scrollView->addChild(_buttonTestRohc);
 		_buttonTestRohc->addTouchEventListener(CC_CALLBACK_2(ControlPanelScene::onButtonTestRohc, this));
-
+        
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+        _checkboxRohc->setEnabled(false);
+        _buttonTestRohc->setEnabled(false);
+#endif
 		//line 6. Payload compression
 		line += 1.0f;
 		auto labelPayloadCompression = Label::createWithTTF("Payload compression", FONT_NAME, FONT_SIZE);
@@ -619,8 +623,11 @@ void ControlPanelScene::onButtonTestRohc(Ref* pSender, Widget::TouchEventType ty
 {
 	if (type == Widget::TouchEventType::ENDED)
 	{
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS && CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
 		addMessage("Testing ROHC!");
-		RohcCompression::compress(static_cast<char*>("payload data"));
+		//RohcCompression::compress((char*)"payload data");
+        RohcCompression::performTest();
+#endif
 	}
 }
 
@@ -845,7 +852,7 @@ void ControlPanelScene::addMessage(std::string msg)
 	_messages.push_back(msg);
 
 	std::string fullMsg = "";
-	for (unsigned i = _messages.size() - 1; i > 0; i--)
+	for (auto i = _messages.size() - 1; i > 0; i--)
 		{
 			fullMsg += _messages[i] + "\n";
 		}

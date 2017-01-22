@@ -1,4 +1,11 @@
 #include "socket.h"
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS && CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
+#include "RohcCompression.hpp"
+#include <rohc/rohc.h> /* includes required to use the compression part of the ROHC library */
+#include <rohc/rohc_buf.h>  /* for the rohc_buf_*() functions */
+#include <rohc/rohc_comp.h>   /* for rohc_comp_*() functions */
+#include <rohc/rohc_decomp.h> /* for rohc_decomp_*() functions */
+#endif
 
 #if defined( __WIN32__ ) || defined( WIN32 ) || defined( _WIN32 )
 int SenderAddrSize = sizeof(SOCKADDR_IN);
@@ -146,7 +153,7 @@ CSocket::CSocket(SOCKET sock)
 #endif
 
 //good
-CSocket::CSocket(): sockid(0)
+CSocket::CSocket() //:sockid(0)
 {
 	udp = false;
 	format = 0;
@@ -176,7 +183,7 @@ CSocket* CSocket::tcpaccept(int mode) const
 	return nullptr;
 }
 #else
-	CSocket* CSocket::tcpaccept(int mode)
+	CSocket* CSocket::tcpaccept(int mode) const
 	{
 		if (sockid<0)return NULL;
 		int sock2;
@@ -199,7 +206,7 @@ char* CSocket::tcpip() const
 	return inet_ntoa(SenderAddr.sin_addr);
 }
 #else
-	char* CSocket::tcpip()
+	char* CSocket::tcpip() const
 	{
 		if(sockid<0)return NULL;
 		if(getpeername(sockid, (sockaddr *)&SenderAddr, (socklen_t*)&SenderAddrSize) == SOCKET_ERROR)return NULL;
@@ -225,7 +232,7 @@ bool CSocket::tcpconnected() const
 	return true;
 }
 #else
-	bool CSocket::tcpconnected()
+	bool CSocket::tcpconnected() const
 	{
 		if (sockid<0)return false;
 		char b;
@@ -244,7 +251,7 @@ int CSocket::setsync(int mode) const
 	return ioctlsocket(sockid, FIONBIO, &i); //ioctl
 }
 #else
-	int CSocket::setsync(int mode)
+	int CSocket::setsync(int mode) const
 	{
 		if (sockid < 0)return -1;
 		u_long i = mode;
@@ -369,13 +376,67 @@ int CSocket::sendmessage(char* ip, int port, CBuffer* source)
 
 		return size;
 	}
+
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS && CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
+int CSocket::sendmessageRohc(char *ip, int port, CBuffer *source)
+{
+    if (sockid<0)return -1;
+    int size = 0;
+    sockaddr_in addr;
+    if (udp)
+    {
+        size = std::min(source->count, 8195);
+        addr.sin_family = AF_INET;
+        addr.sin_port = htons(port);
+        addr.sin_addr.s_addr = inet_addr(ip);
+        size = sendto(sockid, source->data, size, 0, (sockaddr *)&addr, sizeof(sockaddr_in));
+    }
+    else
+    {
+        CBuffer sendbuff;
+        sendbuff.clear();
+        if (format == 0)
+        {
+            sendbuff.writeushort(source->count);
+            sendbuff.addBuffer(source);
+            size = send(sockid, sendbuff.data, sendbuff.count, 0);
+            
+//            int BUFFER_SIZE = 2048;
+//            uint8_t rohc_buffer[BUFFER_SIZE];
+//            rohc_buf compressed_rohc_packet = rohc_buf_init_empty(rohc_buffer, BUFFER_SIZE);
+//            RohcCompression::compress(&sendbuff.data, &compressed_rohc_packet);
+//            
+//            char *m = (char *)malloc(compressed_rohc_packet.len);
+//            for(auto i = 0; i < compressed_rohc_packet.len; i++)
+//            {
+//                m[i] = rohc_buf_byte_at(compressed_rohc_packet,i);
+//            }
+//            
+//            size = sendto(sockid, m, compressed_rohc_packet.len, 0,
+//                          (sockaddr *)&addr, sizeof(sockaddr_in));
+        }
+        else if (format == 1)
+        {
+            sendbuff.addBuffer(source);
+            sendbuff.writechars(formatstr);
+            size = send(sockid, sendbuff.data, sendbuff.count, 0);
+        }
+        else if (format == 2)
+            size = send(sockid, source->data, source->count, 0);
+    }
+    
+    if (size == SOCKET_ERROR)return SOCKET_ERROR;
+    
+    return size;
+}
+#endif
 #endif
 
 //good
 int CSocket::receivetext(char* buf, int max)
 {
 	auto len = static_cast<int>(strlen(formatstr));
-	if ((max = recv(sockid, buf, max, MSG_PEEK)) != SOCKET_ERROR)
+	if ((max = (int)recv(sockid, buf, max, MSG_PEEK)) != SOCKET_ERROR)
 	{
 		int i, ii;
 		for (i = 0; i < max; i++)
@@ -384,7 +445,7 @@ int CSocket::receivetext(char* buf, int max)
 					if (buf[i + ii] != formatstr[ii])
 						break;
 				if (ii == len)
-					return recv(sockid, buf, i + len, 0);
+					return (int)recv(sockid, buf, i + len, 0);
 			}
 	}
 	return -1;
@@ -501,7 +562,7 @@ int CSocket::peekmessage(int size, CBuffer* destination) const
 	return size;
 }
 #else
-int CSocket::peekmessage(int size, CBuffer*destination)
+int CSocket::peekmessage(int size, CBuffer*destination) const
 {
 	if (sockid<0)return -1;
 	if (size == 0)size = 65536;
