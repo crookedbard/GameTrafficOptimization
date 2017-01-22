@@ -275,7 +275,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\payload_compression\lz4stream\lz4_stream_test.cpp" />
     <ClCompile Include="..\Classes\payload_compression\simd\SimdCompression.cpp" />
     <ClCompile Include="..\Classes\scenes\ControlPanelScene.cpp" />
-    <ClCompile Include="..\Classes\transport_protocols\sctp\sctp.c" />
+    <ClCompile Include="..\Classes\transport_protocols\sctp\client.c" />
+    <ClCompile Include="..\Classes\transport_protocols\sctp\discard_server.c" />
     <ClCompile Include="..\Classes\transport_protocols\tcp\39dll.cpp" />
     <ClCompile Include="..\Classes\transport_protocols\tcp\buffer.cpp" />
     <ClCompile Include="..\Classes\transport_protocols\tcp\list.cpp" />

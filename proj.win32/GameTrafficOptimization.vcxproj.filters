@@ -96,9 +96,6 @@
     <ClCompile Include="..\Classes\layers\HudLayer.cpp">
       <Filter>src\layers</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\transport_protocols\sctp\sctp.c">
-      <Filter>src\transport_protocols\sctp</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\payload_compression\huffman\huffman.cpp">
       <Filter>src\payload_compression\huffman</Filter>
     </ClCompile>
@@ -137,6 +134,12 @@
     </ClCompile>
     <ClCompile Include="..\Classes\utils\ScreenLog.cpp">
       <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\transport_protocols\sctp\client.c">
+      <Filter>src\transport_protocols\sctp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\transport_protocols\sctp\discard_server.c">
+      <Filter>src\transport_protocols\sctp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
