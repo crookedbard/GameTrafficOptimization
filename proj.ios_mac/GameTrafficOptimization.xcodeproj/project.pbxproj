@@ -64,8 +64,6 @@
 		57568A741E2FDEBF00B2BD4F /* RohcCompression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57568A701E2FD65F00B2BD4F /* RohcCompression.cpp */; };
 		576C3F411E25B44800D03ECB /* Huffman.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 576C3F3F1E25B44800D03ECB /* Huffman.cpp */; };
 		576C3F421E25B46800D03ECB /* Huffman.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 576C3F3F1E25B44800D03ECB /* Huffman.cpp */; };
-		576C3F441E25B53900D03ECB /* sctp.c in Sources */ = {isa = PBXBuildFile; fileRef = 576C3F431E25B53900D03ECB /* sctp.c */; };
-		576C3F451E25B57800D03ECB /* sctp.c in Sources */ = {isa = PBXBuildFile; fileRef = 576C3F431E25B53900D03ECB /* sctp.c */; };
 		5775A82F1E2E97B2001C5BC7 /* SimdCompression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5775A82D1E2E97B2001C5BC7 /* SimdCompression.cpp */; };
 		5775A8321E2E97D7001C5BC7 /* Lz4Compression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5775A8301E2E97D7001C5BC7 /* Lz4Compression.cpp */; };
 		5775A8331E2E998F001C5BC7 /* Lz4Compression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5775A8301E2E97D7001C5BC7 /* Lz4Compression.cpp */; };
@@ -111,6 +109,10 @@
 		57EA9DBD1E298473006B3928 /* HuffmanCompression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57EA9DBA1E298472006B3928 /* HuffmanCompression.cpp */; };
 		57F18A191E34C58B00D031D1 /* ScreenLog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F18A171E34C58B00D031D1 /* ScreenLog.cpp */; };
 		57F18A1A1E34C58B00D031D1 /* ScreenLog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F18A171E34C58B00D031D1 /* ScreenLog.cpp */; };
+		57F18A231E35080300D031D1 /* client.c in Sources */ = {isa = PBXBuildFile; fileRef = 57F18A211E35080300D031D1 /* client.c */; };
+		57F18A241E35080300D031D1 /* discard_server.c in Sources */ = {isa = PBXBuildFile; fileRef = 57F18A221E35080300D031D1 /* discard_server.c */; };
+		57F18A251E350F9600D031D1 /* client.c in Sources */ = {isa = PBXBuildFile; fileRef = 57F18A211E35080300D031D1 /* client.c */; };
+		57F18A261E350F9600D031D1 /* discard_server.c in Sources */ = {isa = PBXBuildFile; fileRef = 57F18A221E35080300D031D1 /* discard_server.c */; };
 		8262943E1AAF051F00CB7CF7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8262943D1AAF051F00CB7CF7 /* Security.framework */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
@@ -237,7 +239,6 @@
 		576C3F361E25AF3200D03ECB /* libsimdcomp.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsimdcomp.so; path = ../Classes/payload_compression/simd/lib/libsimdcomp.so; sourceTree = "<group>"; };
 		576C3F3F1E25B44800D03ECB /* Huffman.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Huffman.cpp; path = payload_compression/huffman/Huffman.cpp; sourceTree = "<group>"; };
 		576C3F401E25B44800D03ECB /* Huffman.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Huffman.h; path = payload_compression/huffman/Huffman.h; sourceTree = "<group>"; };
-		576C3F431E25B53900D03ECB /* sctp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sctp.c; path = transport_protocols/sctp/sctp.c; sourceTree = "<group>"; };
 		5775A82D1E2E97B2001C5BC7 /* SimdCompression.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SimdCompression.cpp; path = payload_compression/simd/SimdCompression.cpp; sourceTree = "<group>"; };
 		5775A82E1E2E97B2001C5BC7 /* SimdCompression.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SimdCompression.hpp; path = payload_compression/simd/SimdCompression.hpp; sourceTree = "<group>"; };
 		5775A8301E2E97D7001C5BC7 /* Lz4Compression.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Lz4Compression.cpp; path = payload_compression/lz4stream/Lz4Compression.cpp; sourceTree = "<group>"; };
@@ -281,6 +282,8 @@
 		57EA9DBB1E298473006B3928 /* HuffmanCompression.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = HuffmanCompression.hpp; path = payload_compression/huffman/HuffmanCompression.hpp; sourceTree = "<group>"; };
 		57F18A171E34C58B00D031D1 /* ScreenLog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScreenLog.cpp; path = utils/ScreenLog.cpp; sourceTree = "<group>"; };
 		57F18A181E34C58B00D031D1 /* ScreenLog.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScreenLog.hpp; path = utils/ScreenLog.hpp; sourceTree = "<group>"; };
+		57F18A211E35080300D031D1 /* client.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = client.c; path = transport_protocols/sctp/client.c; sourceTree = "<group>"; };
+		57F18A221E35080300D031D1 /* discard_server.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = discard_server.c; path = transport_protocols/sctp/discard_server.c; sourceTree = "<group>"; };
 		8262943D1AAF051F00CB7CF7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -621,7 +624,8 @@
 		57AA27681E21672B00895B24 /* sctp */ = {
 			isa = PBXGroup;
 			children = (
-				576C3F431E25B53900D03ECB /* sctp.c */,
+				57F18A211E35080300D031D1 /* client.c */,
+				57F18A221E35080300D031D1 /* discard_server.c */,
 			);
 			name = sctp;
 			sourceTree = "<group>";
@@ -830,6 +834,8 @@
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				57AA282D1E22F9AB00895B24 /* socket.cpp in Sources */,
 				57AA27651E21671100895B24 /* Utils.cpp in Sources */,
+				57F18A241E35080300D031D1 /* discard_server.c in Sources */,
+				57F18A231E35080300D031D1 /* client.c in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				57C011931E242360006E6C4E /* PacketController.cpp in Sources */,
 				57AA27661E21671100895B24 /* VisibleRect.cpp in Sources */,
@@ -841,7 +847,6 @@
 				57AA282B1E22F9AB00895B24 /* list.cpp in Sources */,
 				57CFFDE91E2EB6C2005C0751 /* lz4hc.c in Sources */,
 				57F18A191E34C58B00D031D1 /* ScreenLog.cpp in Sources */,
-				576C3F441E25B53900D03ECB /* sctp.c in Sources */,
 				57CFFDE81E2EB6C2005C0751 /* lz4frame.c in Sources */,
 				57C011961E24236F006E6C4E /* HudLayer.cpp in Sources */,
 				57AA27641E21671100895B24 /* Timer.cpp in Sources */,
@@ -861,6 +866,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57F18A251E350F9600D031D1 /* client.c in Sources */,
+				57F18A261E350F9600D031D1 /* discard_server.c in Sources */,
 				57F18A1A1E34C58B00D031D1 /* ScreenLog.cpp in Sources */,
 				57568A741E2FDEBF00B2BD4F /* RohcCompression.cpp in Sources */,
 				57CFFDEC1E2EB6D9005C0751 /* lz4.c in Sources */,
@@ -869,7 +876,6 @@
 				57CFFDEF1E2EB6D9005C0751 /* xxhash.c in Sources */,
 				5775A8331E2E998F001C5BC7 /* Lz4Compression.cpp in Sources */,
 				5775A8341E2E998F001C5BC7 /* SimdCompression.cpp in Sources */,
-				576C3F451E25B57800D03ECB /* sctp.c in Sources */,
 				576C3F421E25B46800D03ECB /* Huffman.cpp in Sources */,
 				570797141E2C044900E450FC /* lz4_input_stream.cpp in Sources */,
 				57C011981E2427EC006E6C4E /* 39dll.cpp in Sources */,
@@ -929,13 +935,20 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../libs/rohc/armv7/lib";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SRCROOT)/../libs/rohc/unix/lib",
+					"$(SRCROOT)/../libs/sctp/unix/lib",
+				);
 				ONLY_ACTIVE_ARCH = NO;
-				OTHER_CFLAGS = "-I/usr/local/include";
+				OTHER_CFLAGS = (
+					"-I$(SRCROOT)/../libs/rohc/unix/include",
+					"-I$(SRCROOT)/../libs/sctp/unix/include",
+				);
 				OTHER_LDFLAGS = (
 					"$(_COCOS_LIB_IOS_BEGIN)",
 					"$(_COCOS_LIB_IOS_END)",
 					"-lrohc",
+					"-lusrsctp",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.CrookedBard.GameTrafficOptimization;
 				SDKROOT = iphoneos;
@@ -968,12 +981,16 @@
 				"HEADER_SEARCH_PATHS[arch=*]" = "$(inherited)";
 				INFOPLIST_FILE = ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../libs/rohc/armv7/lib";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SRCROOT)/../libs/rohc/unix/lib",
+					"$(SRCROOT)/../libs/sctp/unix/lib",
+				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"$(_COCOS_LIB_IOS_BEGIN)",
 					"$(_COCOS_LIB_IOS_END)",
 					"-lrohc",
+					"-lusrsctp",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.CrookedBard.GameTrafficOptimization;
 				SDKROOT = iphoneos;
@@ -1009,12 +1026,20 @@
 					"$(SRCROOT)/../cocos2d/external/glfw3/include/mac",
 				);
 				INFOPLIST_FILE = mac/Info.plist;
-				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				LIBRARY_SEARCH_PATHS = (
+					"$(SRCROOT)/../libs/rohc/unix/lib",
+					"$(SRCROOT)/../libs/sctp/unix/lib",
+				);
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"-I$(SRCROOT)/../libs/rohc/unix/include",
+					"-I$(SRCROOT)/../libs/sctp/unix/include",
+				);
 				OTHER_LDFLAGS = (
 					"$(_COCOS_LIB_MAC_BEGIN)",
 					"$(_COCOS_LIB_MAC_END)",
 					"-lrohc",
+					"-lusrsctp",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.CrookedBard.GameTrafficOptimization;
 				SUPPORTED_PLATFORMS = macosx;
@@ -1046,12 +1071,16 @@
 					"$(SRCROOT)/../cocos2d/external/glfw3/include/mac",
 				);
 				INFOPLIST_FILE = mac/Info.plist;
-				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				LIBRARY_SEARCH_PATHS = (
+					"$(SRCROOT)/../libs/rohc/unix/lib",
+					"$(SRCROOT)/../libs/sctp/unix/lib",
+				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"$(_COCOS_LIB_MAC_BEGIN)",
 					"$(_COCOS_LIB_MAC_END)",
 					"-lrohc",
+					"-lusrsctp",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.CrookedBard.GameTrafficOptimization;
 				SUPPORTED_PLATFORMS = macosx;

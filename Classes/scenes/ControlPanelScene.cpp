@@ -247,6 +247,11 @@ bool ControlPanelScene::loadPanel()
 		scrollView->addChild(_buttonSctpConnect);
 		_buttonSctpConnect->addTouchEventListener(CC_CALLBACK_2(ControlPanelScene::onButtonSctpConnect, this));
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+        _buttonSctpListen->setEnabled(false);
+        _buttonSctpConnect->setEnabled(false);
+#endif
+        
 		//line 4. Header compression
 		line += 1.0f;
 		auto labelHeaderCompression = Label::createWithTTF("Header compression", FONT_NAME, FONT_SIZE);
