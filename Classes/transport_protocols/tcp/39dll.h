@@ -12,16 +12,34 @@ double tcpconnect(std::string ip, double port, double mode);
 double tcplisten(double port, double max, double mode);
 double tcpaccept(double sockid, double mode);
 char* tcpip(double sockid);
-double setnagle(double sockid, double value);
 double tcpconnected(double sockid);
 double udpconnect(double port, double mode);
 double sendmessage(double sockid, char* ip = (char *)"", double port = 0, double buffid = 0);
 double receivemessage(double sockid, double len = 0, double buffid = 0);
 double peekmessage(double sockid, double len, double buffid);
+
+double setnagle(double sockid, double value);
+
+/*
+ * setformat(sockid, method, sepstr) - Messages sent over TCP are encoded in special ways. This function takes a specified socket and sets the method of transmission for the packets.
+ * Argument0 = Sockid-self-explanatory, choose which socket to set to the specified method
+ * Argument1 = Method- There are three ways to encode data:
+ * 0-or binary format. This mode puts an extra two bytes containing integers at the beginning of each packet saying how large the packet is. This is the default.
+ * 1-or Text format. This mode puts a delimiter (special character) at the end of every packet. This is usually used for text based protocols like IRC
+ * 2-or no format. This mode makes it so that all packets are raw, without any extra encoding to the packets. We set GG2 sockets to this mode while receiving packets.
+ * This is very important because if you receive a message that is encoded in a different method, then the game will interpret it improperly 
+ * (for example if the message is encoded as 0 binary message, but you expect a 2 or raw format message, then the game will interpret the first two bytes (which detonate the size) as a part of the message, leading to errors and issues.
+ * Argument3 = Sepstr-this is the value you use to note the end of a packet when you use Text format. GG2 doesn’t use this format, so it’s set to 0, but it could be set to anything as it is unused
+ */
 double setformat(double sockid, double mode, char* sep);
-char* lastinIP();
-double lastinPort();
+
+/*
+ * setsync(sockid, mode) - Changes the blocking / non-blocking method of a socket. 
+ * Argument0 = Socket to change.
+ * Argument1 = Mode to set to. 0 = Blocking. 1 = Non-blocking. 
+ */
 double setsync(double sockid, double mode);
+
 double closesock(double sockid);
 double socklasterror(double sockid);
 char* myhost();
@@ -30,6 +48,8 @@ double sockexit();
 double sockstart();
 char* hostip(char* host);
 double getsocketid(double sockid);
+char* lastinIP();
+double lastinPort();
 
 //Buffer Prototypes
 int writebyte(double val, double buffid = 0);
