@@ -29,9 +29,13 @@
 class Lz4Compression
 {
 public:
-    static std::string encode(std::string buffer);
+    static std::string encode(std::string buffer, int &size);
     static std::string decode(std::string buffer/*const char* buffer*/);
-//    static std::pair<EncodingResults, DecodingResults> performTest();
+	static bool performTests(int &cspeed, int &dspeed);
+private:
+	static int performCompressionTest();
+	static int performDecompressionTest();
+	static void meassure();
 };
 
 #endif /* Lz4Compression_hpp */

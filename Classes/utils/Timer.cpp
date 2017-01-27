@@ -87,6 +87,34 @@ double Timer::GetTime()
 	return gettime_offset;
 }
 
+double Timer::GetTimeInMiliseconds()
+{
+#if defined(__WIN32__) || defined(WIN32) || defined(_WIN32)
+#ifdef TIMER_GETTICKCOUNT
+	unsigned int ticks = GetTickCount();
+#else // TIMER_GETTICKCOUNT
+	unsigned int ticks = timeGetTime();
+#endif // TIMER_GETTICKCOUNT
+	double ms = double(ticks);
+#else // WIN32
+	timespec gettime;
+	clock_gettime(CLOCK_MONOTONIC, &gettime);
+	double ms = double(gettime.tv_sec) + double(gettime.tv_nsec) / 1000000000.0;
+#endif // WIN32
+	if (!gettime_init)
+	{
+		gettime_last = ms;
+		gettime_init = true;
+	}
+
+	double relms = ms - gettime_last;
+	gettime_last = ms;
+
+	gettime_offset += relms;
+
+	return gettime_offset;
+}
+
 void Timer::Tick()
 {
 	double currenttime = Timer::GetTime();

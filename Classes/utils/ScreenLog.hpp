@@ -20,6 +20,15 @@
 #define LL_DEBUG    0x10
 #define LL_TRACE    0x20
 
+/*#define printf(MESSAGE,args...) { \
+const char *A[] = {MESSAGE}; \
+if(sizeof(A) > 0) {\
+g_screenLog->log( LL_DEBUG, *A, ##args); \
+} else {\
+g_screenLog->log( LL_DEBUG, "\n"); \
+}\
+}*/
+
 //////////////////////////////////////////////////////////////////////
 
 class screenLogMessage {

@@ -12,6 +12,20 @@
 #include "ScreenLog.hpp"
 #endif
 
+const char *SHORT_STRING_VALUE =
+"Random mmorpg chat message,\
+Buying weapon";
+
+const char *LONG_STRING_VALUE =
+"Random mmorpg chat dialogue, \
+Looking for Party > Endless tower floor 3, \
+LFP > Hotsprings LV70+, \
+LFP > Forest of mirror 50lvl+ 3, \
+RAID > Endless tower floor 10, \
+Farming at Alligator island, \
+Trading weapon for armor set, \
+Buying augmentet weapon S grade, \
+Selling Blue wolf gloves, boots";
 
 void PacketController::read()
 {
@@ -143,13 +157,16 @@ void PacketController::readFewInt()
 
 void PacketController::readFewString()
 {
-	auto string1 = readstring();
-	auto string2 = readstring();
-
-	g_screenLog->log( LL_DEBUG, "%s", string1);
-	g_screenLog->log( LL_DEBUG, "%s", string2);
+//	auto string1 = readstring();
+//	auto string2 = readstring();
+//
+//	g_screenLog->log( LL_DEBUG, "%s", string1);
+//	g_screenLog->log( LL_DEBUG, "%s", string2);
 	//auto chars1 = readchars();
 	//auto chars2 = readchars();
+
+	auto str = readstring();
+	g_screenLog->log(LL_DEBUG, "%s", str);
 }
 
 void PacketController::readManyInt()
@@ -159,10 +176,13 @@ void PacketController::readManyInt()
 
 void PacketController::readManyString()
 {
-	for (int i = 0; i < 15; i++) {
-		auto str = readstring();
-		g_screenLog->log( LL_DEBUG, "%s", str);
-	}
+//	for (int i = 0; i < 15; i++) {
+//		auto str = readstring();
+//		g_screenLog->log( LL_DEBUG, "%s", str);
+//	}
+
+	auto str = readstring();
+	g_screenLog->log(LL_DEBUG, "%s", str);
 }
 
 void PacketController::readFewIntLz()
@@ -172,7 +192,14 @@ void PacketController::readFewIntLz()
 
 void PacketController::readFewStringLz()
 {
-	auto encoded = readstring();
+//	auto encoded = readstring();
+	auto csize = readint();
+	auto encoded = new char[csize];
+	for (auto i = 0; i < csize; i++)
+	{
+		encoded[i] = readbyte();
+	}
+
 	auto decoded = Lz4Compression::decode(encoded);
 	g_screenLog->log( LL_DEBUG, "%s", decoded.c_str());
 }
@@ -186,9 +213,14 @@ void PacketController::readManyStringLz()
 {
 	//auto size = readint();
 	//auto encoded = readchars(size); //doesn't work
-
-	std::string encoded = readstring();
-	auto decoded = Lz4Compression::decode(encoded); //it doesn't decode properly...
+	auto csize = readint();
+	auto encoded = new unsigned char[csize];
+	for (auto i = 0; i < csize; i++)
+	{
+		encoded[i] = readbyte();
+	}
+//	std::string encoded = readstring();
+	auto decoded = Lz4Compression::decode(reinterpret_cast<char*>(encoded)); //it doesn't decode properly...
 	g_screenLog->log( LL_DEBUG, "%s", decoded.c_str());
 	//also doesn't work:
 	/*auto csize = readint();
@@ -210,7 +242,7 @@ void PacketController::readFewStringHuffman()
 {
 	auto csize = readint();
 	auto encoded = new unsigned char[csize];
-	for (int i = 0; i < csize; i++)
+	for (auto i = 0; i < csize; i++)
 	{
 		encoded[i] = readbyte();
 	}
@@ -247,8 +279,9 @@ void PacketController::writeFewString()
 {
 	clearbuffer();
 	writebyte(MSG_FEW_STRING);
-	writestring("DAINIUS 01");
-	writestring("KREIVYS 10");
+//	writestring("DAINIUS 01");
+//	writestring("KREIVYS 10");
+	writestring(SHORT_STRING_VALUE);
 }
 
 void PacketController::writeManyInt()
@@ -260,11 +293,17 @@ void PacketController::writeManyString()
 {
 	clearbuffer();
 	writebyte(MSG_MANY_STRING);
-	for (auto i = 0; i < 20; i++) {
-		writestring("DAINIUS 01 ABCDEF HELLO HELLO BYE");
-		writestring("KREIVYS 10 FGE FGE THANK YOU THANK YOU");
-		writestring("Testas 23 BUYING Selling Looking for party");
-	}
+	std::string str = LONG_STRING_VALUE;
+	str += LONG_STRING_VALUE;
+	str += LONG_STRING_VALUE;
+	str += LONG_STRING_VALUE;
+
+	writestring(str);
+//	for (auto i = 0; i < 20; i++) {
+//		writestring("DAINIUS 01 ABCDEF HELLO HELLO BYE");
+//		writestring("KREIVYS 10 FGE FGE THANK YOU THANK YOU");
+//		writestring("Testas 23 BUYING Selling Looking for party");
+//	}
 }
 
 void PacketController::writeFewIntLz()
@@ -274,11 +313,11 @@ void PacketController::writeFewIntLz()
 
 void PacketController::writeFewStringLz()
 {
-	std::string str = "DAINIUS 01";
-	str += "KREIVYS 10";
+//	std::string str = "DAINIUS 01";
+//	str += "KREIVYS 10";
 
 	int csize;
-	auto encoded = Lz4Compression::encode(str);
+	auto encoded = Lz4Compression::encode(SHORT_STRING_VALUE, csize);
 	clearbuffer();
 	writebyte(MSG_FEW_STRING_LZ);
 	writestring(encoded);
@@ -291,15 +330,20 @@ void PacketController::writeManyIntLz()
 
 void PacketController::writeManyStringLz()
 {
-	std::string str = "";
-	for (auto i = 0; i < 20; i++) {
-		str += "DAINIUS 01 ABCDEF HELLO HELLO BYE";
-		str += "KREIVYS 10 FGE FGE THANK YOU THANK YOU";
-		str += "Testas 23 BUYING Selling Looking for party";
-	}
+//	std::string str = "";
+//	for (auto i = 0; i < 10; i++) {
+//		str += "Looking for Party > Endless tower floor 3";
+//		str += "Buying augmentet weapon S grade";
+//		str += "Selling Blue wolf gloves, boots";
+//	}
 
-	
-	auto encoded = Lz4Compression::encode(str);
+	std::string str = LONG_STRING_VALUE;
+	str += LONG_STRING_VALUE;
+	str += LONG_STRING_VALUE;
+	str += LONG_STRING_VALUE;
+
+	int csize;
+	auto encoded = Lz4Compression::encode(str, csize);
 	clearbuffer();
 	writebyte(MSG_MANY_STRING_LZ);
 
@@ -313,7 +357,17 @@ void PacketController::writeManyStringLz()
 	//writeint(encoded.length());
 	//writechars((char *)encoded.c_str());
 
-	writestring(encoded);
+	writeint(csize);
+
+	auto sour = new unsigned char[csize];
+	strcpy((char*)sour, encoded.c_str());
+
+	for (auto i = 0; i < csize; i++)
+	{
+		writebyte(sour[i]);
+	}
+
+	//writestring(encoded);
 }
 
 void PacketController::writeFewIntHuffman()
@@ -339,15 +393,15 @@ void PacketController::writeFewStringHuffman()
 	writechars("KREIVYS 10"); //kazkodel dar 10 gale prisideda
 	auto buffer = getbuffer();*/
 
-	std::string str = "DAINIUS 01" ;
-	str += "KREIVYS 10";
+//	std::string str = "Buying weapon" ;
+//	str += "Selling armor";
 
 	int csize;
-	auto encoded = HuffmanCompression::encode(str/*buffer->data*/, csize);
+	auto encoded = HuffmanCompression::encode(SHORT_STRING_VALUE/*buffer->data*/, csize);
 	clearbuffer();
 	writebyte(MSG_FEW_STRING_HUFFMAN);
 	writeint(csize);
-	for (int i = 0; i < csize; i++)
+	for (auto i = 0; i < csize; i++)
 	{
 		writebyte(encoded[i]);
 	}
@@ -369,19 +423,22 @@ void PacketController::writeManyStringHuffman()
 	}
 	auto buffer = getbuffer();*/
 
-	std::string str = "";
-	for (auto i = 0; i < 20; i++) {
-		str += "DAINIUS 01 ABCDEF HELLO HELLO BYE";
-		str += "KREIVYS 10 FGE FGE THANK YOU THANK YOU";
-		str += "Testas 23 BUYING Selling Looking for party";
-	}
-
+//	std::string str = "";
+//	for (auto i = 0; i < 10; i++) {
+//		str += "Looking for Party > Endless tower floor 3";
+//		str += "Buying augmentet weapon S grade";
+//		str += "Selling Blue wolf gloves, boots";
+//	}
+	std::string str = LONG_STRING_VALUE;
+	str += LONG_STRING_VALUE;
+	str += LONG_STRING_VALUE;
+	str += LONG_STRING_VALUE;
 	int csize;
 	auto encoded = HuffmanCompression::encode(str/*buffer->data*/, csize);
 	clearbuffer();
 	writebyte(MSG_MANY_STRING_HUFFMAN);
 	writeint(csize);
-	for (int i = 0; i < csize; i++)
+	for (auto i = 0; i < csize; i++)
 	{
 		writebyte(encoded[i]);
 	}

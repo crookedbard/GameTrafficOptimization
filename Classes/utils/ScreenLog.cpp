@@ -140,7 +140,7 @@ void ScreenLog::update(float dt)
     int c = 0;
     for (int i = (int)m_messages.size()-1; i >= 0; i--) {
         screenLogMessage *slm = m_messages[i];
-        if (now - slm->m_timestamp > m_timeout || c > (2*SCREENLOG_NUM_LINES)) {
+        if (/*now - slm->m_timestamp > m_timeout ||*/ c > (2*SCREENLOG_NUM_LINES)) { //removed timeout of messages
             removeChild(slm->m_label,true);
             delete slm;
             m_messages.erase( m_messages.begin() + i );

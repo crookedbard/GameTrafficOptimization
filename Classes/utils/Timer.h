@@ -55,6 +55,12 @@ public:
 	static double GetTime();
 
 	/**
+	* Helper function to get the current time in seconds
+	* This is not guaranteed to start at any particular number, or be a UNIX timestamp
+	*/
+	static double GetTimeInMiliseconds();
+
+	/**
 	* Check all contained TimeEvent objects and call any which are ready
 	*/
 	void Tick();

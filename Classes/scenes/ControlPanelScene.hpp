@@ -37,8 +37,8 @@ public:
 	void onButtonSctpListen(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
 	void onButtonSctpConnect(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
     void onButtonTestRohc(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
-    void onButtonTestLz(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
-    void onButtonTestHuffman(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
+	void onButtonTestLz(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
+	void onButtonTestHuffman(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
 	void onButtonSendFewInts(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
 	void onButtonSendFewStrings(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
 	void onButtonSendManyInts(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);

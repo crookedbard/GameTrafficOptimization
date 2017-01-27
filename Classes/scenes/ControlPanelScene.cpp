@@ -652,24 +652,40 @@ void ControlPanelScene::onButtonTestRohc(Ref* pSender, Widget::TouchEventType ty
 	}
 }
 
+const char *LONG_STRING_VALUE2 =
+"Random mmorpg chat dialogue, \
+Looking for Party > Endless tower floor 3, \
+LFP > Hotsprings LV70+, \
+LFP > Forest of mirror 50lvl+ 3, \
+RAID > Endless tower floor 10, \
+Farming at Alligator island, \
+Trading weapon for armor set, \
+Buying augmentet weapon S grade, \
+Selling Blue wolf gloves, boots";
+
 void ControlPanelScene::onButtonTestLz(Ref* pSender, Widget::TouchEventType type)
 {
 	if (type == Widget::TouchEventType::ENDED)
 	{
 		g_screenLog->log( LL_INFO, "Testing LZ4:" );
 		
-		auto buffer = "Testing Lz4!Testing Lz4!ABCZXNCMBZXCHGUIQiuwiqwjebnbyzixcuzyxciuzyxcuiyzxuciyzuxciyTesting Lz4!";
-		std::string cstr2 = Lz4Compression::encode(buffer);
-		std::string dstr2 = Lz4Compression::decode(cstr2);
-
-		g_screenLog->log( LL_DEBUG, "Dempressed string = %s", dstr2.c_str());
-		g_screenLog->log( LL_DEBUG, "Compressed length = %d", cstr2.length());
-		g_screenLog->log( LL_DEBUG, "Dempressed length = %d", dstr2.length());
+//		auto buffer = "Testing Lz4!Testing Lz4!ABCZXNCMBZXCHGUIQiuwiqwjebnbyzixcuzyxciuzyxcuiyzxuciyzuxciyTesting Lz4!";
+//		int csize;
+//		auto cstr2 = Lz4Compression::encode(LONG_STRING_VALUE2, csize);
+//		auto dstr2 = Lz4Compression::decode(cstr2);
+//
+//		g_screenLog->log(LL_DEBUG, "Original length = %d", std::strlen(LONG_STRING_VALUE2));
+//		g_screenLog->log( LL_DEBUG, "Dempressed string = %s", dstr2.c_str());
+//		g_screenLog->log( LL_DEBUG, "Compressed length = %d size=%d", cstr2.length(), csize);
+//		g_screenLog->log( LL_DEBUG, "Dempressed length = %d", dstr2.length());
 		
-		//addMessage(dstr2);
-		//addMessage(doubleToString(cstr2.length()));
-		//addMessage(doubleToString(dstr2.length()));
-		//#endif
+		int cspeed, dspeed;
+		auto res = Lz4Compression::performTests(cspeed, dspeed);
+		if(res)
+		{
+			g_screenLog->log(LL_DEBUG, "Compression speed = %.3f MB/s", static_cast<double>(cspeed) / static_cast<double>(1000000));
+			g_screenLog->log(LL_DEBUG, "Decompression speed = %.3f MB/s", static_cast<double>(dspeed) / static_cast<double>(1000000));
+		}
 	}
 }
 
