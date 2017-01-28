@@ -36,7 +36,7 @@ public:
 	void onButtonTcpConnect(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
 	void onButtonSctpListen(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
 	void onButtonSctpConnect(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
-    void onButtonTestRohc(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
+	void onButtonTestRohc(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
 	void onButtonTestLz(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
 	void onButtonTestHuffman(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
 	void onButtonSendFewInts(Ref* pSender, cocos2d::ui::Widget::TouchEventType type);
@@ -58,9 +58,9 @@ private:
 	bool _isTcpClient;
 	bool _isSctpServer;
 	bool _isSctpClient;
-    bool _rohc;
-    bool _lz;
-    bool _huffman;
+	bool _rohc;
+	bool _lz;
+	bool _huffman;
 	std::string _ipAddress;
 	double _port;
 	double _tcpSocket;
@@ -73,9 +73,9 @@ private:
 	cocos2d::ui::Button *_buttonTcpConnect;
 	cocos2d::ui::Button *_buttonSctpListen;
 	cocos2d::ui::Button *_buttonSctpConnect;
-    cocos2d::ui::Button *_buttonTestRohc;
-    cocos2d::ui::Button *_buttonTestLz;
-    cocos2d::ui::Button *_buttonTestHuffman;
+	cocos2d::ui::Button *_buttonTestRohc;
+	cocos2d::ui::Button *_buttonTestLz;
+	cocos2d::ui::Button *_buttonTestHuffman;
 	cocos2d::ui::CheckBox *_checkboxRohc;
 	cocos2d::ui::CheckBox *_checkboxLz;
 	cocos2d::ui::CheckBox *_checkboxHuffman;

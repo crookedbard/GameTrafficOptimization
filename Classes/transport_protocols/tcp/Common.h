@@ -777,56 +777,57 @@ inline static unsigned int GetCNetwork(unsigned int ip)
 //#define FORCED_SERVER_KEEPALIVE
 
 static std::string random_string(size_t length)
-    {
-        auto randchar = []() -> char
-        {
-            const char charset[] =
-            "0123456789"
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            "abcdefghijklmnopqrstuvwxyz";
-            const size_t max_index = (sizeof(charset) - 1);
-            return charset[arc4random() % max_index];
-        };
-        std::string str(length, 0);
-        std::generate_n(str.begin(), length, randchar);
-        return str;
-    }
+{
+	auto randchar = []() -> char
+		{
+			const char charset[] =
+				"0123456789"
+				"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+				"abcdefghijklmnopqrstuvwxyz";
+			const size_t max_index = (sizeof(charset) - 1);
+			return charset[rand() % max_index];
+		};
+	std::string str(length, 0);
+	std::generate_n(str.begin(), length, randchar);
+	return str;
+}
 
 static std::string random_numeric_string(size_t length)
-    {
-        auto randchar = []() -> char
-        {
-            const char charset[] =
-            "0123456789";
-            const size_t max_index = (sizeof(charset) - 1);
-            return charset[arc4random() % max_index];
-        };
-        std::string str(length, 0);
-        std::generate_n(str.begin(), length, randchar);
-        return str;
-    }
+{
+	auto randchar = []() -> char
+		{
+			const char charset[] =
+				"0123456789";
+			const size_t max_index = (sizeof(charset) - 1);
+			return charset[rand() % max_index];
+		};
+	std::string str(length, 0);
+	std::generate_n(str.begin(), length, randchar);
+	return str;
+}
 
 static std::string random_literal_string(size_t length)
-    {
-        auto randchar = []() -> char
-        {
-            const char charset[] =
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            "abcdefghijklmnopqrstuvwxyz";
-            const size_t max_index = (sizeof(charset) - 1);
-            return charset[arc4random() % max_index];
-        };
-        std::string str(length, 0);
-        std::generate_n(str.begin(), length, randchar);
-        return str;
-    }
+{
+	auto randchar = []() -> char
+		{
+			const char charset[] =
+				"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+				"abcdefghijklmnopqrstuvwxyz";
+			const size_t max_index = (sizeof(charset) - 1);
+			return charset[rand() % max_index];
+		};
+	std::string str(length, 0);
+	std::generate_n(str.begin(), length, randchar);
+	return str;
+}
 
+#include "cocos2d.h"
 static unsigned long getTimeMillis()
 {
-    timeval time;
-    gettimeofday(&time, nullptr);
-    unsigned long millisecs = (time.tv_sec * 1000) + (time.tv_usec / 1000);
-    return millisecs;
+	timeval time;
+	cocos2d::gettimeofday(&time, nullptr);
+	unsigned long millisecs = (time.tv_sec * 1000) + (time.tv_usec / 1000);
+	return millisecs;
 }
 
 #endif
