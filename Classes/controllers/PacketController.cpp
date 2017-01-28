@@ -316,8 +316,8 @@ void PacketController::writeFewStringLz()
 //	std::string str = "DAINIUS 01";
 //	str += "KREIVYS 10";
 
-	int csize;
-	auto encoded = Lz4Compression::encode(SHORT_STRING_VALUE, csize);
+	//int csize;
+	auto encoded = Lz4Compression::encode(SHORT_STRING_VALUE);
 	clearbuffer();
 	writebyte(MSG_FEW_STRING_LZ);
 	writestring(encoded);
@@ -342,8 +342,8 @@ void PacketController::writeManyStringLz()
 	str += LONG_STRING_VALUE;
 	str += LONG_STRING_VALUE;
 
-	int csize;
-	auto encoded = Lz4Compression::encode(str, csize);
+	//int csize;
+	auto encoded = Lz4Compression::encode(str);
 	clearbuffer();
 	writebyte(MSG_MANY_STRING_LZ);
 
@@ -357,12 +357,12 @@ void PacketController::writeManyStringLz()
 	//writeint(encoded.length());
 	//writechars((char *)encoded.c_str());
 
-	writeint(csize);
+	writeint(encoded.length());
 
-	auto sour = new unsigned char[csize];
+	auto sour = new unsigned char[encoded.length()];
 	strcpy((char*)sour, encoded.c_str());
 
-	for (auto i = 0; i < csize; i++)
+	for (auto i = 0; i < encoded.length(); i++)
 	{
 		writebyte(sour[i]);
 	}

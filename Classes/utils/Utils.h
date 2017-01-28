@@ -35,7 +35,10 @@ namespace util
 
 	// A gigantic pile of fail
 	// Uglified it to make it generate standard C++ code
-
+//    static std::string random_string(size_t length);
+//    static std::string random_numeric_string(size_t length);
+//    static std::string random_literal_string(size_t length);
+    
 #define UTIL_FOREACH_GENERIC(iterator, start, end, type, as) \
 	for (int util_i = 0; util_i < 1; ++util_i) \
 	for (iterator util_start = start; util_i < 1; ++util_i) \

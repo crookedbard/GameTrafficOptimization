@@ -663,28 +663,48 @@ Trading weapon for armor set, \
 Buying augmentet weapon S grade, \
 Selling Blue wolf gloves, boots";
 
+const char *LONG_STRING_VALUE3 =
+"1111111111114444444444488888888882222222222222222222222222222";
+
+std::string random_string3(size_t length)
+{
+    auto randchar = []() -> char
+    {
+        const char charset[] =
+        "0123456789"
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        "abcdefghijklmnopqrstuvwxyz";
+        const size_t max_index = (sizeof(charset) - 1);
+        return charset[rand() % max_index];
+    };
+    std::string str(length, 0);
+    std::generate_n(str.begin(), length, randchar);
+    return str;
+}
+
 void ControlPanelScene::onButtonTestLz(Ref* pSender, Widget::TouchEventType type)
 {
 	if (type == Widget::TouchEventType::ENDED)
 	{
 		g_screenLog->log( LL_INFO, "Testing LZ4:" );
 		
-//		auto buffer = "Testing Lz4!Testing Lz4!ABCZXNCMBZXCHGUIQiuwiqwjebnbyzixcuzyxciuzyxcuiyzxuciyzuxciyTesting Lz4!";
-//		int csize;
-//		auto cstr2 = Lz4Compression::encode(LONG_STRING_VALUE2, csize);
+//		auto buffer = random_string3(65536); //64 * 1024
+//        
+//        //std::string buffer(LONG_STRING_VALUE3);
+//		auto cstr2 = Lz4Compression::encode(buffer);
 //		auto dstr2 = Lz4Compression::decode(cstr2);
 //
-//		g_screenLog->log(LL_DEBUG, "Original length = %d", std::strlen(LONG_STRING_VALUE2));
+//        g_screenLog->log(LL_DEBUG, "Original length = %d", buffer.length()); //buffer.length() //std::strlen(LONG_STRING_VALUE3)
 //		g_screenLog->log( LL_DEBUG, "Dempressed string = %s", dstr2.c_str());
-//		g_screenLog->log( LL_DEBUG, "Compressed length = %d size=%d", cstr2.length(), csize);
-//		g_screenLog->log( LL_DEBUG, "Dempressed length = %d", dstr2.length());
+//		g_screenLog->log( LL_DEBUG, "Compressed length = %d ", cstr2.length());
+//		g_screenLog->log( LL_DEBUG, "Decompressed length = %d", dstr2.length());
 		
-		int cspeed, dspeed;
+		float cspeed, dspeed;
 		auto res = Lz4Compression::performTests(cspeed, dspeed);
 		if(res)
 		{
-			g_screenLog->log(LL_DEBUG, "Compression speed = %.3f MB/s", static_cast<double>(cspeed) / static_cast<double>(1000000));
-			g_screenLog->log(LL_DEBUG, "Decompression speed = %.3f MB/s", static_cast<double>(dspeed) / static_cast<double>(1000000));
+			g_screenLog->log(LL_DEBUG, "Compression speed = %.2f MB/s", cspeed);
+			g_screenLog->log(LL_DEBUG, "Decompression speed = %.3f MB/s", dspeed);
 		}
 	}
 }
@@ -700,6 +720,14 @@ void ControlPanelScene::onButtonTestHuffman(Ref* pSender, Widget::TouchEventType
 		//addMessage(result);
 		auto result2 = HuffmanCompression::decode(result);
 		addMessage(result2);*/
+        
+        		float cspeed, dspeed;
+        		auto res = HuffmanCompression::performTests(cspeed, dspeed);
+        		if(res)
+        		{
+        			g_screenLog->log(LL_DEBUG, "Compression speed = %.2f MB/s", cspeed);
+        			g_screenLog->log(LL_DEBUG, "Decompression speed = %.3f MB/s", dspeed);
+        		}
 	}
 }
 

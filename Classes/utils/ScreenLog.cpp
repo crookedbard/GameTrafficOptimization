@@ -21,7 +21,7 @@ using namespace cocos2d;
 ScreenLog* g_screenLog = NULL;
 char g_screenLogPrintBuffer[SCREENLOG_PRINT_BUFFER_SIZE];
 
-float getTimeMillis() {
+float ScreenLog::getTimeMillis() {
     timeval time;
     gettimeofday(&time, NULL);
     unsigned long millisecs = (time.tv_sec * 1000) + (time.tv_usec/1000);

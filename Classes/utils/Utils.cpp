@@ -17,10 +17,58 @@
 #if defined(WIN32) || defined(WIN64)
 #include <windows.h>
 #endif // defined(WIN32) || defined(WIN64)
-
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <iostream>
+//#include <string>
 namespace util
 {
 
+//    std::string random_string(size_t length)
+//    {
+//        auto randchar = []() -> char
+//        {
+//            const char charset[] =
+//            "0123456789"
+//            "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+//            "abcdefghijklmnopqrstuvwxyz";
+//            const size_t max_index = (sizeof(charset) - 1);
+//            return charset[arc4random() % max_index];
+//        };
+//        std::string str(length, 0);
+//        std::generate_n(str.begin(), length, randchar);
+//        return str;
+//    }
+//    
+//    std::string random_numeric_string(size_t length)
+//    {
+//        auto randchar = []() -> char
+//        {
+//            const char charset[] =
+//            "0123456789";
+//            const size_t max_index = (sizeof(charset) - 1);
+//            return charset[arc4random() % max_index];
+//        };
+//        std::string str(length, 0);
+//        std::generate_n(str.begin(), length, randchar);
+//        return str;
+//    }
+//    
+//    std::string random_literal_string(size_t length)
+//    {
+//        auto randchar = []() -> char
+//        {
+//            const char charset[] =
+//            "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+//            "abcdefghijklmnopqrstuvwxyz";
+//            const size_t max_index = (sizeof(charset) - 1);
+//            return charset[arc4random() % max_index];
+//        };
+//        std::string str(length, 0);
+//        std::generate_n(str.begin(), length, randchar);
+//        return str;
+//    }
+    
 	variant::variant()
 	{
 		this->type = type_int;

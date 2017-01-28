@@ -20,15 +20,16 @@
 #define LL_DEBUG    0x10
 #define LL_TRACE    0x20
 
-/*#define printf(MESSAGE,args...) { \
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
+#define printf(MESSAGE,args...) { \
 const char *A[] = {MESSAGE}; \
 if(sizeof(A) > 0) {\
 g_screenLog->log( LL_DEBUG, *A, ##args); \
 } else {\
 g_screenLog->log( LL_DEBUG, "\n"); \
 }\
-}*/
-
+}
+#endif
 //////////////////////////////////////////////////////////////////////
 
 class screenLogMessage {
@@ -67,7 +68,7 @@ private:
     float m_timeout;
     std::vector<screenLogMessage*> m_messages;
     //pthread_mutex_t m_contentMutex;
-    
+    static float getTimeMillis();
 public:
     
     ScreenLog();

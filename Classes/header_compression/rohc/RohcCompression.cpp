@@ -30,14 +30,14 @@
 
 //#define printf(MESSAGE,args...) g_screenLog->log( LL_DEBUG, MESSAGE, args);
 //#define printf(MESSAGE) g_screenLog->log( LL_DEBUG, MESSAGE);
-#define printf(MESSAGE,args...) { \
-const char *A[] = {MESSAGE}; \
-if(sizeof(A) > 0) {\
-g_screenLog->log( LL_DEBUG, *A, ##args); \
-} else {\
-g_screenLog->log( LL_DEBUG, "\n"); \
-}\
-}
+//#define printf(MESSAGE,args...) { \
+//const char *A[] = {MESSAGE}; \
+//if(sizeof(A) > 0) {\
+//g_screenLog->log( LL_DEBUG, *A, ##args); \
+//} else {\
+//g_screenLog->log( LL_DEBUG, "\n"); \
+//}\
+//}
 
 //printf("%s %d",__FILE__,__LINE__); fflush(stdout);\
 //printf("::"); \

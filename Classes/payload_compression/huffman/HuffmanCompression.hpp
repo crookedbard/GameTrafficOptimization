@@ -12,26 +12,16 @@
 #include <stdio.h>
 #include <iostream>
 #include <string>
-/*struct EncodingResults {
-    int cyclesMin;
-    int cyclesMax;
-    int cyclesAverage;
-    int cyclesTotal;
-} ;
-
-struct DecodingResults {
-    int cyclesMin;
-    int cyclesMax;
-    int cyclesAverage;
-    int cyclesTotal;
-} ;*/
 
 class HuffmanCompression
 {
 public:
     static unsigned char * encode(std::string str, int &compSize);
 	static std::string decode(unsigned char * sour, int csize);
-    //static std::pair<EncodingResults, DecodingResults> performTest();
+    static bool performTests(float &cspeed, float &dspeed);
+private:
+    static unsigned char* performCompressionTest(float &cspeed, int &csize);
+    static std::string performDecompressionTest(unsigned char* cstring, float &dspeed, int &csize);
 };
 
 #endif /* HuffmanCompression_hpp */

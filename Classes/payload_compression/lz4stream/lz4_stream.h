@@ -131,8 +131,8 @@ class LZ4InputStream : public std::istream
     LZ4InputBuffer& operator= (const LZ4InputBuffer &) = delete;
   private:
     std::istream& source_;
-    std::array<char, 64 * 1024> src_buf_;
-    std::array<char, 64 * 1024> dest_buf_;
+    std::array<char, 64 * 1024> src_buf_; //64 * 1024
+    std::array<char, 64 * 1024> dest_buf_; //64 * 1024
     size_t offset_;
     size_t src_buf_size_;
     LZ4F_decompressionContext_t ctx_;
