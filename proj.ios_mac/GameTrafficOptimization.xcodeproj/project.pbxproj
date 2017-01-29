@@ -60,6 +60,10 @@
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
 		570797141E2C044900E450FC /* lz4_input_stream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5707970B1E2C044900E450FC /* lz4_input_stream.cpp */; };
 		570797161E2C044900E450FC /* lz4_output_stream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5707970C1E2C044900E450FC /* lz4_output_stream.cpp */; };
+		57141E181E3E939D00B2C3A6 /* rawtcp.c in Sources */ = {isa = PBXBuildFile; fileRef = 57141E171E3E939D00B2C3A6 /* rawtcp.c */; };
+		57141E191E3E939D00B2C3A6 /* rawtcp.c in Sources */ = {isa = PBXBuildFile; fileRef = 57141E171E3E939D00B2C3A6 /* rawtcp.c */; };
+		57141E1C1E3EB1D200B2C3A6 /* rawsocket.c in Sources */ = {isa = PBXBuildFile; fileRef = 57141E1B1E3EB1D200B2C3A6 /* rawsocket.c */; };
+		57141E1D1E3EB1D200B2C3A6 /* rawsocket.c in Sources */ = {isa = PBXBuildFile; fileRef = 57141E1B1E3EB1D200B2C3A6 /* rawsocket.c */; };
 		57568A721E2FD65F00B2BD4F /* RohcCompression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57568A701E2FD65F00B2BD4F /* RohcCompression.cpp */; };
 		57568A741E2FDEBF00B2BD4F /* RohcCompression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57568A701E2FD65F00B2BD4F /* RohcCompression.cpp */; };
 		576C3F411E25B44800D03ECB /* Huffman.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 576C3F3F1E25B44800D03ECB /* Huffman.cpp */; };
@@ -217,6 +221,8 @@
 		5707970B1E2C044900E450FC /* lz4_input_stream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lz4_input_stream.cpp; path = payload_compression/lz4stream/lz4_input_stream.cpp; sourceTree = "<group>"; };
 		5707970C1E2C044900E450FC /* lz4_output_stream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lz4_output_stream.cpp; path = payload_compression/lz4stream/lz4_output_stream.cpp; sourceTree = "<group>"; };
 		5707970E1E2C044900E450FC /* lz4_stream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lz4_stream.h; path = payload_compression/lz4stream/lz4_stream.h; sourceTree = "<group>"; };
+		57141E171E3E939D00B2C3A6 /* rawtcp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = rawtcp.c; path = header_compression/rohc/rawtcp.c; sourceTree = "<group>"; };
+		57141E1B1E3EB1D200B2C3A6 /* rawsocket.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = rawsocket.c; path = header_compression/rohc/rawsocket.c; sourceTree = "<group>"; };
 		57568A701E2FD65F00B2BD4F /* RohcCompression.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RohcCompression.cpp; path = header_compression/rohc/RohcCompression.cpp; sourceTree = "<group>"; };
 		57568A711E2FD65F00B2BD4F /* RohcCompression.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = RohcCompression.hpp; path = header_compression/rohc/RohcCompression.hpp; sourceTree = "<group>"; };
 		576C3F061E25930400D03ECB /* bitpacking.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = bitpacking.o; path = ../Classes/payload_compression/simdcpp/libs/bitpacking.o; sourceTree = "<group>"; };
@@ -646,6 +652,8 @@
 			children = (
 				57568A701E2FD65F00B2BD4F /* RohcCompression.cpp */,
 				57568A711E2FD65F00B2BD4F /* RohcCompression.hpp */,
+				57141E171E3E939D00B2C3A6 /* rawtcp.c */,
+				57141E1B1E3EB1D200B2C3A6 /* rawsocket.c */,
 			);
 			name = rohc;
 			sourceTree = "<group>";
@@ -844,6 +852,7 @@
 				5775A8321E2E97D7001C5BC7 /* Lz4Compression.cpp in Sources */,
 				57AA28081E22A11B00895B24 /* ControlPanelScene.cpp in Sources */,
 				57EA9DBC1E298473006B3928 /* HuffmanCompression.cpp in Sources */,
+				57141E1C1E3EB1D200B2C3A6 /* rawsocket.c in Sources */,
 				57AA282B1E22F9AB00895B24 /* list.cpp in Sources */,
 				57CFFDE91E2EB6C2005C0751 /* lz4hc.c in Sources */,
 				57F18A191E34C58B00D031D1 /* ScreenLog.cpp in Sources */,
@@ -853,6 +862,7 @@
 				576C3F411E25B44800D03ECB /* Huffman.cpp in Sources */,
 				57AA282E1E22F9AB00895B24 /* tools.cpp in Sources */,
 				57AA282A1E22F9AB00895B24 /* buffer.cpp in Sources */,
+				57141E181E3E939D00B2C3A6 /* rawtcp.c in Sources */,
 				57568A721E2FD65F00B2BD4F /* RohcCompression.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				57AA282C1E22F9AB00895B24 /* md5.cpp in Sources */,
@@ -876,6 +886,7 @@
 				57CFFDEF1E2EB6D9005C0751 /* xxhash.c in Sources */,
 				5775A8331E2E998F001C5BC7 /* Lz4Compression.cpp in Sources */,
 				5775A8341E2E998F001C5BC7 /* SimdCompression.cpp in Sources */,
+				57141E191E3E939D00B2C3A6 /* rawtcp.c in Sources */,
 				576C3F421E25B46800D03ECB /* Huffman.cpp in Sources */,
 				570797141E2C044900E450FC /* lz4_input_stream.cpp in Sources */,
 				57C011981E2427EC006E6C4E /* 39dll.cpp in Sources */,
@@ -889,6 +900,7 @@
 				57AA28091E22A11B00895B24 /* ControlPanelScene.cpp in Sources */,
 				57AA276C1E21690A00895B24 /* Timer.cpp in Sources */,
 				57AA276E1E21690A00895B24 /* Utils.cpp in Sources */,
+				57141E1D1E3EB1D200B2C3A6 /* rawsocket.c in Sources */,
 				57AA27701E21690A00895B24 /* VisibleRect.cpp in Sources */,
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,

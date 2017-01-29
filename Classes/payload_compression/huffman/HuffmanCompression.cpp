@@ -90,7 +90,7 @@ bool HuffmanCompression::performTests(float &cspeed, float &dspeed)
 
 unsigned char* HuffmanCompression::performCompressionTest(float &cspeed,int &csize)
 {
-	const int MB_SIZE = 50;
+	const int MB_SIZE = 25;
 	const int MB_BYTES = 1000000; //1 MB = 1000000 Bytes
 	const int SEC_MILI = 1000; //1 second = 1000 milis
 	

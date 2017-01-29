@@ -130,6 +130,7 @@ void RohcCompression::performTest()
 	
 	uint8_t ip_buffer[BUFFER_SIZE];
 	rohc_buf ip_packet = rohc_buf_init_empty(ip_buffer, BUFFER_SIZE);
+    //createRohcPacketTcpIp((char*)FAKE_PAYLOAD, &ip_packet);
 	createIpPacket((char*)FAKE_PAYLOAD, &ip_packet);
 	
 	printf("Uncompressed Packet Length:\t%zu\n", ip_packet.len);
@@ -138,11 +139,11 @@ void RohcCompression::performTest()
 	{
 		uint8_t rohc_buffer[BUFFER_SIZE];
 		rohc_buf compressed_rohc_packet = rohc_buf_init_empty(rohc_buffer, BUFFER_SIZE);  /* the packet that will contain the resulting ROHC packet */
-		char *m = (char *)malloc(compressed_rohc_packet.len);
-		for(auto j = 0; j < compressed_rohc_packet.len; j++)
-		{
-			m[j] = rohc_buf_byte_at(compressed_rohc_packet, j);
-		}
+//		char *m = (char *)malloc(compressed_rohc_packet.len);
+//		for(auto j = 0; j < compressed_rohc_packet.len; j++)
+//		{
+//			m[j] = rohc_buf_byte_at(compressed_rohc_packet, j);
+//		}
 		
 		if(!compress(&ip_packet, &compressed_rohc_packet)) return;
 		printf("Packet no: %d compressed Packet Length:\t%zu\n", i, compressed_rohc_packet.len);
@@ -151,7 +152,7 @@ void RohcCompression::performTest()
 		
 		rohc_buf decompressed_ip_packet;
 		if(!decompress(&compressed_rohc_packet, decompressed_ip_packet)) return;
-		printf("Packet no: %d decompressed Packet Length:\t%zu\n", i, decompressed_ip_packet.len);
+		//printf("Packet no: %d decompressed Packet Length:\t%zu\n", i, decompressed_ip_packet.len);
 	}
 	
 	RohcCompression::free();
@@ -200,21 +201,39 @@ bool RohcCompression::initCompressor()
 		return false;
 	}
 	
-	/* enable the IP-only compression profile */
+	/* enable the UNCOMPRESSED compression profile */
 	printf("enable the IP-only compression profile\n");
-	if (!rohc_comp_enable_profile(_compressor, ROHC_PROFILE_IP))
+	if (!rohc_comp_enable_profile(_compressor, ROHC_PROFILE_UNCOMPRESSED))
 	{
 		fprintf(stderr, "failed to enable the IP-only profile\n");
 		/* cleanup compressor, then leave with an error code */
 		rohc_comp_free(_compressor);
 		return false ;
 	}
+    /* enable the IP-only compression profile */
+    printf("enable the IP-only compression profile\n");
+    if (!rohc_comp_enable_profile(_compressor, ROHC_PROFILE_IP))
+    {
+        fprintf(stderr, "failed to enable the IP-only profile\n");
+        /* cleanup compressor, then leave with an error code */
+        rohc_comp_free(_compressor);
+        return false ;
+    }
+    /* enable the TCP-IP compression profile */
+    printf("enable the IP-only compression profile\n");
+    if (!rohc_comp_enable_profile(_compressor, ROHC_PROFILE_TCP))
+    {
+        fprintf(stderr, "failed to enable the IP-only profile\n");
+        /* cleanup compressor, then leave with an error code */
+        rohc_comp_free(_compressor);
+        return false ;
+    }
 	//we dont have a function that would calculate ip tcp checksum
-//    printf("enable the NO_IP_CHECKSUMS feature\n");
-//    if (!rohc_comp_set_features(_compressor, ROHC_COMP_FEATURE_NO_IP_CHECKSUMS))
-//    {
-//        fprintf(stderr, "failed to enable features\n");
-//    }
+    printf("enable the NO_IP_CHECKSUMS feature\n");
+    if (!rohc_comp_set_features(_compressor, ROHC_COMP_FEATURE_NO_IP_CHECKSUMS))
+    {
+        fprintf(stderr, "failed to enable features\n");
+    }
 	return true;
 }
 
@@ -246,13 +265,24 @@ bool RohcCompression::initDecompressor()
 	//        return false;
 	//    }
 	
-	if(!rohc_decomp_enable_profile(_decompressor, ROHC_PROFILE_IP))
+	if(!rohc_decomp_enable_profile(_decompressor, ROHC_PROFILE_UNCOMPRESSED))
 	{
-		fprintf(stderr, "failed to enable the IP-only profile\n");
-		//goto release_decompressor;
+		fprintf(stderr, "failed to enable the UNCOMPRESSED profile\n");
 		rohc_decomp_free(_decompressor);
 		return false;
 	}
+    if(!rohc_decomp_enable_profile(_decompressor, ROHC_PROFILE_IP))
+    {
+        fprintf(stderr, "failed to enable the IP-only profile\n");
+        rohc_decomp_free(_decompressor);
+        return false;
+    }
+    if(!rohc_decomp_enable_profile(_decompressor, ROHC_PROFILE_TCP))
+    {
+        fprintf(stderr, "failed to enable the TCP-IP profile\n");
+        rohc_decomp_free(_decompressor);
+        return false;
+    }
 	//! [enable ROHC decompression profile]
 	//! [enable ROHC decompression profiles]
 	//    if(!rohc_decomp_enable_profiles(decompressor, ROHC_PROFILE_UDP,
@@ -284,30 +314,6 @@ void RohcCompression::free()
 	//! [destroy ROHC compressor and decompressor]
 }
 
-
-struct iphdr
-{
-#if __BYTE_ORDER == __LITTLE_ENDIAN
-	unsigned int ihl:4;
-	unsigned int version:4;
-#elif __BYTE_ORDER == __BIG_ENDIAN
-	unsigned int version:4;
-	unsigned int ihl:4;
-#else
-# error  "Please fix <bits/endian.h>"
-#endif
-	
-	uint8_t tos;
-	uint16_t tot_len;
-	uint16_t id;
-	uint16_t frag_off;
-	uint8_t ttl;
-	uint8_t protocol;
-	uint16_t check;
-	uint32_t saddr;
-	uint32_t daddr;
-	/*The options start here. */
-};
 
 #define rohc_buf_init_empty(__data, __max_len) \
 { \
@@ -356,11 +362,108 @@ void RohcCompression::createIpPacket(char* payload, rohc_buf *ip_packet)
 	//ip_header->daddr = *((LPIN_ADDR)*(0x05060708));
 	//#endif
 	
+    //test tcp header
+//    char tcp_buffer[BUFFER_SIZE];
+//    struct tcpheader *tcp = reinterpret_cast<struct tcpheader *> (tcp_buffer);
+//    // The TCP structure. The source port, spoofed, we accept through the command line
+//    tcp->tcph_srcport = htons(atoi("1337"));
+//    // The destination port, we accept through command line
+//    tcp->tcph_destport = htons(atoi("1337"));
+//    tcp->tcph_seqnum = htonl(1);
+//    tcp->tcph_acknum = 0;
+//    tcp->tcph_offset = 5;
+//    tcp->tcph_syn = 1;
+//    tcp->tcph_ack = 0;
+//    tcp->tcph_win = htons(32767);
+//    tcp->tcph_chksum = 0; // Done by kernel
+//    tcp->tcph_urgptr = 0;
+    
 	/* copy the payload just after the IP header */
 	//rohc_buf_append(&ip_packet, reinterpret_cast<uint8_t *>(FAKE_PAYLOAD), strlen(FAKE_PAYLOAD));
+    printf("IP header length: %d \n", ip_packet->len);
+    //printf("TCP header length: %d \n", sizeof(tcpheader));
+    //rohc_buf_append(ip_packet, (uint8_t *)tcp_buffer, sizeof(tcpheader));
+    
+    printf("Payload length: %d \n", strlen(FAKE_PAYLOAD));
 	rohc_buf_append(ip_packet, (uint8_t *)FAKE_PAYLOAD, strlen(FAKE_PAYLOAD));
 	//rohc_buf *pointer = ip_packet;
 	//return &ip_packet;
+}
+
+// Simple checksum function, may use others such as Cyclic Redundancy Check, CRC
+unsigned short RohcCompression::csum(unsigned short *buf, int len)
+{
+    unsigned long sum;
+    for(sum=0; len>0; len--)
+        sum += *buf++;
+    sum = (sum >> 16) + (sum &0xffff);
+    sum += (sum >> 16);
+    return (unsigned short)(~sum);
+}
+
+void RohcCompression::createRohcPacketTcpIp(char* payload, rohc_buf *ip_packet)
+{
+    char buffer[BUFFER_SIZE];
+    // The size of the headers
+    struct ipheader *ip = (struct ipheader *) buffer;
+    struct tcpheader *tcp = (struct tcpheader *) (buffer + sizeof(struct ipheader));
+    
+    memset(buffer, 0, BUFFER_SIZE);
+    
+    //struct ipheader *ip = reinterpret_cast<struct ipheader *> (ip_packet->data);
+    //struct tcpheader *tcp = reinterpret_cast<struct tcpheader *> (ip_packet->data + sizeof(struct ipheader));
+    
+    // IP structure
+    ip->iph_ihl = 5;
+    ip->iph_ver = 4;
+    ip->iph_tos = 16;
+    ip->iph_len = sizeof(struct ipheader) + sizeof(struct tcpheader);
+    ip->iph_ident = htons(54321);
+    ip->iph_offset = 0;
+    ip->iph_ttl = 64;
+    ip->iph_protocol = 6; // TCP
+    ip->iph_chksum = 0; // Done by kernel
+    
+    // Source IP, modify as needed, spoofed, we accept through command line argument
+    ip->iph_sourceip = inet_addr("1.2.3.4");
+    // Destination IP, modify as needed, but here we accept through command line argument
+    ip->iph_destip = inet_addr("5.6.7.8");
+    
+    // The TCP structure. The source port, spoofed, we accept through the command line
+    tcp->tcph_srcport = htons(atoi("1337"));
+    // The destination port, we accept through command line
+    tcp->tcph_destport = htons(atoi("1337"));
+    tcp->tcph_seqnum = htonl(1);
+    tcp->tcph_acknum = 0;
+    tcp->tcph_offset = 5;
+    tcp->tcph_syn = 1;
+    tcp->tcph_ack = 0;
+    tcp->tcph_win = htons(32767);
+    tcp->tcph_chksum = 0; // Done by kernel
+    tcp->tcph_urgptr = 0;
+    // IP checksum calculation
+    ip->iph_chksum = csum((unsigned short *) buffer, (sizeof(struct ipheader) + sizeof(struct tcpheader)));
+
+    
+    printf("IP header length: %d \n", sizeof(struct ipheader));
+    //rohc_buf_append(ip_packet, (uint8_t *)ip, sizeof(struct ipheader));
+//    memcpy(rohc_buf_data_at(*ip_packet, ip_packet->len), (uint8_t *)ip,
+//           sizeof(struct ipheader));
+//    ip_packet->len += sizeof(struct ipheader);
+    
+    printf("TCP header length: %d \n", sizeof(struct tcpheader));
+    //rohc_buf_append(ip_packet, (uint8_t *)tcp, sizeof(struct tcpheader));
+//    memcpy(rohc_buf_data_at(*ip_packet, ip_packet->len), (uint8_t *)tcp,
+//           sizeof(struct tcpheader));
+//    ip_packet->len += sizeof(struct tcpheader);
+    
+    rohc_buf_append(ip_packet, (uint8_t *)buffer, sizeof(struct ipheader) + sizeof(struct tcpheader));
+    
+    printf("Payload length: %d \n", strlen(payload));
+    rohc_buf_append(ip_packet, (uint8_t *)payload, strlen(payload));
+//    memcpy(rohc_buf_data_at(*ip_packet, ip_packet->len), FAKE_PAYLOAD,
+//           strlen(FAKE_PAYLOAD));
+//    ip_packet->len += strlen(FAKE_PAYLOAD);
 }
 
 void printErrorStatus(rohc_status_t status)

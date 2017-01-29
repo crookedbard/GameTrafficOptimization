@@ -821,12 +821,16 @@ static std::string random_literal_string(size_t length)
 	return str;
 }
 
-#include "cocos2d.h"
 static unsigned long getTimeMillis()
 {
+    unsigned long millisecs;
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
 	timeval time;
-	cocos2d::gettimeofday(&time, nullptr);
-	unsigned long millisecs = (time.tv_sec * 1000) + (time.tv_usec / 1000);
+	gettimeofday(&time, nullptr);
+	millisecs = (time.tv_sec * 1000) + (time.tv_usec / 1000);
+#else
+    millisecs = GetTickCount();
+#endif
 	return millisecs;
 }
 
