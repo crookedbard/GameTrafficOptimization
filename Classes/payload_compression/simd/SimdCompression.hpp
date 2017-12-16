@@ -17,6 +17,7 @@ class SimdCompression
 public:
     static std::string encode(std::string buffer);
     static std::string decode(std::string buffer);
+    static void test();
 };
 
 #endif /* SimdCompression_hpp */

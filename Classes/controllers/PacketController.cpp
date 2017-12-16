@@ -13,8 +13,9 @@
 #endif
 
 const char *SHORT_STRING_VALUE =
-"Random mmorpg chat message,\
-Buying weapon";
+"Random mmorpg chat message\
+Buying weapon\
+Searching";
 
 const char *LONG_STRING_VALUE =
 "Random mmorpg chat dialogue, \
@@ -271,8 +272,13 @@ void PacketController::writeFewInt()
 {
 	clearbuffer();
 	writebyte(MSG_FEW_INT);
+    writeint(8);
 	writeint(123);
 	writeint(456);
+    writeint(123);
+    writebyte(1);
+    writebyte(1);
+    writebyte(1);
 }
 
 void PacketController::writeFewString()
@@ -286,29 +292,81 @@ void PacketController::writeFewString()
 
 void PacketController::writeManyInt()
 {
-	
+    clearbuffer();
+    writebyte(MSG_FEW_INT);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writebyte(1);
+    writebyte(1);
+    writebyte(1);
 }
 
 void PacketController::writeManyString()
 {
 	clearbuffer();
 	writebyte(MSG_MANY_STRING);
-	std::string str = LONG_STRING_VALUE;
-	str += LONG_STRING_VALUE;
-	str += LONG_STRING_VALUE;
-	str += LONG_STRING_VALUE;
-
-	writestring(str);
-//	for (auto i = 0; i < 20; i++) {
-//		writestring("DAINIUS 01 ABCDEF HELLO HELLO BYE");
-//		writestring("KREIVYS 10 FGE FGE THANK YOU THANK YOU");
-//		writestring("Testas 23 BUYING Selling Looking for party");
-//	}
+//	std::string str = LONG_STRING_VALUE;
+//	str += LONG_STRING_VALUE;
+//	str += LONG_STRING_VALUE;
+//	str += LONG_STRING_VALUE;
+//
+//
+    std::string str = "";
+    for (auto i = 0; i < 10; i++) {
+        str += "Looking for Party> Endless tower floor 3";
+        str += "Buying augmentet weapon grade";
+        str += "Selling Blue wolf gloves, boots";
+    }
+    str.pop_back();str.pop_back();
+    writestring(str);
 }
 
 void PacketController::writeFewIntLz()
 {
-	
+    clearbuffer();
+    writebyte(1);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writeint(123);
+    writebyte(1);
+    writebyte(1);
+    writebyte(1);
+    auto buffer = getbuffer();
+    auto encoded = Lz4Compression::encode(buffer->data);
+    clearbuffer();
+    writebyte(MSG_FEW_INT_LZ);
+    writeint(encoded.length());
+    
+    auto sour = new unsigned char[encoded.length()];
+    strcpy((char*)sour, encoded.c_str());
+    
+    for (auto i = 0; i < encoded.length(); i++)
+    {
+        writebyte(sour[i]);
+    }
 }
 
 void PacketController::writeFewStringLz()
@@ -320,27 +378,76 @@ void PacketController::writeFewStringLz()
 	auto encoded = Lz4Compression::encode(SHORT_STRING_VALUE);
 	clearbuffer();
 	writebyte(MSG_FEW_STRING_LZ);
-	writestring(encoded);
+    writeint(encoded.length());
+    
+    auto sour = new unsigned char[encoded.length()];
+    strcpy((char*)sour, encoded.c_str());
+    
+    for (auto i = 0; i < encoded.length(); i++)
+    {
+        writebyte(sour[i]);
+    }
 }
 
 void PacketController::writeManyIntLz()
 {
-	
+    clearbuffer();
+    writebyte(1);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writebyte(1);
+    writebyte(1);
+    writebyte(1);
+    auto buffer = getbuffer();
+    auto encoded = Lz4Compression::encode(buffer->data);
+    clearbuffer();
+    writebyte(MSG_FEW_INT_LZ);
+    writeint(encoded.length());
+    
+    auto sour = new unsigned char[encoded.length()];
+    strcpy((char*)sour, encoded.c_str());
+    
+    for (auto i = 0; i < encoded.length(); i++)
+    {
+        writebyte(sour[i]);
+    }
 }
 
 void PacketController::writeManyStringLz()
 {
-//	std::string str = "";
-//	for (auto i = 0; i < 10; i++) {
-//		str += "Looking for Party > Endless tower floor 3";
-//		str += "Buying augmentet weapon S grade";
-//		str += "Selling Blue wolf gloves, boots";
-//	}
-
-	std::string str = LONG_STRING_VALUE;
-	str += LONG_STRING_VALUE;
-	str += LONG_STRING_VALUE;
-	str += LONG_STRING_VALUE;
+	std::string str = "";
+	for (auto i = 0; i < 10; i++) {
+		str += "Looking for Party > Endless tower floor 3";
+		str += "Buying augmentet weapon S grade";
+		str += "Selling Blue wolf gloves, boots";
+	}
+str.pop_back();str.pop_back();
+//	std::string str = LONG_STRING_VALUE;
+//	str += LONG_STRING_VALUE;
+//	str += LONG_STRING_VALUE;
+//	str += LONG_STRING_VALUE;
 
 	//int csize;
 	auto encoded = Lz4Compression::encode(str);
@@ -372,16 +479,25 @@ void PacketController::writeManyStringLz()
 
 void PacketController::writeFewIntHuffman()
 {
-	/*clearbuffer();
-	writeint(123);
-	writeint(456);
-	auto buffer = getbuffer();
-	auto encoded = HuffmanCompression::encode(buffer->data);
 	clearbuffer();
-	writebyte(MSG_FEW_INT);
-	writechars("");//huffman tree
-	writechars("");//huffman tree
-	*/
+    writebyte(1);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writeint(123);
+    writebyte(1);
+    writebyte(1);
+    writebyte(1);
+	auto buffer = getbuffer();
+    int csize;
+	auto encoded = HuffmanCompression::encode(buffer->data, csize);
+	clearbuffer();
+	writebyte(MSG_FEW_INT_HUFFMAN);
+    writeint(csize);
+    for (auto i = 0; i < csize; i++)
+    {
+        writebyte(encoded[i]);
+    }
 }
 
 void PacketController::writeFewStringHuffman()
@@ -410,7 +526,45 @@ void PacketController::writeFewStringHuffman()
 
 void PacketController::writeManyIntHuffman()
 {
-	
+    clearbuffer();
+    writebyte(1);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writeint(8);
+    writeint(123);
+    writeint(456);
+    writebyte(1);
+    writebyte(1);
+    writebyte(1);
+    auto buffer = getbuffer();
+    int csize;
+    auto encoded = HuffmanCompression::encode(buffer->data, csize);
+    clearbuffer();
+    writebyte(MSG_FEW_INT_HUFFMAN);
+    writeint(csize);
+    for (auto i = 0; i < csize; i++)
+    {
+        writebyte(encoded[i]);
+    }
 }
 
 void PacketController::writeManyStringHuffman()
@@ -423,16 +577,17 @@ void PacketController::writeManyStringHuffman()
 	}
 	auto buffer = getbuffer();*/
 
-//	std::string str = "";
-//	for (auto i = 0; i < 10; i++) {
-//		str += "Looking for Party > Endless tower floor 3";
-//		str += "Buying augmentet weapon S grade";
-//		str += "Selling Blue wolf gloves, boots";
-//	}
-	std::string str = LONG_STRING_VALUE;
-	str += LONG_STRING_VALUE;
-	str += LONG_STRING_VALUE;
-	str += LONG_STRING_VALUE;
+	std::string str = "";
+	for (auto i = 0; i < 10; i++) {
+		str += "Looking for Party > Endless tower floor 3";
+		str += "Buying augmentet weapon S grade";
+		str += "Selling Blue wolf gloves, boots";
+	}
+    str.pop_back();str.pop_back();
+//	std::string str = LONG_STRING_VALUE;
+//	str += LONG_STRING_VALUE;
+//	str += LONG_STRING_VALUE;
+//	str += LONG_STRING_VALUE;
 	int csize;
 	auto encoded = HuffmanCompression::encode(str/*buffer->data*/, csize);
 	clearbuffer();

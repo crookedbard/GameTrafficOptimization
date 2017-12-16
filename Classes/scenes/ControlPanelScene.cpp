@@ -24,6 +24,7 @@
 #include "ScreenLog.hpp"
 #include "HuffmanCompression.hpp"
 #include "Lz4Compression.hpp"
+#include "SimdCompression.hpp"
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS)
 #include "RohcCompression.hpp" //doesnt work on Iphone 5 and on emulator 5. but it works on emu >=6
 #endif
@@ -469,7 +470,7 @@ void ControlPanelScene::onButtonTcpListen(Ref* pSender, Widget::TouchEventType t
 			dllInit();
 			_tcpSocket = tcplisten(_port, 2, 1);
 
-			if (socket <= 0)
+			if (_tcpSocket <= 0)
 			{
 				//addMessage("Listening socket could not be opened on port " + doubleToString(_port));
 				g_screenLog->log( LL_ERROR, "Listening socket could not be opened on port %s", doubleToString(_port).c_str());
@@ -684,6 +685,7 @@ std::string random_string3(size_t length)
 
 void ControlPanelScene::onButtonTestLz(Ref* pSender, Widget::TouchEventType type)
 {
+    //SimdCompression::test();
 	if (type == Widget::TouchEventType::ENDED)
 	{
 		g_screenLog->log( LL_INFO, "Testing LZ4:" );
@@ -792,10 +794,26 @@ void ControlPanelScene::onButtonSendFewStrings(Ref* pSender, Widget::TouchEventT
 
 void ControlPanelScene::onButtonSendManyInts(Ref* pSender, Widget::TouchEventType type)
 {
-	if (type == Widget::TouchEventType::ENDED)
+	if (type == Widget::TouchEventType::ENDED && (_isTcpClient || _isTcpServer))
 	{
-		//addMessage("Sending many ints: 123, 456, 789 ...");
-		
+        if (_lz) PacketController::write(MSG_MANY_INT_LZ);
+        else if (_huffman) PacketController::write(MSG_MANY_INT_HUFFMAN);
+        else PacketController::write(MSG_MANY_INT);
+        
+        double payloadSize;
+        if (_isTcpClient)
+        {
+            sendmessage(_tcpSocket);
+        }
+        if (_isTcpServer)
+        {
+            for (auto i : _connections)
+            {
+                sendmessage(i.second);
+            }
+        }
+        payloadSize = buffsize();
+        g_screenLog->log( LL_INFO, "Sending packet with size: %s", doubleToString(payloadSize).c_str());
 	}
 }
 

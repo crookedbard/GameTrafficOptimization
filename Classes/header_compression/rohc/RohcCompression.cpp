@@ -28,6 +28,10 @@
 //#include "socket.h"
 #endif
 
+#include <stdio.h> //for printf
+#include <string.h> //memset
+#include <stdlib.h>
+#include <cstring>
 //#define printf(MESSAGE,args...) g_screenLog->log( LL_DEBUG, MESSAGE, args);
 //#define printf(MESSAGE) g_screenLog->log( LL_DEBUG, MESSAGE);
 //#define printf(MESSAGE,args...) { \
@@ -39,19 +43,42 @@
 //}\
 //}
 
-//printf("%s %d",__FILE__,__LINE__); fflush(stdout);\
-//printf("::"); \
-//printf(*A,##args); \
+#include "rawtcp.h"
+
+
 
 /* The size (in bytes) of the buffers used in the program */
 #define BUFFER_SIZE 2048
 
 /* The payload for the fake IP packet */
-#define FAKE_PAYLOAD "hello, ROHC world!"
+//#define FAKE_PAYLOAD "hello, ROHC world!"
+#define FAKE_PAYLOAD "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789012345678901234"
 
 #define PACKET_COUNT 10
 
-
+struct iphdr
+{
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+    unsigned int ihl:4;
+    unsigned int version:4;
+#elif __BYTE_ORDER == __BIG_ENDIAN
+    unsigned int version:4;
+    unsigned int ihl:4;
+#else
+# error  "Please fix <bits/endian.h>"
+#endif
+    
+    uint8_t tos;
+    uint16_t tot_len;
+    uint16_t id;
+    uint16_t frag_off;
+    uint8_t ttl;
+    uint8_t protocol;
+    uint16_t check;
+    uint32_t saddr;
+    uint32_t daddr;
+    /*The options start here. */
+};
 
 /* return a random number every time it is called */
 static int gen_random_num(const struct rohc_comp*const comp,
@@ -122,6 +149,19 @@ uint16_t ip_sum_calc(uint16_t len_ip_header, uint8_t buff[])
 rohc_comp* RohcCompression::_compressor;
 rohc_decomp* RohcCompression::_decompressor;
 
+// Define some constants.
+#define IP4_HDRLEN 20         // IPv4 header length
+#define TCP_HDRLEN 20         // TCP header length, excludes options data
+
+#define __FAVOR_BSD           // Use BSD format of tcp header
+
+// Function prototypes
+uint16_t checksum (uint16_t *, int);
+uint16_t tcp4_checksum (struct ip iphdr, struct tcphdr tcphdr);//(struct ip, struct tcphdr, uint8_t *, int);
+char *allocate_strmem (int);
+uint8_t *allocate_ustrmem (int);
+int *allocate_intmem (int);
+
 void RohcCompression::performTest()
 {
 	printf("ROHC version %s\n", rohc_version());
@@ -130,8 +170,260 @@ void RohcCompression::performTest()
 	
 	uint8_t ip_buffer[BUFFER_SIZE];
 	rohc_buf ip_packet = rohc_buf_init_empty(ip_buffer, BUFFER_SIZE);
+    
+    //!TEST 1:
+    //int packetLength;
+    //auto buffer = RawTcp::createRawTcpPacket(packetLength);
+    //rohc_buf_append(&ip_packet, (uint8_t *)buffer, packetLength);
+    //!TEST 2:
+    //Datagram to represent the packet
+//    char datagram[4096] , source_ip[32] , *data , *pseudogram;
+//    
+//    //zero out the packet buffer
+//    memset (datagram, 0, 4096);
+//    
+//    //IP header
+//    struct iphdr *iph = (struct iphdr *) datagram;
+//    
+//    //TCP header
+//    struct tcphdr *tcph = (struct tcphdr *) (datagram + sizeof (struct ip));
+//    struct sockaddr_in sin;
+//    struct pseudo_header psh;
+//    
+//    //Data part
+//    data = datagram + sizeof(struct iphdr) + sizeof(struct tcphdr);
+//    strcpy(data , "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+//    
+//    //Fill in the IP Header
+//    iph->ihl = 5;
+//    iph->version = 4;
+//    iph->tos = 0;
+//    iph->tot_len = sizeof (struct iphdr) + sizeof (struct tcphdr) + strlen(data);
+//    iph->id = 0;/* ID is not important for the example */ //htonl (54321); //Id of this packet
+//    iph->frag_off = 0;
+//    iph->ttl = 255;
+//    iph->protocol = IPPROTO_TCP;
+//    iph->check = 0;      //Set to 0 before calculating checksum
+//    iph->saddr = inet_addr ( source_ip );    //Spoof the source ip address
+//    iph->daddr = sin.sin_addr.s_addr;
+//    iph->saddr = htonl(0x01020304); /* source address 1.2.3.4 */
+//    iph->daddr = htonl(0x05060708); /* destination addr. 5.6.7.8 */
+//    
+//    //Ip checksum
+//    iph->check = csum ((unsigned short *) datagram, iph->tot_len);
+//    
+//    //TCP Header
+//    tcph->th_sport = htons (1234); //source
+//    tcph->th_dport = htons (80); //dest
+//    tcph->th_seq = 0; //seq
+//    tcph->th_ack = 0; //ack_seq
+//    tcph->th_off = 5;  //tcp header size //doff
+//    tcph->th_flags = TH_SYN;
+//    tcph->th_win = htons (5840); /* maximum allowed window size */
+//    tcph->th_sum = 0; //leave checksum 0 now, filled later by pseudo header
+//    tcph->th_urp = 0; //urg_ptr
+//    
+//    //Now the TCP checksum
+//    psh.source_address = inet_addr( source_ip );
+//    psh.dest_address = sin.sin_addr.s_addr;
+//    psh.placeholder = 0;
+//    psh.protocol = IPPROTO_TCP;
+//    psh.tcp_length = htons(sizeof(struct tcphdr) + strlen(data) );
+//    
+//    int psize = sizeof(struct pseudo_header) + sizeof(struct tcphdr) + strlen(data);
+//    pseudogram = (char *)malloc(psize);
+//    
+//    memcpy(pseudogram , (char*) &psh , sizeof (struct pseudo_header));
+//    memcpy(pseudogram + sizeof(struct pseudo_header) , tcph , sizeof(struct tcphdr) + strlen(data));
+//    
+//    tcph->th_sum = csum( (unsigned short*) pseudogram , psize);
+//    
+//    rohc_buf_append(&ip_packet, (uint8_t *)datagram, iph->tot_len);
+    //!Test 3: WORKS! TCP IPv4 WITHOUT OPTIONS AND PAYLOAD
+    int i, status,  *ip_flags, *tcp_flags; //sd,
+    //const int on = 1;
+    char *interface, *target, *src_ip, *dst_ip;
+    struct ip iphdr;
+    struct tcphdr tcphdr;
+    uint8_t *packet;
+    struct addrinfo hints, *res;
+    struct sockaddr_in *ipv4;//, sin;
+    //struct ifreq ifr;
+    void *tmp;
+    
+    // Allocate memory for various arrays.
+    packet = allocate_ustrmem (IP_MAXPACKET);
+    interface = allocate_strmem (40);
+    target = allocate_strmem (40);
+    src_ip = allocate_strmem (INET_ADDRSTRLEN);
+    dst_ip = allocate_strmem (INET_ADDRSTRLEN);
+    ip_flags = allocate_intmem (4);
+    tcp_flags = allocate_intmem (8);
+    
+    
+    // Source IPv4 address: you need to fill this out
+    strcpy (src_ip, "192.168.1.132");
+    
+    // Destination URL or IPv4 address: you need to fill this out
+    strcpy (target, "www.google.com");
+    
+    // Fill out hints for getaddrinfo().
+    memset (&hints, 0, sizeof (struct addrinfo));
+    hints.ai_family = AF_INET;
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_flags = hints.ai_flags | AI_CANONNAME;
+    
+    // Resolve target using getaddrinfo().
+    if ((status = getaddrinfo (target, NULL, &hints, &res)) != 0) {
+        fprintf (stderr, "getaddrinfo() failed: %s\n", gai_strerror (status));
+        exit (EXIT_FAILURE);
+    }
+    ipv4 = (struct sockaddr_in *) res->ai_addr;
+    tmp = &(ipv4->sin_addr);
+    if (inet_ntop (AF_INET, tmp, dst_ip, INET_ADDRSTRLEN) == NULL) {
+        status = errno;
+        fprintf (stderr, "inet_ntop() failed.\nError message: %s", strerror (status));
+        exit (EXIT_FAILURE);
+    }
+    freeaddrinfo (res);
+    
+    // IPv4 header
+    
+    // IPv4 header length (4 bits): Number of 32-bit words in header = 5
+    iphdr.ip_hl = IP4_HDRLEN / sizeof (uint32_t);
+    
+    // Internet Protocol version (4 bits): IPv4
+    iphdr.ip_v = 4;
+    
+    // Type of service (8 bits)
+    iphdr.ip_tos = 0;
+    
+    // Total length of datagram (16 bits): IP header + TCP header
+    iphdr.ip_len = htons (IP4_HDRLEN + TCP_HDRLEN + strlen(FAKE_PAYLOAD));
+    
+    // ID sequence number (16 bits): unused, since single datagram
+    iphdr.ip_id = htons (0);
+    
+    // Flags, and Fragmentation offset (3, 13 bits): 0 since single datagram
+    
+    // Zero (1 bit)
+    ip_flags[0] = 0;
+    
+    // Do not fragment flag (1 bit)
+    ip_flags[1] = 0;
+    
+    // More fragments following flag (1 bit)
+    ip_flags[2] = 0;
+    
+    // Fragmentation offset (13 bits)
+    ip_flags[3] = 0;
+    
+    iphdr.ip_off = htons ((ip_flags[0] << 15)
+                          + (ip_flags[1] << 14)
+                          + (ip_flags[2] << 13)
+                          +  ip_flags[3]);
+    
+    // Time-to-Live (8 bits): default to maximum value
+    iphdr.ip_ttl = 255;
+    
+    // Transport layer protocol (8 bits): 6 for TCP
+    iphdr.ip_p = IPPROTO_TCP;
+    
+    // Source IPv4 address (32 bits)
+    if ((status = inet_pton (AF_INET, src_ip, &(iphdr.ip_src))) != 1) {
+        fprintf (stderr, "inet_pton() failed.\nError message: %s", strerror (status));
+        exit (EXIT_FAILURE);
+    }
+    
+    // Destination IPv4 address (32 bits)
+    if ((status = inet_pton (AF_INET, dst_ip, &(iphdr.ip_dst))) != 1) {
+        fprintf (stderr, "inet_pton() failed.\nError message: %s", strerror (status));
+        exit (EXIT_FAILURE);
+    }
+    
+    // IPv4 header checksum (16 bits): set to 0 when calculating checksum
+    iphdr.ip_sum = 0;
+    iphdr.ip_sum = checksum ((uint16_t *) &iphdr, IP4_HDRLEN);
+    
+    // TCP header
+    
+    // Source port number (16 bits)
+    tcphdr.th_sport = htons (60);
+    
+    // Destination port number (16 bits)
+    tcphdr.th_dport = htons (80);
+    
+    // Sequence number (32 bits)
+    tcphdr.th_seq = htonl (0);
+    
+    // Acknowledgement number (32 bits): 0 in first packet of SYN/ACK process
+    tcphdr.th_ack = htonl (0);
+    
+    // Reserved (4 bits): should be 0
+    tcphdr.th_x2 = 0;
+    
+    // Data offset (4 bits): size of TCP header in 32-bit words
+    tcphdr.th_off = TCP_HDRLEN / 4;
+    
+    // Flags (8 bits)
+    
+    // FIN flag (1 bit)
+    tcp_flags[0] = 0;
+    
+    // SYN flag (1 bit): set to 1
+    tcp_flags[1] = 1;
+    
+    // RST flag (1 bit)
+    tcp_flags[2] = 0;
+    
+    // PSH flag (1 bit)
+    tcp_flags[3] = 0;
+    
+    // ACK flag (1 bit)
+    tcp_flags[4] = 0;
+    
+    // URG flag (1 bit)
+    tcp_flags[5] = 0;
+    
+    // ECE flag (1 bit)
+    tcp_flags[6] = 0;
+    
+    // CWR flag (1 bit)
+    tcp_flags[7] = 0;
+    
+    tcphdr.th_flags = 0;
+    for (i=0; i<8; i++) {
+        tcphdr.th_flags += (tcp_flags[i] << i);
+    }
+    
+    // Window size (16 bits)
+    tcphdr.th_win = htons (65535);
+    
+    // Urgent pointer (16 bits): 0 (only valid if URG flag is set)
+    tcphdr.th_urp = htons (0);
+    
+    // TCP checksum (16 bits)
+    tcphdr.th_sum = tcp4_checksum (iphdr, tcphdr);
+    
+    // Prepare packet.
+    
+    // First part is an IPv4 header.
+    memcpy (packet, &iphdr, IP4_HDRLEN * sizeof (uint8_t));
+    
+    // Next part of packet is upper layer protocol header.
+    memcpy ((packet + IP4_HDRLEN), &tcphdr, TCP_HDRLEN * sizeof (uint8_t));
+    
+
+    rohc_buf_append(&ip_packet, (uint8_t *)packet, IP4_HDRLEN + TCP_HDRLEN);
+    
+    printf("Payload length: %d \n", strlen(FAKE_PAYLOAD));
+    rohc_buf_append(&ip_packet, (uint8_t *)FAKE_PAYLOAD, strlen(FAKE_PAYLOAD));
+    
+    //!Test  4: unsuported bersion of header
     //createRohcPacketTcpIp((char*)FAKE_PAYLOAD, &ip_packet);
-	createIpPacket((char*)FAKE_PAYLOAD, &ip_packet);
+    
+    //!Test 5: just ip, works
+	//createIpPacket((char*)FAKE_PAYLOAD, &ip_packet);
 	
 	printf("Uncompressed Packet Length:\t%zu\n", ip_packet.len);
 	
@@ -152,9 +444,20 @@ void RohcCompression::performTest()
 		
 		rohc_buf decompressed_ip_packet;
 		if(!decompress(&compressed_rohc_packet, decompressed_ip_packet)) return;
-		//printf("Packet no: %d decompressed Packet Length:\t%zu\n", i, decompressed_ip_packet.len);
+		printf("Packet no: %d decompressed Packet Length:\t%zu\n", i, decompressed_ip_packet.len);
 	}
 	
+    // Close socket descriptor.
+    //close (sd);
+    
+    // Free allocated memory.
+    ::free (packet);
+    ::free (interface);
+    ::free (target);
+    ::free (src_ip);
+    ::free (dst_ip);
+    ::free (ip_flags);
+    ::free (tcp_flags);
 	RohcCompression::free();
 }
 void RohcCompression::printLastCompressedPacketInfo()
@@ -202,23 +505,23 @@ bool RohcCompression::initCompressor()
 	}
 	
 	/* enable the UNCOMPRESSED compression profile */
-	printf("enable the IP-only compression profile\n");
-	if (!rohc_comp_enable_profile(_compressor, ROHC_PROFILE_UNCOMPRESSED))
-	{
-		fprintf(stderr, "failed to enable the IP-only profile\n");
-		/* cleanup compressor, then leave with an error code */
-		rohc_comp_free(_compressor);
-		return false ;
-	}
+//	printf("enable the IP-only compression profile\n");
+//	if (!rohc_comp_enable_profile(_compressor, ROHC_PROFILE_UNCOMPRESSED))
+//	{
+//		fprintf(stderr, "failed to enable the IP-only profile\n");
+//		/* cleanup compressor, then leave with an error code */
+//		rohc_comp_free(_compressor);
+//		return false ;
+//	}
     /* enable the IP-only compression profile */
-    printf("enable the IP-only compression profile\n");
-    if (!rohc_comp_enable_profile(_compressor, ROHC_PROFILE_IP))
-    {
-        fprintf(stderr, "failed to enable the IP-only profile\n");
-        /* cleanup compressor, then leave with an error code */
-        rohc_comp_free(_compressor);
-        return false ;
-    }
+//    printf("enable the IP-only compression profile\n");
+//    if (!rohc_comp_enable_profile(_compressor, ROHC_PROFILE_IP))
+//    {
+//        fprintf(stderr, "failed to enable the IP-only profile\n");
+//        /* cleanup compressor, then leave with an error code */
+//        rohc_comp_free(_compressor);
+//        return false ;
+//    }
     /* enable the TCP-IP compression profile */
     printf("enable the IP-only compression profile\n");
     if (!rohc_comp_enable_profile(_compressor, ROHC_PROFILE_TCP))
@@ -229,11 +532,11 @@ bool RohcCompression::initCompressor()
         return false ;
     }
 	//we dont have a function that would calculate ip tcp checksum
-    printf("enable the NO_IP_CHECKSUMS feature\n");
-    if (!rohc_comp_set_features(_compressor, ROHC_COMP_FEATURE_NO_IP_CHECKSUMS))
-    {
-        fprintf(stderr, "failed to enable features\n");
-    }
+//    printf("enable the NO_IP_CHECKSUMS feature\n");
+//    if (!rohc_comp_set_features(_compressor, ROHC_COMP_FEATURE_NO_IP_CHECKSUMS))
+//    {
+//        fprintf(stderr, "failed to enable features\n");
+//    }
 	return true;
 }
 
@@ -265,18 +568,18 @@ bool RohcCompression::initDecompressor()
 	//        return false;
 	//    }
 	
-	if(!rohc_decomp_enable_profile(_decompressor, ROHC_PROFILE_UNCOMPRESSED))
-	{
-		fprintf(stderr, "failed to enable the UNCOMPRESSED profile\n");
-		rohc_decomp_free(_decompressor);
-		return false;
-	}
-    if(!rohc_decomp_enable_profile(_decompressor, ROHC_PROFILE_IP))
-    {
-        fprintf(stderr, "failed to enable the IP-only profile\n");
-        rohc_decomp_free(_decompressor);
-        return false;
-    }
+//	if(!rohc_decomp_enable_profile(_decompressor, ROHC_PROFILE_UNCOMPRESSED))
+//	{
+//		fprintf(stderr, "failed to enable the UNCOMPRESSED profile\n");
+//		rohc_decomp_free(_decompressor);
+//		return false;
+//	}
+//    if(!rohc_decomp_enable_profile(_decompressor, ROHC_PROFILE_IP))
+//    {
+//        fprintf(stderr, "failed to enable the IP-only profile\n");
+//        rohc_decomp_free(_decompressor);
+//        return false;
+//    }
     if(!rohc_decomp_enable_profile(_decompressor, ROHC_PROFILE_TCP))
     {
         fprintf(stderr, "failed to enable the TCP-IP profile\n");
@@ -296,11 +599,11 @@ bool RohcCompression::initDecompressor()
 	//    }
 	//! [enable ROHC decompression profiles]
 	//we dont have a function that would calculate ip tcp checksum
-	printf("tryout decomp features feature\n");
-	if (!rohc_decomp_set_features(_decompressor, /*ROHC_DECOMP_FEATURE_CRC_REPAIR))*/ROHC_DECOMP_FEATURE_DUMP_PACKETS))
-	{
-		fprintf(stderr, "failed to enable features\n");
-	}
+//	printf("tryout decomp features feature\n");
+//	if (!rohc_decomp_set_features(_decompressor, /*ROHC_DECOMP_FEATURE_CRC_REPAIR))*/ROHC_DECOMP_FEATURE_DUMP_PACKETS))
+//	{
+//		fprintf(stderr, "failed to enable features\n");
+//	}
 	return true;
 }
 
@@ -323,6 +626,45 @@ void RohcCompression::free()
 .offset = 0, \
 .len = 0, \
 }
+
+// IP header's structure
+struct ipheader {
+    unsigned char      iph_ihl:5, /* Little-endian */
+iph_ver:4;
+    unsigned char      iph_tos;
+    unsigned short int iph_len;
+    unsigned short int iph_ident;
+    unsigned char      iph_flags;
+    unsigned short int iph_offset;
+    unsigned char      iph_ttl;
+    unsigned char      iph_protocol;
+    unsigned short int iph_chksum;
+    unsigned int       iph_sourceip;
+    unsigned int       iph_destip;
+};
+
+/* Structure of a TCP header */
+struct tcpheader {
+    unsigned short int tcph_srcport;
+    unsigned short int tcph_destport;
+    unsigned int       tcph_seqnum;
+    unsigned int       tcph_acknum;
+    unsigned char      tcph_reserved:4, tcph_offset:4;
+    // unsigned char tcph_flags;
+    unsigned int
+tcp_res1:4,       /*little-endian*/
+tcph_hlen:4,      /*length of tcp header in 32-bit words*/
+tcph_fin:1,       /*Finish flag "fin"*/
+tcph_syn:1,       /*Synchronize sequence numbers to start a connection*/
+tcph_rst:1,       /*Reset flag */
+tcph_psh:1,       /*Push, sends data to the application*/
+tcph_ack:1,       /*acknowledge*/
+tcph_urg:1,       /*urgent pointer*/
+tcph_res2:2;
+    unsigned short int tcph_win;
+    unsigned short int tcph_chksum;
+    unsigned short int tcph_urgptr;
+};
 
 void RohcCompression::createIpPacket(char* payload, rohc_buf *ip_packet)
 {
@@ -569,4 +911,188 @@ bool RohcCompression::decompress(struct rohc_buf *const rohc_packet2, struct roh
 	
 	return true;
 }
+
+// Computing the internet checksum (RFC 1071).
+uint16_t
+checksum (uint16_t *addr, int len)
+{
+    int count = len;
+    uint32_t sum = 0;
+    uint16_t answer = 0;
+    
+    // Sum up 2-byte values until none or only one byte left.
+    while (count > 1) {
+        sum += *(addr++);
+        count -= 2;
+    }
+    
+    // Add left-over byte, if any.
+    if (count > 0) {
+        sum += *(uint8_t *) addr;
+    }
+    
+    // Fold 32-bit sum into 16 bits; we lose information by doing this,
+    // increasing the chances of a collision.
+    // sum = (lower 16 bits) + (upper 16 bits shifted right 16 bits)
+    while (sum >> 16) {
+        sum = (sum & 0xffff) + (sum >> 16);
+    }
+    
+    // Checksum is one's compliment of sum.
+    answer = ~sum;
+    
+    return (answer);
+}
+
+// Build IPv4 TCP pseudo-header and call checksum function.
+uint16_t
+tcp4_checksum (struct ip iphdr, struct tcphdr tcphdr)
+{
+    uint16_t svalue;
+    char buf[IP_MAXPACKET], cvalue;
+    char *ptr;
+    int chksumlen = 0;
+    
+    // ptr points to beginning of buffer buf
+    ptr = &buf[0];
+    
+    // Copy source IP address into buf (32 bits)
+    memcpy (ptr, &iphdr.ip_src.s_addr, sizeof (iphdr.ip_src.s_addr));
+    ptr += sizeof (iphdr.ip_src.s_addr);
+    chksumlen += sizeof (iphdr.ip_src.s_addr);
+    
+    // Copy destination IP address into buf (32 bits)
+    memcpy (ptr, &iphdr.ip_dst.s_addr, sizeof (iphdr.ip_dst.s_addr));
+    ptr += sizeof (iphdr.ip_dst.s_addr);
+    chksumlen += sizeof (iphdr.ip_dst.s_addr);
+    
+    // Copy zero field to buf (8 bits)
+    *ptr = 0; ptr++;
+    chksumlen += 1;
+    
+    // Copy transport layer protocol to buf (8 bits)
+    memcpy (ptr, &iphdr.ip_p, sizeof (iphdr.ip_p));
+    ptr += sizeof (iphdr.ip_p);
+    chksumlen += sizeof (iphdr.ip_p);
+    
+    // Copy TCP length to buf (16 bits)
+    svalue = htons (sizeof (tcphdr));
+    memcpy (ptr, &svalue, sizeof (svalue));
+    ptr += sizeof (svalue);
+    chksumlen += sizeof (svalue);
+    
+    // Copy TCP source port to buf (16 bits)
+    memcpy (ptr, &tcphdr.th_sport, sizeof (tcphdr.th_sport));
+    ptr += sizeof (tcphdr.th_sport);
+    chksumlen += sizeof (tcphdr.th_sport);
+    
+    // Copy TCP destination port to buf (16 bits)
+    memcpy (ptr, &tcphdr.th_dport, sizeof (tcphdr.th_dport));
+    ptr += sizeof (tcphdr.th_dport);
+    chksumlen += sizeof (tcphdr.th_dport);
+    
+    // Copy sequence number to buf (32 bits)
+    memcpy (ptr, &tcphdr.th_seq, sizeof (tcphdr.th_seq));
+    ptr += sizeof (tcphdr.th_seq);
+    chksumlen += sizeof (tcphdr.th_seq);
+    
+    // Copy acknowledgement number to buf (32 bits)
+    memcpy (ptr, &tcphdr.th_ack, sizeof (tcphdr.th_ack));
+    ptr += sizeof (tcphdr.th_ack);
+    chksumlen += sizeof (tcphdr.th_ack);
+    
+    // Copy data offset to buf (4 bits) and
+    // copy reserved bits to buf (4 bits)
+    cvalue = (tcphdr.th_off << 4) + tcphdr.th_x2;
+    memcpy (ptr, &cvalue, sizeof (cvalue));
+    ptr += sizeof (cvalue);
+    chksumlen += sizeof (cvalue);
+    
+    // Copy TCP flags to buf (8 bits)
+    memcpy (ptr, &tcphdr.th_flags, sizeof (tcphdr.th_flags));
+    ptr += sizeof (tcphdr.th_flags);
+    chksumlen += sizeof (tcphdr.th_flags);
+    
+    // Copy TCP window size to buf (16 bits)
+    memcpy (ptr, &tcphdr.th_win, sizeof (tcphdr.th_win));
+    ptr += sizeof (tcphdr.th_win);
+    chksumlen += sizeof (tcphdr.th_win);
+    
+    // Copy TCP checksum to buf (16 bits)
+    // Zero, since we don't know it yet
+    *ptr = 0; ptr++;
+    *ptr = 0; ptr++;
+    chksumlen += 2;
+    
+    // Copy urgent pointer to buf (16 bits)
+    memcpy (ptr, &tcphdr.th_urp, sizeof (tcphdr.th_urp));
+    ptr += sizeof (tcphdr.th_urp);
+    chksumlen += sizeof (tcphdr.th_urp);
+    
+    return checksum ((uint16_t *) buf, chksumlen);
+}
+
+// Allocate memory for an array of chars.
+char *
+allocate_strmem (int len)
+{
+    void *tmp;
+    
+    if (len <= 0) {
+        fprintf (stderr, "ERROR: Cannot allocate memory because len = %i in allocate_strmem().\n", len);
+        exit (EXIT_FAILURE);
+    }
+    
+    tmp = (char *) malloc (len * sizeof (char));
+    if (tmp != NULL) {
+        memset (tmp, 0, len * sizeof (char));
+        return (char *)(tmp);
+    } else {
+        fprintf (stderr, "ERROR: Cannot allocate memory for array allocate_strmem().\n");
+        exit (EXIT_FAILURE);
+    }
+}
+
+// Allocate memory for an array of unsigned chars.
+uint8_t *
+allocate_ustrmem (int len)
+{
+    void *tmp;
+    
+    if (len <= 0) {
+        fprintf (stderr, "ERROR: Cannot allocate memory because len = %i in allocate_ustrmem().\n", len);
+        exit (EXIT_FAILURE);
+    }
+    
+    tmp = (uint8_t *) malloc (len * sizeof (uint8_t));
+    if (tmp != NULL) {
+        memset (tmp, 0, len * sizeof (uint8_t));
+        return (uint8_t *)(tmp);
+    } else {
+        fprintf (stderr, "ERROR: Cannot allocate memory for array allocate_ustrmem().\n");
+        exit (EXIT_FAILURE);
+    }
+}
+
+// Allocate memory for an array of ints.
+int *
+allocate_intmem (int len)
+{
+    void *tmp;
+    
+    if (len <= 0) {
+        fprintf (stderr, "ERROR: Cannot allocate memory because len = %i in allocate_intmem().\n", len);
+        exit (EXIT_FAILURE);
+    }
+    
+    tmp = (int *) malloc (len * sizeof (int));
+    if (tmp != NULL) {
+        memset (tmp, 0, len * sizeof (int));
+        return (int *)(tmp);
+    } else {
+        fprintf (stderr, "ERROR: Cannot allocate memory for array allocate_intmem().\n");
+        exit (EXIT_FAILURE);
+    }
+}
+
 #endif
