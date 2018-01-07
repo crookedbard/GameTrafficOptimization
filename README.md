@@ -22,7 +22,12 @@ Library list:
 3. Huffman - https://github.com/crookedbard/Working-Huffman
 4. Lz4 - ... in code
 5. Simd - ?
-6. Sctp - ?
+6. SCTP - Github: https://github.com/sctplab/usrsctp
+
+Sending over SCTP
+To send data over SCTP directly you need root privileges because raw sockets are used. Thus instead of specifying the encapsulation ports you have to start the programs prepending sudo or in case of Windows start the program from an administrator console.
+
+Usage of SCTP and ROHC in ios devices are impossible due to raw socket permission. It is not allowed to use raw sockets without root. And root access in ios appse are not possible to get.
 
 Progress:
 
